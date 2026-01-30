@@ -135,6 +135,7 @@ void CTurtlebot4Test::LogLightUsingCameraSensorReadings() const {
    for (size_t i = 0; i < sReadings.BlobList.size(); i++) {
          CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor::SBlob* sBlob = sReadings.BlobList[i];
       LOG << "Color = " << sBlob->Color << std::endl;
+      LOG << "Distance = " << sBlob->Distance << std::endl;
    }
 }
 
