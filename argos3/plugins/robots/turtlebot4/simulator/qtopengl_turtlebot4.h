@@ -7,7 +7,8 @@
 #ifndef QTOPENGL_TURTLEBOT4_H
 #define QTOPENGL_TURTLEBOT4_H
 
-namespace argos {
+namespace argos
+{
    class CQTOpenGLTurtlebot4;
    class CTurtlebot4Entity;
 }
@@ -18,20 +19,20 @@ namespace argos {
 #include <GL/gl.h>
 #endif
 
-namespace argos {
+namespace argos
+{
 
-   class CQTOpenGLTurtlebot4 {
+   class CQTOpenGLTurtlebot4
+   {
 
    public:
-
       CQTOpenGLTurtlebot4();
 
       virtual ~CQTOpenGLTurtlebot4();
 
-      virtual void Draw(CTurtlebot4Entity& c_entity);
+      virtual void Draw(CTurtlebot4Entity &c_entity);
 
    protected:
-
       /** Renders a wheel */
       void RenderWheel();
 
@@ -44,24 +45,22 @@ namespace argos {
       /** Renders the columns */
       void RenderColumn();
 
-      /** Set Base Material */ 
+      /** Set Base Material */
       void SetBaseMaterial();
 
-      /** Set deck Material */ 
+      /** Set Bumper Material (front arc) */
+      void SetBumperMaterial();
+
+      /** Set deck Material */
       void SetDeckMaterial();
 
-      /** Set Column Material */ 
+      /** Set Column Material */
       void SetColumnMaterial();
 
       /** Set Wheel Material */
-      void SetWheelMaterial(); 
+      void SetWheelMaterial();
 
-      /** Renders the camera */
-      void RenderCamera();
-
-      void SetWhitePlasticMaterial();
    private:
-
       /** Start of the display list index */
       GLuint m_unLists;
 
@@ -79,9 +78,6 @@ namespace argos {
 
       /** Number of vertices to display the round parts */
       GLuint m_unVertices;
-
-      /** Foot-bot camera module */
-      GLuint m_unCameraList;
    };
 
 }

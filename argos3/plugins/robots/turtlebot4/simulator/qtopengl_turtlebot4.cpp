@@ -39,11 +39,6 @@ namespace argos
    static const Real LED_HEIGHT = 0.01; // to be checked!
    // static const Real LED_UPPER_RING_INNER_RADIUS = 0.8 * BODY_RADIUS;
 
-   /* Camera */
-   static const Real BEACON_RADIUS               = 0.021f;
-   static const Real CAMERA_ELEVATION            = BODY_ELEVATION+0.1f;
-   static const Real CAMERA_RADIUS               = BEACON_RADIUS;
-   static const Real CAMERA_HEIGHT               = 0.104f;
 
    /****************************************/
    /****************************************/
@@ -51,14 +46,13 @@ namespace argos
    CQTOpenGLTurtlebot4::CQTOpenGLTurtlebot4() : m_unVertices(40)
    {
       /* Reserve the needed display lists */
-      m_unLists = glGenLists(5);
+      m_unLists = glGenLists(4);
 
       /* Assign indices for better referencing (later) */
       m_unWheelList = m_unLists;
       m_unBodyList = m_unLists + 1;
       m_unUpperBodyList = m_unLists + 2;
       m_unColumnList = m_unLists + 3;
-      m_unCameraList                = m_unLists + 4;
 
       /* Create the wheel display list */
       glNewList(m_unWheelList, GL_COMPILE);
@@ -80,10 +74,6 @@ namespace argos
       RenderColumn();
       glEndList();
 
-      /* Create the camera display list */
-      glNewList(m_unCameraList, GL_COMPILE);
-      RenderCamera();
-      glEndList();
    }
 
    /****************************************/
@@ -91,7 +81,7 @@ namespace argos
 
    CQTOpenGLTurtlebot4::~CQTOpenGLTurtlebot4()
    {
-      glDeleteLists(m_unLists, 5);
+      glDeleteLists(m_unLists, 4);
    }
 
    /****************************************/
@@ -114,45 +104,60 @@ namespace argos
 
       glCallList(m_unUpperBodyList);
 
-      /* Columns (3 pillars) */
-      CRadians cStep = CRadians::TWO_PI / TURTLEBOT4_NUM_COLUMNS;
-      Real angleStep = cStep.GetValue();
+      /* Columns (4 pillars: 2 front wider apart, 2 rear closer together) */
+      Real frontRadius = BODY_RADIUS * 0.6f;
+      Real rearRadius  = BODY_RADIUS * 0.75f;
+      CRadians cColumnAngles[4] = {
+         CRadians(ToRadians(CDegrees(  70.0))),  /* front-left  */
+         CRadians(ToRadians(CDegrees( -70.0))),  /* front-right */
+         CRadians(ToRadians(CDegrees( 160.0))),  /* rear-left   */
+         CRadians(ToRadians(CDegrees(-160.0)))   /* rear-right  */
+      };
+      Real colRadius[4] = { frontRadius, frontRadius, rearRadius, rearRadius };
 
-      Real radius = BODY_RADIUS * 0.9f;            // slightly inside edge
-      CRadians cOffset = CRadians(ARGOS_PI / 3.0); // 60 degrees
-
-      for (UInt32 i = 0; i < TURTLEBOT4_NUM_COLUMNS; ++i)
+      for (UInt32 i = 0; i < 4; ++i)
       {
-         CRadians cAngle = cOffset + cStep * i;
-         // CRadians cAngle = cStep * i;
-
          glPushMatrix();
-         glTranslated(radius * Cos(cAngle),
-                      radius * Sin(cAngle),
+         glTranslated(colRadius[i] * Cos(cColumnAngles[i]),
+                      colRadius[i] * Sin(cColumnAngles[i]),
                       0.0f);
          glCallList(m_unColumnList);
          glPopMatrix();
       }
-
-      /* Place the camera */
-      glCallList(m_unCameraList);
    }
 
-   /* Dark plastic (Lower body) */
+   /* Base body — dark charcoal */
    void CQTOpenGLTurtlebot4::SetBaseMaterial()
    {
-      const GLfloat ambient_diffuse[] = {0.15f, 0.15f, 0.15f, 1.0f}; // dark gray
-      const GLfloat specular[] = {0.05f, 0.05f, 0.05f, 1.0f};
-      const GLfloat shininess[] = {5.0f};
+      const GLfloat ambient_diffuse[] = {0.12f, 0.12f, 0.12f, 1.0f};
+      const GLfloat specular[] = {0.08f, 0.08f, 0.08f, 1.0f};
+      const GLfloat shininess[] = {10.0f};
       glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, ambient_diffuse);
       glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
       glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
    }
 
-   /* Matte black (Upper deck) */
+   /* Bumper — not used, same as base */
+   void CQTOpenGLTurtlebot4::SetBumperMaterial()
+   {
+      SetBaseMaterial();
+   }
+
+   /* Upper deck — slightly lighter gray */
    void CQTOpenGLTurtlebot4::SetDeckMaterial()
    {
-      const GLfloat ambient_diffuse[] = {0.07f, 0.07f, 0.07f, 1.0f}; // matte black
+      const GLfloat ambient_diffuse[] = {0.18f, 0.18f, 0.18f, 1.0f};
+      const GLfloat specular[] = {0.06f, 0.06f, 0.06f, 1.0f};
+      const GLfloat shininess[] = {8.0f};
+      glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, ambient_diffuse);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
+   }
+
+   /* Columns — pure black matte */
+   void CQTOpenGLTurtlebot4::SetColumnMaterial()
+   {
+      const GLfloat ambient_diffuse[] = {0.05f, 0.05f, 0.05f, 1.0f};
       const GLfloat specular[] = {0.02f, 0.02f, 0.02f, 1.0f};
       const GLfloat shininess[] = {2.0f};
       glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, ambient_diffuse);
@@ -160,21 +165,10 @@ namespace argos
       glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
    }
 
-   /* Aluminum / metal (Columns) */
-   void CQTOpenGLTurtlebot4::SetColumnMaterial()
-   {
-      const GLfloat ambient_diffuse[] = {0.75f, 0.75f, 0.75f, 1.0f}; // light silver
-      const GLfloat specular[] = {0.90f, 0.90f, 0.90f, 1.0f};        // shiny
-      const GLfloat shininess[] = {50.0f};
-      glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, ambient_diffuse);
-      glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
-      glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
-   }
-
-   /* Rubber (Wheels) */
+   /* Wheels — black rubber, no shine */
    void CQTOpenGLTurtlebot4::SetWheelMaterial()
    {
-      const GLfloat ambient_diffuse[] = {0.05f, 0.05f, 0.05f, 1.0f}; // dark rubber
+      const GLfloat ambient_diffuse[] = {0.7f, 0.7f, 0.7f, 1.0f};
       const GLfloat specular[] = {0.00f, 0.00f, 0.00f, 1.0f};
       const GLfloat shininess[] = {1.0f};
       glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, ambient_diffuse);
@@ -232,16 +226,44 @@ namespace argos
    void CQTOpenGLTurtlebot4::RenderUpperBody()
    {
       SetDeckMaterial();
-      Real z = BODY_ELEVATION + LOWER_BODY_HEIGHT + TURTLEBOT4_COLUMN_HEIGHT;
+      static const Real UPPER_BODY_THICKNESS = 0.01f;
+      Real zBottom = BODY_ELEVATION + LOWER_BODY_HEIGHT + TURTLEBOT4_COLUMN_HEIGHT;
+      Real zTop = zBottom + UPPER_BODY_THICKNESS;
 
       CVector2 cVertex(UPPER_BODY_RADIUS, 0.0f);
       CRadians cAngle(CRadians::TWO_PI / m_unVertices);
 
+      /* Bottom disk */
+      glBegin(GL_POLYGON);
+      glNormal3d(0.0f, 0.0f, -1.0f);
+      for (GLuint i = 0; i <= m_unVertices; i++)
+      {
+         glVertex3d(cVertex.GetX(), cVertex.GetY(), zBottom);
+         cVertex.Rotate(cAngle);
+      }
+      glEnd();
+
+      /* Side cylinder */
+      CVector2 cNormal(1.0f, 0.0f);
+      cVertex.Set(UPPER_BODY_RADIUS, 0.0f);
+      glBegin(GL_QUAD_STRIP);
+      for (GLuint i = 0; i <= m_unVertices; i++)
+      {
+         glNormal3d(cNormal.GetX(), cNormal.GetY(), 0.0f);
+         glVertex3d(cVertex.GetX(), cVertex.GetY(), zTop);
+         glVertex3d(cVertex.GetX(), cVertex.GetY(), zBottom);
+         cVertex.Rotate(cAngle);
+         cNormal.Rotate(cAngle);
+      }
+      glEnd();
+
+      /* Top disk */
+      cVertex.Set(UPPER_BODY_RADIUS, 0.0f);
       glBegin(GL_POLYGON);
       glNormal3d(0.0f, 0.0f, 1.0f);
       for (GLuint i = 0; i <= m_unVertices; i++)
       {
-         glVertex3d(cVertex.GetX(), cVertex.GetY(), z);
+         glVertex3d(cVertex.GetX(), cVertex.GetY(), zTop);
          cVertex.Rotate(cAngle);
       }
       glEnd();
@@ -250,24 +272,22 @@ namespace argos
    void CQTOpenGLTurtlebot4::RenderBody()
    {
       SetBaseMaterial();
+      CRadians cAngle(CRadians::TWO_PI / m_unVertices);
+
       /* Bottom disk */
       CVector2 cVertex(BODY_RADIUS, 0.0f);
-      CRadians cAngle(-CRadians::TWO_PI / m_unVertices);
-
       glBegin(GL_POLYGON);
       glNormal3d(0.0f, 0.0f, -1.0f);
       for (GLuint i = 0; i <= m_unVertices; i++)
       {
          glVertex3d(cVertex.GetX(), cVertex.GetY(), BODY_ELEVATION);
-         cVertex.Rotate(cAngle);
+         cVertex.Rotate(-cAngle);
       }
       glEnd();
 
       /* Side cylinder */
-      cAngle = -cAngle;
       CVector2 cNormal(1.0f, 0.0f);
       cVertex.Set(BODY_RADIUS, 0.0f);
-
       glBegin(GL_QUAD_STRIP);
       for (GLuint i = 0; i <= m_unVertices; i++)
       {
@@ -279,7 +299,7 @@ namespace argos
       }
       glEnd();
 
-      /* NEW: Top disk */
+      /* Top disk */
       cVertex.Set(BODY_RADIUS, 0.0f);
       glBegin(GL_POLYGON);
       glNormal3d(0.0f, 0.0f, 1.0f);
@@ -315,54 +335,6 @@ namespace argos
       glEnd();
    }
 
-   void CQTOpenGLTurtlebot4::SetWhitePlasticMaterial() {
-      const GLfloat pfColor[]     = {   1.0f, 1.0f, 1.0f, 1.0f };
-      const GLfloat pfSpecular[]  = {   0.9f, 0.9f, 0.9f, 1.0f };
-      const GLfloat pfShininess[] = { 100.0f                   };
-      const GLfloat pfEmission[]  = {   0.0f, 0.0f, 0.0f, 1.0f };
-      glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, pfColor);
-      glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,            pfSpecular);
-      glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS,           pfShininess);
-      glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION,            pfEmission);
-   }
-
-   void CQTOpenGLTurtlebot4::RenderCamera() {
-      /* Set material */
-      SetWhitePlasticMaterial();
-      CVector2 cVertex(CAMERA_RADIUS, 0.0f);
-      CRadians cAngle(-CRadians::TWO_PI / m_unVertices);
-      /* Bottom part */
-      glBegin(GL_POLYGON);
-      glNormal3d(0.0f, 0.0f, -1.0f);
-      for(GLuint i = 0; i <= m_unVertices; i++) {
-         glVertex3d(cVertex.GetX(), cVertex.GetY(), CAMERA_ELEVATION);
-         cVertex.Rotate(cAngle);
-      }
-      glEnd();
-      /* Side surface */
-      cAngle = -cAngle;
-      CVector2 cNormal(1.0f, 0.0f);
-      cVertex.Set(CAMERA_RADIUS, 0.0f);
-      glBegin(GL_QUAD_STRIP);
-      for(GLuint i = 0; i <= m_unVertices; i++) {
-         glNormal3d(cNormal.GetX(), cNormal.GetY(), 0.0f);
-         glVertex3d(cVertex.GetX(), cVertex.GetY(), CAMERA_ELEVATION + CAMERA_HEIGHT);
-         glVertex3d(cVertex.GetX(), cVertex.GetY(), CAMERA_ELEVATION);
-         cVertex.Rotate(cAngle);
-         cNormal.Rotate(cAngle);
-      }
-      glEnd();
-      /* Top part */
-      glBegin(GL_POLYGON);
-      glNormal3d(0.0f, 0.0f, 1.0f);
-      cVertex.Set(CAMERA_RADIUS, 0.0f);
-      for(GLuint i = 0; i <= m_unVertices; i++) {
-         glVertex3d(cVertex.GetX(), cVertex.GetY(), CAMERA_ELEVATION + CAMERA_HEIGHT);
-         cVertex.Rotate(cAngle);
-      }
-      glEnd();
-   }
-   
    class CQTOpenGLOperationDrawTurtlebot4Normal : public CQTOpenGLOperationDrawNormal
    {
    public:

@@ -25,7 +25,7 @@
       <sensors>
         <turtlebot4_ground implementation="rot_z_only" />
         <turtlebot4_proximity implementation="default" show_rays="true" />
-        <turtlebot4_lidar implementation="default" num_readings="360" show_rays="true" />
+        <turtlebot4_lidar implementation="default" num_readings="360" show_rays="false" />
 
       </sensors>
       <params velocity="6.0" />
@@ -53,7 +53,7 @@
       pixels_per_meter="50" />
 
     <!-- Place four boxes in a square to delimit the arena -->
-    <box id="wall_north" size="4,0.1,0.5" movable="false">
+    <!-- <box id="wall_north" size="4,0.1,0.5" movable="false">
       <body position="0,2,0" orientation="0,0,0" />
     </box>
     <box id="wall_south" size="4,0.1,0.5" movable="false">
@@ -64,13 +64,24 @@
     </box>
     <box id="wall_west" size="0.1,4,0.5" movable="false">
       <body position="-2,0,0" orientation="0,0,0" />
-    </box>
+    </box> -->
 
     <!-- Place a turtlebot4 in the origin and bind it to the controller -->
-    <turtlebot4 id="fb_0">
+    <!-- <turtlebot4 id="fb_0">
       <body position="0,0,0" orientation="0,0,0" />
       <controller config="fdc" />
-    </turtlebot4>
+    </turtlebot4> -->
+
+    <distribute>
+      <position method="uniform" min="-2,-2,0" max="2,2,0" />
+      <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0" />
+      <entity quantity="1" max_trials="100">
+        <turtlebot4 id="tb">
+          <controller config="fdc" />
+        </turtlebot4>
+      </entity>
+    </distribute>
+
 
   </arena>
 
@@ -93,7 +104,8 @@
     <qt-opengl>
       <camera>
         <placements>
-          <placement index="0" position="0,0,8.14689" look_at="0,0,0" up="1,0,0" lens_focal_length="40" />
+          <placement index="0" position="0,0,8.14689" look_at="0,0,0" up="1,0,0"
+            lens_focal_length="40" />
         </placements>
       </camera>
     </qt-opengl>
