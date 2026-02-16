@@ -13,7 +13,7 @@ namespace argos {
    class CTurtlebot4Entity;
    class CGroundSensorEquippedEntity;
    class CLEDEquippedEntity;
-   // class CLightSensorEquippedEntity;
+   class CLightSensorEquippedEntity;
    // class CPerspectiveCameraEquippedEntity;
    class COmnidirectionalCameraEquippedEntity;
    class CProximitySensorEquippedEntity;
@@ -119,7 +119,7 @@ namespace argos {
       CEmbodiedEntity*                       m_pcEmbodiedEntity;
       CGroundSensorEquippedEntity*           m_pcGroundSensorEquippedEntity;
       CLEDEquippedEntity*                    m_pcLEDEquippedEntity;
-      // CLightSensorEquippedEntity*            m_pcLightSensorEquippedEntity;
+      CLightSensorEquippedEntity*            m_pcLightSensorEquippedEntity;
       CProximitySensorEquippedEntity*        m_pcProximitySensorEquippedEntity;
       CProximitySensorEquippedEntity*        m_pcLIDARSensorEquippedEntity;
       // CRABEquippedEntity*                    m_pcRABEquippedEntity;

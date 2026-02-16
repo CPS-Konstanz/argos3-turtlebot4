@@ -18,49 +18,51 @@
 #include <argos3/plugins/simulator/entities/proximity_sensor_equipped_entity.h>
 #include <argos3/plugins/simulator/entities/battery_equipped_entity.h>
 
-namespace argos {
+namespace argos
+{
 
+   CTurtlebot4Entity::CTurtlebot4Entity() : CComposableEntity(nullptr),
+                                            m_pcControllableEntity(nullptr),
+                                            m_pcEmbodiedEntity(nullptr),
+                                            m_pcGroundSensorEquippedEntity(nullptr),
+                                            m_pcLEDEquippedEntity(nullptr),
+                                            m_pcProximitySensorEquippedEntity(nullptr),
+                                            m_pcWheeledEntity(nullptr),
+                                            m_pcOmnidirectionalCameraEquippedEntity(nullptr),
+                                            // m_pcPerspectiveCameraEquippedEntity(NULL)
+                                            m_pcLightSensorEquippedEntity(nullptr)
 
-   CTurtlebot4Entity::CTurtlebot4Entity() :
-      CComposableEntity(nullptr),
-      m_pcControllableEntity(nullptr),
-      m_pcEmbodiedEntity(nullptr),
-      m_pcGroundSensorEquippedEntity(nullptr),
-      m_pcLEDEquippedEntity(nullptr),
-      m_pcProximitySensorEquippedEntity(nullptr),
-      m_pcWheeledEntity(nullptr),
-      m_pcOmnidirectionalCameraEquippedEntity(nullptr)
-      // m_pcPerspectiveCameraEquippedEntity(NULL)
-      {
+   {
    }
 
    /****************************************/
    /****************************************/
 
-   CTurtlebot4Entity::CTurtlebot4Entity(const std::string& str_id,
-                              const std::string& str_controller_id,
-                              const CVector3& c_position,
-                              const CQuaternion& c_orientation,
-                              Real f_rab_range,
-                              size_t un_rab_data_size,
-                              const std::string& str_bat_model,
-                              const CRadians& c_omnicam_aperture,
-                                  bool b_perspcam_front,
-                              const CRadians& c_perspcam_aperture,
-                              Real f_perspcam_focal_length,
-                              Real f_perspcam_range) :
-                              
-      CComposableEntity(nullptr, str_id),
-      m_pcControllableEntity(nullptr),
-      m_pcEmbodiedEntity(nullptr),
-      m_pcGroundSensorEquippedEntity(nullptr),
-      m_pcLEDEquippedEntity(nullptr),
-      m_pcProximitySensorEquippedEntity(nullptr),
-      m_pcWheeledEntity(nullptr),
-      m_pcOmnidirectionalCameraEquippedEntity(nullptr)
-      // m_pcPerspectiveCameraEquippedEntity(nullptr)
-       {
-      try {
+   CTurtlebot4Entity::CTurtlebot4Entity(const std::string &str_id,
+                                        const std::string &str_controller_id,
+                                        const CVector3 &c_position,
+                                        const CQuaternion &c_orientation,
+                                        Real f_rab_range,
+                                        size_t un_rab_data_size,
+                                        const std::string &str_bat_model,
+                                        const CRadians &c_omnicam_aperture,
+                                        bool b_perspcam_front,
+                                        const CRadians &c_perspcam_aperture,
+                                        Real f_perspcam_focal_length,
+                                        Real f_perspcam_range) :
+
+                                                                 CComposableEntity(nullptr, str_id),
+                                                                 m_pcControllableEntity(nullptr),
+                                                                 m_pcEmbodiedEntity(nullptr),
+                                                                 m_pcGroundSensorEquippedEntity(nullptr),
+                                                                 m_pcLEDEquippedEntity(nullptr),
+                                                                 m_pcProximitySensorEquippedEntity(nullptr),
+                                                                 m_pcWheeledEntity(nullptr),
+                                                                 m_pcOmnidirectionalCameraEquippedEntity(nullptr)
+   // m_pcPerspectiveCameraEquippedEntity(nullptr)
+   {
+      try
+      {
          /*
           * Create and init components
           */
@@ -70,44 +72,44 @@ namespace argos {
          /* Wheeled entity and wheel positions (left, right) */
          m_pcWheeledEntity = new CWheeledEntity(this, "wheels_0", 2);
          AddComponent(*m_pcWheeledEntity);
-         m_pcWheeledEntity->SetWheel(0, CVector3(0.0f,  TURTLEBOT4_HALF_WHEEL_DISTANCE, 0.0f), TURTLEBOT4_WHEEL_RADIUS);
+         m_pcWheeledEntity->SetWheel(0, CVector3(0.0f, TURTLEBOT4_HALF_WHEEL_DISTANCE, 0.0f), TURTLEBOT4_WHEEL_RADIUS);
          m_pcWheeledEntity->SetWheel(1, CVector3(0.0f, -TURTLEBOT4_HALF_WHEEL_DISTANCE, 0.0f), TURTLEBOT4_WHEEL_RADIUS);
 
          // /* LED equipped entity */
          m_pcLEDEquippedEntity = new CLEDEquippedEntity(this, "leds_0");
          AddComponent(*m_pcLEDEquippedEntity);
          m_pcLEDEquippedEntity->AddLEDRing(
-            CVector3(0.0f, 0.0f, TURTLEBOT4_LED_RING_ELEVATION),
-            TURTLEBOT4_LED_RING_RADIUS,
-            TURTLEBOT4_LED_RING_START_ANGLE,
-            8,
-            m_pcEmbodiedEntity->GetOriginAnchor());
+             CVector3(0.0f, 0.0f, TURTLEBOT4_LED_RING_ELEVATION),
+             TURTLEBOT4_LED_RING_RADIUS,
+             TURTLEBOT4_LED_RING_START_ANGLE,
+             8,
+             m_pcEmbodiedEntity->GetOriginAnchor());
 
          /* LIDAR sensor equipped entity */
          m_pcLIDARSensorEquippedEntity =
-            new CProximitySensorEquippedEntity(this,
-                                               "lidar");
+             new CProximitySensorEquippedEntity(this,
+                                                "lidar");
          AddComponent(*m_pcLIDARSensorEquippedEntity);
 
          /* Proximity sensor equipped entity */
          m_pcProximitySensorEquippedEntity =
-            new CProximitySensorEquippedEntity(this,
-                                               "proximity");
+             new CProximitySensorEquippedEntity(this,
+                                                "proximity");
          AddComponent(*m_pcProximitySensorEquippedEntity);
 
          CRadians sensor_angle[7] = {
-    -CRadians::PI / 2.75f,             // -65,3°
-    -CRadians::PI / 4.736f,             // -38°
-    -CRadians::PI / 9.0f,                   // -20° 
-    -CRadians::PI / 60.0f,              // -3°
-    CRadians::PI / 12.630f,              // +60°
-    CRadians::PI / 5.294f,              // +60°
-    CRadians::PI / 2.7565f             // +90° (rightmost)            // slight extra left bias if needed
+             -CRadians::PI / 2.75f,  // -65,3°
+             -CRadians::PI / 4.736f, // -38°
+             -CRadians::PI / 9.0f,   // -20°
+             -CRadians::PI / 60.0f,  // -3°
+             CRadians::PI / 12.630f, // +60°
+             CRadians::PI / 5.294f,  // +60°
+             CRadians::PI / 2.7565f  // +90° (rightmost)            // slight extra left bias if needed
          };
 
          CRadians cAngle;
          CVector3 cOff, cDir, c_center = CVector3(0.0f, 0.0f, TURTLEBOT4_IR_SENSOR_RING_ELEVATION);
-         for(UInt32 i = 0; i < 7; ++i)
+         for (UInt32 i = 0; i < 7; ++i)
          {
             cAngle = sensor_angle[i];
             cAngle.SignedNormalize();
@@ -121,19 +123,19 @@ namespace argos {
 
          /* Omnidirectional camera equipped entity */
          m_pcOmnidirectionalCameraEquippedEntity =
-            new COmnidirectionalCameraEquippedEntity(this,
-                                                     "omnidirectional_camera_0",
-                                                     c_omnicam_aperture,
-                                                     CVector3(0.0f,
-                                                              0.0f,
-                                                              OMNIDIRECTIONAL_CAMERA_ELEVATION));
+             new COmnidirectionalCameraEquippedEntity(this,
+                                                      "omnidirectional_camera_0",
+                                                      c_omnicam_aperture,
+                                                      CVector3(0.0f,
+                                                               0.0f,
+                                                               OMNIDIRECTIONAL_CAMERA_ELEVATION));
          AddComponent(*m_pcOmnidirectionalCameraEquippedEntity);
-         
+
          /* Perspective camera equipped entity */
          // CQuaternion cPerspCamOrient(CRadians::PI_OVER_TWO, CVector3::Y);
          // SAnchor& cPerspCamAnchor = m_pcEmbodiedEntity->AddAnchor("perspective_camera",
          //                                                          CVector3(0.0, 0.0, 0.0),
-                                                                  // cPerspCamOrient);
+         // cPerspCamOrient);
          // m_pcPerspectiveCameraEquippedEntity =
          //    new CPerspectiveCameraEquippedEntity(this,
          //                                         "perspective_camera_0",
@@ -146,20 +148,20 @@ namespace argos {
 
          /* Ground sensor equipped entity */
          m_pcGroundSensorEquippedEntity =
-            new CGroundSensorEquippedEntity(this, "ground_0");
+             new CGroundSensorEquippedEntity(this, "ground_0");
          AddComponent(*m_pcGroundSensorEquippedEntity);
          m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.1425, 0.0268),
-            CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-            m_pcEmbodiedEntity->GetOriginAnchor());
+                                                   CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
+                                                   m_pcEmbodiedEntity->GetOriginAnchor());
          m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.1425, -0.0268),
-            CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-            m_pcEmbodiedEntity->GetOriginAnchor());
+                                                   CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
+                                                   m_pcEmbodiedEntity->GetOriginAnchor());
          m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.0879, 0.109),
-            CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-            m_pcEmbodiedEntity->GetOriginAnchor());
+                                                   CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
+                                                   m_pcEmbodiedEntity->GetOriginAnchor());
          m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.0879, -0.109),
-            CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-            m_pcEmbodiedEntity->GetOriginAnchor());
+                                                   CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
+                                                   m_pcEmbodiedEntity->GetOriginAnchor());
 
          /* Controllable entity
             It must be the last one, for actuators/sensors to link to composing entities correctly */
@@ -170,7 +172,8 @@ namespace argos {
          /* Update components */
          UpdateComponents();
       }
-      catch(CARGoSException& ex) {
+      catch (CARGoSException &ex)
+      {
          THROW_ARGOSEXCEPTION_NESTED("Failed to initialize entity \"" << GetId() << "\".", ex);
       }
    }
@@ -178,8 +181,10 @@ namespace argos {
    /****************************************/
    /****************************************/
 
-   void CTurtlebot4Entity::Init(TConfigurationNode& t_tree) {
-      try {
+   void CTurtlebot4Entity::Init(TConfigurationNode &t_tree)
+   {
+      try
+      {
          /*
           * Init parent
           */
@@ -191,47 +196,46 @@ namespace argos {
          m_pcEmbodiedEntity = new CEmbodiedEntity(this);
          AddComponent(*m_pcEmbodiedEntity);
          m_pcEmbodiedEntity->Init(GetNode(t_tree, "body"));
-         
+
          /* Wheeled entity and wheel positions (left, right) */
          m_pcWheeledEntity = new CWheeledEntity(this, "wheels_0", 2);
          AddComponent(*m_pcWheeledEntity);
-         m_pcWheeledEntity->SetWheel(0, CVector3(0.0f,  TURTLEBOT4_HALF_WHEEL_DISTANCE, 0.0f), TURTLEBOT4_WHEEL_RADIUS);
+         m_pcWheeledEntity->SetWheel(0, CVector3(0.0f, TURTLEBOT4_HALF_WHEEL_DISTANCE, 0.0f), TURTLEBOT4_WHEEL_RADIUS);
          m_pcWheeledEntity->SetWheel(1, CVector3(0.0f, -TURTLEBOT4_HALF_WHEEL_DISTANCE, 0.0f), TURTLEBOT4_WHEEL_RADIUS);
          /* LED equipped entity, with LEDs [0-11] and beacon [12] */
          m_pcLEDEquippedEntity = new CLEDEquippedEntity(this, "leds_0");
          AddComponent(*m_pcLEDEquippedEntity);
          m_pcLEDEquippedEntity->AddLEDRing(
-            CVector3(0.0f, 0.0f, TURTLEBOT4_LED_RING_ELEVATION),
-            TURTLEBOT4_LED_RING_RADIUS,
-            TURTLEBOT4_LED_RING_START_ANGLE,
-            8,
-            m_pcEmbodiedEntity->GetOriginAnchor());
-         
+             CVector3(0.0f, 0.0f, TURTLEBOT4_LED_RING_ELEVATION),
+             TURTLEBOT4_LED_RING_RADIUS,
+             TURTLEBOT4_LED_RING_START_ANGLE,
+             8,
+             m_pcEmbodiedEntity->GetOriginAnchor());
+
          /* LIDAR sensor equipped entity */
          m_pcLIDARSensorEquippedEntity =
-            new CProximitySensorEquippedEntity(this,
-                                               "lidar");
+             new CProximitySensorEquippedEntity(this,
+                                                "lidar");
          AddComponent(*m_pcLIDARSensorEquippedEntity);
-         
+
          /* Proximity sensor equipped entity */
          m_pcProximitySensorEquippedEntity =
-            new CProximitySensorEquippedEntity(this,
-                                               "proximity");
+             new CProximitySensorEquippedEntity(this,
+                                                "proximity");
          AddComponent(*m_pcProximitySensorEquippedEntity);
 
-
-	      CRadians sensor_angle[7] = {
-    -CRadians::PI / 2.75f,             // -65,3°
-    -CRadians::PI / 4.736f,             // -38°
-    -CRadians::PI / 9.0f,                   // -20° 
-    -CRadians::PI / 60.0f,              // -3°
-    CRadians::PI / 12.630f,              // +60°
-    CRadians::PI / 5.294f,              // +60°
-    CRadians::PI / 2.7565f             // +90° (rightmost)            // slight extra left bias if needed
+         CRadians sensor_angle[7] = {
+             -CRadians::PI / 2.75f,  // -65,3°
+             -CRadians::PI / 4.736f, // -38°
+             -CRadians::PI / 9.0f,   // -20°
+             -CRadians::PI / 60.0f,  // -3°
+             CRadians::PI / 12.630f, // +60°
+             CRadians::PI / 5.294f,  // +60°
+             CRadians::PI / 2.7565f  // +90° (rightmost)            // slight extra left bias if needed
          };
          CRadians cAngle;
          CVector3 cOff, cDir, c_center = CVector3(0.0f, 0.0f, TURTLEBOT4_IR_SENSOR_RING_ELEVATION);
-         for(UInt32 i = 0; i < 7; ++i)
+         for (UInt32 i = 0; i < 7; ++i)
          {
             cAngle = sensor_angle[i];
             cAngle.SignedNormalize();
@@ -247,31 +251,31 @@ namespace argos {
          CDegrees cAperture(70.0f);
          GetNodeAttributeOrDefault(t_tree, "omnidirectional_camera_aperture", cAperture, cAperture);
          m_pcOmnidirectionalCameraEquippedEntity =
-            new COmnidirectionalCameraEquippedEntity(this,
-                                                     "omnidirectional_camera_0",
-                                                     ToRadians(cAperture),
-                                                     CVector3(0.0f,
-                                                              0.0f,
-                                                              OMNIDIRECTIONAL_CAMERA_ELEVATION));
+             new COmnidirectionalCameraEquippedEntity(this,
+                                                      "omnidirectional_camera_0",
+                                                      ToRadians(cAperture),
+                                                      CVector3(0.0f,
+                                                               0.0f,
+                                                               OMNIDIRECTIONAL_CAMERA_ELEVATION));
          AddComponent(*m_pcOmnidirectionalCameraEquippedEntity);
 
          /* Ground sensor equipped entity */
          m_pcGroundSensorEquippedEntity =
-            new CGroundSensorEquippedEntity(this, "ground_0");
+             new CGroundSensorEquippedEntity(this, "ground_0");
          AddComponent(*m_pcGroundSensorEquippedEntity);
          m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.1425, 0.0268),
-            CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-            m_pcEmbodiedEntity->GetOriginAnchor());
+                                                   CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
+                                                   m_pcEmbodiedEntity->GetOriginAnchor());
          m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.1425, -0.0268),
-            CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-            m_pcEmbodiedEntity->GetOriginAnchor());
+                                                   CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
+                                                   m_pcEmbodiedEntity->GetOriginAnchor());
          m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.0879, 0.109),
-            CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-            m_pcEmbodiedEntity->GetOriginAnchor());
+                                                   CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
+                                                   m_pcEmbodiedEntity->GetOriginAnchor());
          m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.0879, -0.109),
-            CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-            m_pcEmbodiedEntity->GetOriginAnchor());
-         
+                                                   CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
+                                                   m_pcEmbodiedEntity->GetOriginAnchor());
+
          /* Controllable entity
             It must be the last one, for actuators/sensors to link to composing entities correctly */
          m_pcControllableEntity = new CControllableEntity(this);
@@ -280,7 +284,8 @@ namespace argos {
          /* Update components */
          UpdateComponents();
       }
-      catch(CARGoSException& ex) {
+      catch (CARGoSException &ex)
+      {
          THROW_ARGOSEXCEPTION_NESTED("Failed to initialize entity \"" << GetId() << "\".", ex);
       }
    }
@@ -288,7 +293,8 @@ namespace argos {
    /****************************************/
    /****************************************/
 
-   void CTurtlebot4Entity::Reset() {
+   void CTurtlebot4Entity::Reset()
+   {
       /* Reset all components */
       CComposableEntity::Reset();
       /* Update components */
@@ -298,16 +304,20 @@ namespace argos {
    /****************************************/
    /****************************************/
 
-   void CTurtlebot4Entity::Destroy() {
+   void CTurtlebot4Entity::Destroy()
+   {
       CComposableEntity::Destroy();
    }
 
    /****************************************/
    /****************************************/
 
-#define UPDATE(COMPONENT) if(COMPONENT->IsEnabled()) COMPONENT->Update();
+#define UPDATE(COMPONENT)      \
+   if (COMPONENT->IsEnabled()) \
+      COMPONENT->Update();
 
-   void CTurtlebot4Entity::UpdateComponents() {
+   void CTurtlebot4Entity::UpdateComponents()
+   {
       UPDATE(m_pcLEDEquippedEntity);
       UPDATE(m_pcGroundSensorEquippedEntity);
       // UPDATE(m_pcPerspectiveCameraEquippedEntity)
@@ -315,7 +325,7 @@ namespace argos {
 
    /****************************************/
    /****************************************/
-   
+
    REGISTER_ENTITY(CTurtlebot4Entity,
                    "turtlebot4",
                    "Jyotsna Bellary [jyotsnabellary@gmail.com]",
@@ -428,8 +438,7 @@ namespace argos {
                    "    </eye-bot>\n"
                    "    ...\n"
                    "  </arena>\n\n",
-                   "Under development"
-      );
+                   "Under development");
 
    /****************************************/
    /****************************************/

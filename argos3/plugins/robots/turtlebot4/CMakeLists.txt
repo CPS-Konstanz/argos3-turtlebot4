@@ -8,6 +8,7 @@ set(ARGOS3_HEADERS_PLUGINS_ROBOTS_TURTLEBOT4_CONTROLINTERFACE
   control_interface/ci_turtlebot4_lidar_sensor.h
   control_interface/ci_turtlebot4_proximity_sensor.h
   control_interface/ci_turtlebot4_colored_blob_omnidirectional_camera_sensor.h
+  control_interface/ci_turtlebot4_light_sensor.h
 )
 set(ARGOS3_HEADERS_PLUGINS_ROBOTS_TURTLEBOT4_SIMULATOR
     simulator/dynamics2d_turtlebot4_model.h
@@ -15,9 +16,11 @@ set(ARGOS3_HEADERS_PLUGINS_ROBOTS_TURTLEBOT4_SIMULATOR
     simulator/turtlebot4_base_ground_rotzonly_sensor.h
     simulator/turtlebot4_lidar_default_sensor.h
     simulator/turtlebot4_proximity_default_sensor.h
+    simulator/turtlebot4_light_rotzonly_sensor.h
     simulator/turtlebot4_colored_blob_omnidirectional_camera_rotzonly_sensor.h
     simulator/turtlebot4_entity.h
     simulator/turtlebot4_measures.h
+
 
     )
     
@@ -28,6 +31,7 @@ set(ARGOS3_SOURCES_PLUGINS_ROBOTS_TURTLEBOT4
   ${ARGOS3_HEADERS_PLUGINS_ROBOTS_TURTLEBOT4_CONTROLINTERFACE}
   control_interface/ci_turtlebot4_base_ground_sensor.cpp
   control_interface/ci_turtlebot4_lidar_sensor.cpp
+  control_interface/ci_turtlebot4_light_sensor.cpp
   control_interface/ci_turtlebot4_proximity_sensor.cpp
   control_interface/ci_turtlebot4_colored_blob_omnidirectional_camera_sensor.cpp
 )
@@ -40,6 +44,7 @@ set(ARGOS3_SOURCES_PLUGINS_ROBOTS_TURTLEBOT4
   simulator/turtlebot4_base_ground_rotzonly_sensor.cpp
   simulator/turtlebot4_lidar_default_sensor.cpp
   simulator/turtlebot4_proximity_default_sensor.cpp
+  simulator/turtlebot4_light_rotzonly_sensor.cpp
   simulator/turtlebot4_colored_blob_omnidirectional_camera_rotzonly_sensor.cpp
   simulator/turtlebot4_entity.cpp
   simulator/turtlebot4_measures.cpp
