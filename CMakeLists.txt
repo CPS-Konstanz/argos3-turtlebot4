@@ -26,10 +26,10 @@ link_directories(${ARGOS_LIBRARY_DIR})
 link_libraries(${ARGOS_LDFLAGS})
 
 # Look for the (optional) galib library
-find_package(GALIB)
-if(GALIB_FOUND)
-  include_directories(${GALIB_INCLUDE_DIRS})
-endif(GALIB_FOUND)
+# find_package(GALIB)
+# if(GALIB_FOUND)
+#   include_directories(${GALIB_INCLUDE_DIRS})
+# endif(GALIB_FOUND)
 
 #
 # Check for Lua 5.3

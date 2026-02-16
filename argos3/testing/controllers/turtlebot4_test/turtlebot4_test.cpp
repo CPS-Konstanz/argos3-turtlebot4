@@ -11,7 +11,7 @@ CTurtlebot4Test::CTurtlebot4Test() :
    m_pcWheels(NULL),
    // m_pcProximity(NULL),
    m_pcGround(NULL), 
-   m_pcCamera(NULL),
+   // m_pcCamera(NULL),
    // m_pcLight(NULL),
    m_fWheelVelocity(-2.5f) {}
 
@@ -45,12 +45,12 @@ void CTurtlebot4Test::Init(TConfigurationNode& t_node) {
    m_pcWheels    = GetActuator<CCI_DifferentialSteeringActuator>("differential_steering");
    m_pcProximity = GetSensor  <CCI_Turtlebot4ProximitySensor             >("turtlebot4_proximity"    );
    // m_pcLight = GetSensor  <CCI_Turtlebot4LightSensor>("turtlebot4_light");
-   m_pcCamera = GetSensor  <CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor>("turtlebot4_colored_blob_omnidirectional_camera");
+   // m_pcCamera = GetSensor  <CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor>("turtlebot4_colored_blob_omnidirectional_camera");
    m_pcGround = GetSensor  <CCI_Turtlebot4BaseGroundSensor>("turtlebot4_ground");
-   m_pcLEDs   = GetActuator<CCI_LEDsActuator                          >("leds");
+   // m_pcLEDs   = GetActuator<CCI_LEDsActuator                          >("leds");
    m_pcLidar = GetSensor  <CCI_Turtlebot4LIDARSensor    >("turtlebot4_lidar"  );
    // m_pcCamera  = GetSensor  <CCI_ColoredBlobPerspectiveCameraSensor>("turtlebot4_colored_blob_perspective_camera");
-   m_pcCamera->Enable();
+   // m_pcCamera->Enable();
 
    const auto& tReadings = m_pcGround->GetReadings();
    
@@ -128,15 +128,15 @@ void CTurtlebot4Test::LogLidarSensorReadings() const {
 
 void CTurtlebot4Test::LogLightUsingCameraSensorReadings() const {
     /* Perspective Camera */
-   const CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor::SReadings& sReadings = m_pcCamera->GetReadings();
+   // const CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor::SReadings& sReadings = m_pcCamera->GetReadings();
    LOG << CCI_Controller::GetId() << "> Camera: " << std::endl;
-   LOG << "Number of blobs detected: " << sReadings.BlobList.size() << std::endl;
-   LOG << "Counter: " << sReadings.Counter << std::endl;
-   for (size_t i = 0; i < sReadings.BlobList.size(); i++) {
-         CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor::SBlob* sBlob = sReadings.BlobList[i];
-      LOG << "Color = " << sBlob->Color << std::endl;
-      LOG << "Distance = " << sBlob->Distance << std::endl;
-   }
+   // LOG << "Number of blobs detected: " << sReadings.BlobList.size() << std::endl;
+   // LOG << "Counter: " << sReadings.Counter << std::endl;
+   // for (size_t i = 0; i < sReadings.BlobList.size(); i++) {
+   //       CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor::SBlob* sBlob = sReadings.BlobList[i];
+   //    LOG << "Color = " << sBlob->Color << std::endl;
+   //    LOG << "Distance = " << sBlob->Distance << std::endl;
+   // }
 }
 
 
@@ -234,9 +234,9 @@ void CTurtlebot4Test::ControlStep() {
 
 void CTurtlebot4Test::Reset() {
    /* Enable camera filtering */
-   m_pcCamera->Enable();
+   // m_pcCamera->Enable();
    /* Set beacon color to all red to be visible for other robots */
-   m_pcLEDs->SetSingleColor(12, CColor::RED);
+   // m_pcLEDs->SetSingleColor(12, CColor::RED);
 
 }
 

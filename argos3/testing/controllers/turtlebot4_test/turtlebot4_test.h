@@ -141,7 +141,7 @@ private:
    Real m_fWheelVelocity;
 
    /* Pointer to the omnidirectional camera sensor */
-   CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor* m_pcCamera;
+   // CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor* m_pcCamera;
 
    // CCI_ColoredBlobPerspectiveCameraSensor* m_pcCamera;
    // CCI_LEDsActuator* m_pcLedAct;
