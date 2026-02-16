@@ -62,6 +62,9 @@ set(ARGOS3_SOURCES_PLUGINS_ROBOTS_TURTLEBOT4
 # Create Turtlebot4 plugin
 #
 add_library(argos3plugin_simulator_turtlebot4 SHARED ${ARGOS3_SOURCES_PLUGINS_ROBOTS_TURTLEBOT4})
+if(ARGOS_USE_DOUBLE)
+  target_compile_definitions(argos3plugin_simulator_turtlebot4 PRIVATE BT_USE_DOUBLE_PRECISION)
+endif(ARGOS_USE_DOUBLE)
 
 target_link_libraries(argos3plugin_simulator_turtlebot4
     argos3core_simulator
@@ -70,11 +73,11 @@ target_link_libraries(argos3plugin_simulator_turtlebot4
     argos3plugin_simulator_entities
     argos3plugin_simulator_genericrobot
     argos3plugin_simulator_media)
-if(ARGOS_COMPILE_QTOPENGL)
+if(ARGOS_QTOPENGL_FOUND)
   target_link_libraries(argos3plugin_simulator_turtlebot4
     argos3plugin_simulator_qtopengl
-    ${QT_LIBRARIES} ${GLUT_LIBRARY} ${OPENGL_LIBRARY})
-endif(ARGOS_COMPILE_QTOPENGL)
+    ${ARGOS_QTOPENGL_LIBRARIES})
+endif(ARGOS_QTOPENGL_FOUND)
 
 
 #

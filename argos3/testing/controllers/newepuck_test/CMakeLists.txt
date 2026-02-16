@@ -1,6 +1,0 @@
-add_library(newepuck_shared_test STATIC newepuck_test.h newepuck_test.cpp)
-add_library(newepuck_test MODULE newepuck_test.h newepuck_test.cpp)
-target_link_libraries(newepuck_test
-  argos3core_simulator
-  argos3plugin_simulator_newepuck
-  argos3plugin_simulator_genericrobot)

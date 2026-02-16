@@ -1,5 +1,0 @@
-add_library(epuck_obstacleavoidance MODULE epuck_obstacleavoidance.h epuck_obstacleavoidance.cpp)
-target_link_libraries(epuck_obstacleavoidance
-  argos3core_simulator
-  argos3plugin_simulator_newepuck
-  argos3plugin_simulator_genericrobot)
