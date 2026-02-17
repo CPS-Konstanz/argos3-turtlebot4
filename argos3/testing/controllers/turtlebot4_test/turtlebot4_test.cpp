@@ -71,7 +71,7 @@ void CTurtlebot4Test::LogLightReadings() const
 
    for (size_t i = 0; i < tReadings.size(); ++i)
    {
-      std::cout << "Light sensor " << kLabels[i] << ": " << tReadings[i].Value << std::endl;
+      LOG << "Light sensor " << kLabels[i] << ": " << tReadings[i].Value << std::endl;
    }
 }
 
@@ -92,7 +92,7 @@ void CTurtlebot4Test::LogGroundSensorReadings() const
    {
 
       // print the value of each ground sensor reading
-      cout << "Ground sensor " << i << ": " << tGroundReads[i].Value << endl;
+      LOG << "Ground sensor " << i << ": " << tGroundReads[i].Value << std::endl;
    }
 
    //  /* Classify based on number of white sensors */
@@ -104,8 +104,8 @@ void CTurtlebot4Test::LogGroundSensorReadings() const
    //  }
 
    //  /* Print results */
-   //  std::cout << strId << " | ";
-   //  std::cout << "| Zone: " << strZone << std::endl;
+   //  LOG << strId << " | ";
+   //  LOG << "| Zone: " << strZone << std::endl;
 }
 
 /****************************************/
@@ -122,6 +122,7 @@ void CTurtlebot4Test::LogLidarSensorReadings() const
          LOG << ',';
       LOG << m_pcLidar->GetReading(i);
    }
+   LOG << std::endl;
 }
 
 /****************************************/
@@ -147,7 +148,7 @@ void CTurtlebot4Test::LogLightUsingCameraSensorReadings() const
 void CTurtlebot4Test::LogIRReadings()
 {
    const auto &readings = m_pcProximity->GetReadings();
-   // std::cout << "Avoiding obstacles with proximity sensors..." << std::endl;
+   // LOG << "Avoiding obstacles with proximity sensors..." << std::endl;
    if (readings.empty())
    {
       THROW_ARGOSEXCEPTION("Proximity sensor returned no readings");
@@ -163,7 +164,7 @@ void CTurtlebot4Test::LogIRReadings()
    /* Get the highest reading in front of the robot, which corresponds to the closest object */
    // Start with index 0
    const std::string &strId = GetId();
-   // std::cout << strId << " | " << endl;
+   // LOG << strId << " | " << endl;
 
    Real IRvalue_0 = readings[0].Value;
    Real IRvalue_1 = readings[1].Value;
@@ -213,7 +214,7 @@ void CTurtlebot4Test::ControlStep()
 {
 
    const std::string &strId = GetId();
-   std::cout << "\n\n"
+   LOG << "\n"
              << strId << "  " << std::endl;
 
    // --- Obstacle Avoidance with proximity sensors ---
@@ -223,7 +224,6 @@ void CTurtlebot4Test::ControlStep()
    // --- Light sensor debug ---
    LogLightReadings();
    // LogLightUsingCameraSensorReadings();
-
    LogLidarSensorReadings();
 }
 

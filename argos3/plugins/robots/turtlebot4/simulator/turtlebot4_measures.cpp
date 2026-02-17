@@ -11,23 +11,21 @@
 // Measures from here:
 // https://emanual.robotis.com/docs/en/platform/turtlebot4/features/
 
-UInt8 TURTLEBOT4_POWERON_LASERON   = 3;
-const Real TURTLEBOT4_MASS = 0.4f;
-const Real TURTLEBOT4_BASE_RADIUS    = 0.169; //important used for collision
-const Real TURTLEBOT4_BASE_ELEVATION = 0.025;
-const Real TURTLEBOT4_BASE_HEIGHT    = 0.351;
-const Real TURTLEBOT4_LOWER_BODY_HEIGHT    = 0.0934; // height of the lower body part
-const Real TURTLEBOT4_UPPER_BODY_HEIGHT = TURTLEBOT4_BASE_HEIGHT - TURTLEBOT4_LOWER_BODY_HEIGHT;
-const Real TURTLEBOT4_BASE_TOP       = TURTLEBOT4_BASE_ELEVATION + TURTLEBOT4_BASE_HEIGHT;
-const Real TURTLEBOT4_COLUMN_RADIUS       = 0.008f;  // tubes ~1cm
-const Real TURTLEBOT4_COLUMN_HEIGHT       = TURTLEBOT4_UPPER_BODY_HEIGHT;
-const Real TURTLEBOT4_NUM_COLUMNS         = 3;
+UInt8 TURTLEBOT4_POWERON_LASERON = 3;
+const Real TURTLEBOT4_MASS = 0.3945f;                                                            // mass in kg (see https://turtlebot.github.io/turtlebot4-user-manual/overview/features.html#hardware-specifications)
+const Real TURTLEBOT4_BASE_RADIUS = 0.17095;                                                     // meters, value used for collision (see https://iroboteducation.github.io/create3_docs/hw/mechanical/)
+const Real TURTLEBOT4_BASE_ELEVATION = 0.0045;                                                   // meters, height of the base from the ground (see https://turtlebot.github.io/turtlebot4-user-manual/overview/features.html#hardware-specifications)
+const Real TURTLEBOT4_BASE_HEIGHT = 0.351;                                                       // meters, height of the robot (https://turtlebot.github.io/turtlebot4-user-manual/overview/features.html#hardware-specifications)
+const Real TURTLEBOT4_LOWER_BODY_HEIGHT = 0.0934;                                                // meters, height of the lower body part, that is Create3 platform height (see https://iroboteducation.github.io/create3_docs/hw/mechanical/)
+const Real TURTLEBOT4_UPPER_BODY_HEIGHT = TURTLEBOT4_BASE_HEIGHT - TURTLEBOT4_LOWER_BODY_HEIGHT; // meters, position of the top plate, approximation
+const Real TURTLEBOT4_BASE_TOP = TURTLEBOT4_BASE_ELEVATION + TURTLEBOT4_BASE_HEIGHT;
+const Real TURTLEBOT4_COLUMN_RADIUS = 0.008f; // tubes ~1cm
+const Real TURTLEBOT4_COLUMN_HEIGHT = TURTLEBOT4_UPPER_BODY_HEIGHT;
 
-const Real TURTLEBOT4_WHEEL_RADIUS        = 0.036; //important
-const Real TURTLEBOT4_WHEEL_DISTANCE      = 0.235;
+const Real TURTLEBOT4_WHEEL_RADIUS = 0.036; // important
+const Real TURTLEBOT4_WHEEL_DISTANCE = 0.235;
 const Real TURTLEBOT4_HALF_WHEEL_DISTANCE = TURTLEBOT4_WHEEL_DISTANCE * 0.5;
 const Real UPPER_BODY_RADIUS = TURTLEBOT4_BASE_RADIUS * 0.95f;
-
 
 // const CVector3 TURTLEBOT4_LEDS_OFFSET[3] = {
 //    CVector3( 0.04,  0.025, TURTLEBOT4_BASE_TOP),
@@ -39,25 +37,25 @@ const Real UPPER_BODY_RADIUS = TURTLEBOT4_BASE_RADIUS * 0.95f;
 // extern const Real TURTLEBOT4_IR_SENSORS_RING_RADIUS;
 // extern const Real TURTLEBOT4_IR_SENSORS_RING_RANGE;
 
-const Real TURTLEBOT4_LIDAR_CENTER_ELEVATION   = -0.03;  // Lidar hight is considered in the robot height
-                                                         // Hence, negative value
-const Real TURTLEBOT4_LIDAR_ELEVATION          = TURTLEBOT4_BASE_TOP + TURTLEBOT4_LIDAR_CENTER_ELEVATION;
+const Real TURTLEBOT4_LIDAR_CENTER_ELEVATION = -0.2; // Lidar hight is considered in the robot height
+                                                     // Hence, negative value
+const Real TURTLEBOT4_LIDAR_ELEVATION = TURTLEBOT4_BASE_TOP + TURTLEBOT4_LIDAR_CENTER_ELEVATION;
 const Real TURTLEBOT4_LIDAR_SENSORS_FAN_RADIUS = TURTLEBOT4_BASE_RADIUS;
 const CRadians TURTLEBOT4_LIDAR_ANGLE_SPAN(ToRadians(CDegrees(360.0)));
-const CRange<Real> TURTLEBOT4_LIDAR_SENSORS_RING_RANGE(0.150, 12.00);
+const CRange<Real> TURTLEBOT4_LIDAR_SENSORS_RING_RANGE(0.01, 2.00); // minimum and maximum reading ranges of the LiDAR. these values sums to TURTLEBOT4_LIDAR_SENSORS_FAN_RADIUS
 
-const Real TURTLEBOT4_MAX_FORCE           = 2.0f; // Are these the right values?
-const Real TURTLEBOT4_MAX_TORQUE          = 2.0f;
+const Real TURTLEBOT4_MAX_FORCE = 2.0f; // Are these the right values?
+const Real TURTLEBOT4_MAX_TORQUE = 2.0f;
 
-const CRadians TURTLEBOT4_LED_RING_START_ANGLE   = CRadians((ARGOS_PI / 8.0f) * 0.5f);
-const Real TURTLEBOT4_LED_RING_RADIUS            = TURTLEBOT4_BASE_RADIUS + 0.007;
-const Real TURTLEBOT4_LED_RING_ELEVATION         = 0.086f;
-const Real TURTLEBOT4_RAB_ELEVATION              = TURTLEBOT4_LED_RING_ELEVATION;
+const CRadians TURTLEBOT4_LED_RING_START_ANGLE = CRadians((ARGOS_PI / 8.0f) * 0.5f);
+const Real TURTLEBOT4_LED_RING_RADIUS = TURTLEBOT4_BASE_RADIUS + 0.007;
+const Real TURTLEBOT4_LED_RING_ELEVATION = 0.086f;
+const Real TURTLEBOT4_RAB_ELEVATION = TURTLEBOT4_LED_RING_ELEVATION;
 
-const Real TURTLEBOT4_IR_SENSOR_RING_ELEVATION       = 0.06f; // is this correct?
-const Real TURTLEBOT4_IR_SENSOR_RING_RADIUS          = TURTLEBOT4_BASE_RADIUS;
+const Real TURTLEBOT4_IR_SENSOR_RING_ELEVATION = 0.06f; // is this correct?
+const Real TURTLEBOT4_IR_SENSOR_RING_RADIUS = TURTLEBOT4_BASE_RADIUS;
 const CRadians TURTLEBOT4_IR_SENSOR_RING_START_ANGLE = CRadians((2 * ARGOS_PI / 8.0f) * 0.5f);
-const Real TURTLEBOT4_IR_SENSOR_RING_RANGE           = 0.1f;
+const Real TURTLEBOT4_IR_SENSOR_RING_RANGE = 0.1f;
 const Real OMNIDIRECTIONAL_CAMERA_ELEVATION = 0.288699733f;
 
 // Readings from here:

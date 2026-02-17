@@ -24,7 +24,6 @@ extern const Real UPPER_BODY_RADIUS;
 
 extern const Real TURTLEBOT4_COLUMN_RADIUS ;      
 extern const Real TURTLEBOT4_COLUMN_HEIGHT;
-extern const Real TURTLEBOT4_NUM_COLUMNS;
 extern const Real TURTLEBOT4_UPPER_BODY_HEIGHT;
 
 extern const Real TURTLEBOT4_WHEEL_RADIUS;

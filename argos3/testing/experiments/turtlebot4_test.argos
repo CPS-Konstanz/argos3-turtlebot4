@@ -25,7 +25,21 @@
       <sensors>
         <turtlebot4_ground implementation="rot_z_only" />
         <turtlebot4_proximity implementation="default" show_rays="true" />
-        <turtlebot4_lidar implementation="default" num_readings="3" show_rays="true" />
+        <turtlebot4_lidar implementation="default" num_readings="360" show_rays="true" />
+        <turtlebot4_light implementation="rot_z_only" show_rays="false" />
+      </sensors>
+      <params velocity="6.0" />
+    </turtlebot4_test_controller>
+
+    <turtlebot4_test_controller id="fdc_no_lidar"
+      library="build/argos3/testing/controllers/turtlebot4_test/libturtlebot4_test.so">
+      <actuators>
+        <differential_steering implementation="default" />
+      </actuators>
+      <sensors>
+        <turtlebot4_ground implementation="rot_z_only" />
+        <turtlebot4_proximity implementation="default" show_rays="true" />
+        <turtlebot4_lidar implementation="default" num_readings="360" show_rays="false" />
         <turtlebot4_light implementation="rot_z_only" show_rays="false" />
       </sensors>
       <params velocity="6.0" />
@@ -89,7 +103,7 @@
 
 
     <!-- Place a turtlebot4 in the origin and bind it to the controller -->
-    <turtlebot4 id="fb_0">
+    <turtlebot4 id="tb_11">
       <body position="0,0,0" orientation="0,0,0" />
       <controller config="fdc" />
     </turtlebot4>
@@ -97,9 +111,9 @@
     <!-- <distribute>
       <position method="uniform" min="-2,-2,0" max="2,2,0" />
       <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0" />
-      <entity quantity="10" max_trials="100">
+      <entity quantity="1" max_trials="100">
         <turtlebot4 id="tb">
-          <controller config="fdc" />
+          <controller config="fdc_no_lidar" />
         </turtlebot4>
       </entity>
     </distribute> -->
