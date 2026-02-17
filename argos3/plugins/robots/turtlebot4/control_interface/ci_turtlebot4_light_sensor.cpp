@@ -16,19 +16,14 @@ namespace argos
     /****************************************/
     /****************************************/
 
-    static CRadians SPACING = CRadians(ARGOS_PI / 12.0f);
-    static CRadians START_ANGLE = SPACING * 0.5f;
-
-    /****************************************/
-    /****************************************/
-
-    CCI_Turtlebot4LightSensor::CCI_Turtlebot4LightSensor() : m_tReadings(24)
+    CCI_Turtlebot4LightSensor::CCI_Turtlebot4LightSensor() : m_tReadings(3)
     {
-        for (size_t i = 0; i < 24; ++i)
-        {
-            m_tReadings[i].Angle = START_ANGLE + i * SPACING;
-            m_tReadings[i].Angle.SignedNormalize();
-        }
+        /* Front-left: +30° */
+        m_tReadings[0].Angle = CRadians::PI / 6.0;
+        /* Front-right: -30° */
+        m_tReadings[1].Angle = -CRadians::PI / 6.0;
+        /* Rear: 180° */
+        m_tReadings[2].Angle = CRadians::PI;
     }
 
     /****************************************/
@@ -98,7 +93,7 @@ namespace argos
             c_os << "{ " << t_readings[0].Value << " }";
             for (UInt32 i = 1; i < t_readings.size(); ++i)
             {
-                c_os << " { " << t_readings[0].Value << " }";
+                c_os << " { " << t_readings[i].Value << " }";
             }
             c_os << std::endl;
         }

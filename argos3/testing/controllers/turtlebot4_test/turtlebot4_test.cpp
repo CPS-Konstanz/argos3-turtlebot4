@@ -69,12 +69,10 @@ void CTurtlebot4Test::LogLightReadings() const
    static const char *kLabels[] = {"Front-Left", "Front-Right", "Rear"};
    const auto &tReadings = m_pcLight->GetReadings();
 
-   std::cout << "Light readings: ";
    for (size_t i = 0; i < tReadings.size(); ++i)
    {
-      std::cout << kLabels[i] << ": " << tReadings[i].Value << " ";
+      std::cout << "Light sensor " << kLabels[i] << ": " << tReadings[i].Value << std::endl;
    }
-   std::cout << std::endl;
 }
 
 /****************************************/
@@ -89,12 +87,12 @@ void CTurtlebot4Test::LogGroundSensorReadings() const
 
    /* Determine how many sensors are in "white" (close to 1.0) */
    size_t unWhiteCount = 0;
-   cout << "Number of Ground Readings: " << tGroundReads.size() << endl;
+   // cout << "Number of Ground Readings: " << tGroundReads.size() << endl;
    for (size_t i = 0; i < tGroundReads.size(); ++i)
    {
 
       // print the value of each ground sensor reading
-      cout << "Ground Sensor " << i << ": " << tGroundReads[i].Value << endl;
+      cout << "Ground sensor " << i << ": " << tGroundReads[i].Value << endl;
    }
 
    //  /* Classify based on number of white sensors */
@@ -158,7 +156,7 @@ void CTurtlebot4Test::LogIRReadings()
    /* Get the highest reading in front of the robot, which corresponds to the closest object */
    // Start with index 0
    const std::string &strId = GetId();
-   std::cout << strId << " | " << endl;
+   // std::cout << strId << " | " << endl;
 
    Real IRvalue_0 = readings[0].Value;
    Real IRvalue_1 = readings[1].Value;
@@ -170,13 +168,13 @@ void CTurtlebot4Test::LogIRReadings()
    Real fMaxReadVal = 0.0f;
    UInt32 unMaxReadIdx = 0;
 
-   argos::LOG << "IRvalue_0: " << IRvalue_0 << std::endl;
-   argos::LOG << "IRvalue_1: " << IRvalue_1 << std::endl;
-   argos::LOG << "IRvalue_2: " << IRvalue_2 << std::endl;
-   argos::LOG << "IRvalue_3: " << IRvalue_3 << std::endl;
-   argos::LOG << "IRvalue_4: " << IRvalue_4 << std::endl;
-   argos::LOG << "IRvalue_5: " << IRvalue_5 << std::endl;
-   argos::LOG << "IRvalue_6: " << IRvalue_6 << std::endl;
+   argos::LOG << "IR sensor 0: " << IRvalue_0 << std::endl;
+   argos::LOG << "IR sensor 1: " << IRvalue_1 << std::endl;
+   argos::LOG << "IR sensor 2: " << IRvalue_2 << std::endl;
+   argos::LOG << "IR sensor 3: " << IRvalue_3 << std::endl;
+   argos::LOG << "IR sensor 4: " << IRvalue_4 << std::endl;
+   argos::LOG << "IR sensor 5: " << IRvalue_5 << std::endl;
+   argos::LOG << "IR sensor 6: " << IRvalue_6 << std::endl;
 
    // the following part is an addition to the logging function and it's just used to avoid obstacles
 
@@ -206,6 +204,10 @@ void CTurtlebot4Test::LogIRReadings()
 
 void CTurtlebot4Test::ControlStep()
 {
+
+   const std::string &strId = GetId();
+   std::cout << "\n"
+             << strId << "  " << std::endl;
 
    // --- Obstacle Avoidance with proximity sensors ---
    LogIRReadings();

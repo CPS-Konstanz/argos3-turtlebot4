@@ -18,45 +18,7 @@ namespace argos
     /****************************************/
     /****************************************/
 
-    static CRange<Real> SENSOR_RANGE(0.0f, 1.0f);
-    static CRadians SENSOR_SPACING = CRadians(ARGOS_PI / 12.0f);
-    static CRadians SENSOR_HALF_SPACING = SENSOR_SPACING * 0.5;
-
-    /****************************************/
-    /****************************************/
-
-    static SInt32 Modulo(SInt32 n_value, SInt32 un_modulo)
-    {
-        while (n_value < 0)
-            n_value += un_modulo;
-        while (n_value >= un_modulo)
-            n_value -= un_modulo;
-        return n_value;
-    }
-
-    static Real ComputeReading(Real f_distance)
-    {
-        if (f_distance > 2.5f)
-        {
-            return 0.0f;
-        }
-        else
-        {
-            return ::exp(-f_distance * 2.0f);
-        }
-    }
-
-    static Real ScaleReading(const CRadians &c_angular_distance)
-    {
-        if (c_angular_distance > CRadians::PI_OVER_TWO)
-        {
-            return 0.0f;
-        }
-        else
-        {
-            return (1.0f - 2.0f * c_angular_distance / CRadians::PI);
-        }
-    }
+    static CRange<Real> UNIT(0.0f, 1.0f);
 
     /****************************************/
     /****************************************/
@@ -92,6 +54,7 @@ namespace argos
     {
         try
         {
+            CCI_Turtlebot4LightSensor::Init(t_tree);
             /* Show rays? */
             GetNodeAttributeOrDefault(t_tree, "show_rays", m_bShowRays, m_bShowRays);
             /* Parse noise level */
@@ -133,146 +96,70 @@ namespace argos
         {
             m_tReadings[i].Value = 0.0f;
         }
-        /* Get turtlebot4 orientation */
-        CRadians cTmp1, cTmp2, cOrientationZ;
-        m_pcEmbodiedEntity->GetOriginAnchor().Orientation.ToEulerAngles(cOrientationZ, cTmp1, cTmp2);
-        /* Get physical sensor list for ray start positions */
-        CLightSensorEquippedEntity::SSensor::TList &tSensors = m_pcLightEntity->GetSensors();
         /* Ray used for scanning the environment for obstacles */
-        CRay3 cOcclusionCheckRay;
-        CVector3 cRobotToLight;
-        /* Buffer for the angle of the light wrt to the turtlebot4 */
-        CRadians cAngleLightWrtTurtlebot;
+        CRay3 cScanningRay;
+        CVector3 cRayStart;
+        CVector3 cSensorToLight;
         /* Buffers to contain data about the intersection */
         SEmbodiedEntityIntersectionItem sIntersection;
-        /* List of light entities */
+        /* Get the map of light entities */
         auto itLights = m_cSpace.GetEntityMapPerTypePerId().find("light");
         if (itLights != m_cSpace.GetEntityMapPerTypePerId().end())
         {
             CSpace::TMapPerType &mapLights = itLights->second;
-            /*
-             * 1. go through the list of light entities in the scene
-             * 2. find the closest physical sensor to the light direction
-             * 3. check if the light is occluded from that sensor's position
-             * 4. if it isn't, distribute the reading across the 24 virtual sensors
-             *    NOTE: the readings are additive
-             * 5. go through the sensors and clamp their values
-             */
-            for (auto it = mapLights.begin();
-                 it != mapLights.end();
-                 ++it)
+            /* Go through the sensors */
+            for (UInt32 i = 0; i < m_tReadings.size(); ++i)
             {
-                /* Get a reference to the light */
-                CLightEntity &cLight = *(any_cast<CLightEntity *>(it->second));
-                /* Consider the light only if it has non zero intensity */
-                if (cLight.GetIntensity() > 0.0f)
+                /* Compute sensor world position */
+                cRayStart = m_pcLightEntity->GetSensor(i).Position;
+                cRayStart.Rotate(m_pcLightEntity->GetSensor(i).Anchor.Orientation);
+                cRayStart += m_pcLightEntity->GetSensor(i).Anchor.Position;
+                /* Go through all the light entities */
+                for (auto it = mapLights.begin();
+                     it != mapLights.end();
+                     ++it)
                 {
-                    /* Find the closest physical sensor to the light direction */
-                    CVector3 cLightPos = cLight.GetPosition();
-                    CVector3 cRobotPos = m_pcEmbodiedEntity->GetOriginAnchor().Position;
-                    CRadians cLightAngleLocal = (cLightPos - cRobotPos).GetZAngle() - cOrientationZ;
-                    cLightAngleLocal.SignedNormalize();
-                    Real fMinAngDist = CRadians::TWO_PI.GetValue();
-                    CVector3 cSensorWorldPos = cRobotPos;
-                    for (UInt32 s = 0; s < tSensors.size(); ++s)
+                    /* Get a reference to the light */
+                    CLightEntity &cLight = *any_cast<CLightEntity *>(it->second);
+                    /* Consider the light only if it has non zero intensity */
+                    if (cLight.GetIntensity() > 0.0f)
                     {
-                        CRadians cSensorAngle = tSensors[s]->Direction.GetZAngle();
-                        CRadians cDiff = (cLightAngleLocal - cSensorAngle);
-                        cDiff.SignedNormalize();
-                        if (Abs(cDiff).GetValue() < fMinAngDist)
+                        /* Set ray from sensor to light */
+                        cScanningRay.Set(cRayStart, cLight.GetPosition());
+                        /* Check occlusion */
+                        if (!GetClosestEmbodiedEntityIntersectedByRay(sIntersection,
+                                                                      cScanningRay,
+                                                                      *m_pcEmbodiedEntity))
                         {
-                            fMinAngDist = Abs(cDiff).GetValue();
-                            cSensorWorldPos = tSensors[s]->Position;
-                            cSensorWorldPos.Rotate(tSensors[s]->Anchor.Orientation);
-                            cSensorWorldPos += tSensors[s]->Anchor.Position;
-                        }
-                    }
-                    /* Set ray from closest physical sensor to the light */
-                    cOcclusionCheckRay.SetStart(cSensorWorldPos);
-                    cOcclusionCheckRay.SetEnd(cLightPos);
-                    /* Check occlusion between the turtlebot4 and the light */
-                    if (!GetClosestEmbodiedEntityIntersectedByRay(sIntersection,
-                                                                  cOcclusionCheckRay,
-                                                                  *m_pcEmbodiedEntity))
-                    {
-                        /* The light is not occluded */
-                        if (m_bShowRays)
-
-                        // this part is just for visualization of the rays between the light and the sensors, it doesn't affect the readings
-                        // and shows all the light rays not only the highest one
-
-                        {
-                            CRay3 cSensorRay;
-                            CVector3 cSensorWPos;
-                            for (UInt32 s = 0; s < tSensors.size(); ++s)
+                            /* No occlusion, the light is visible */
+                            if (m_bShowRays)
                             {
-                                cSensorWPos = tSensors[s]->Position;
-                                cSensorWPos.Rotate(tSensors[s]->Anchor.Orientation);
-                                cSensorWPos += tSensors[s]->Anchor.Position;
-                                cSensorRay.Set(cSensorWPos, cLightPos);
-                                m_pcControllableEntity->AddCheckedRay(false, cSensorRay);
+                                m_pcControllableEntity->AddCheckedRay(false, cScanningRay);
                             }
+                            /* Calculate reading: R = (I / x)^2  for each light and sum contributions*/
+                            cScanningRay.ToVector(cSensorToLight);
+                            m_tReadings[i].Value += CalculateReading(cSensorToLight.Length(),
+                                                                     cLight.GetIntensity());
                         }
-                        /* Get the distance between the light and the robot center for reading computation */
-                        cRobotToLight = cLightPos - cRobotPos;
-                        /*
-                         * Linearly scale the distance with the light intensity
-                         * The greater the intensity, the smaller the distance
-                         */
-                        cRobotToLight /= cLight.GetIntensity();
-                        /* Get the angle wrt to turtlebot4 rotation */
-                        cAngleLightWrtTurtlebot = cRobotToLight.GetZAngle();
-                        cAngleLightWrtTurtlebot -= cOrientationZ;
-                        /*
-                         * Find closest sensor index to point at which ray hits turtlebot4 body
-                         * Rotate whole body by half a sensor spacing (corresponding to placement of first sensor)
-                         * Division says how many sensor spacings there are between first sensor and point at which ray hits turtlebot4 body
-                         * Increase magnitude of result of division to ensure correct rounding
-                         */
-                        Real fIdx = (cAngleLightWrtTurtlebot - SENSOR_HALF_SPACING) / SENSOR_SPACING;
-                        SInt32 nReadingIdx = static_cast<SInt32>((fIdx > 0) ? fIdx + 0.5f : fIdx - 0.5f);
-                        /* Set the actual readings */
-                        Real fReading = cRobotToLight.Length();
-                        /*
-                         * Take 6 readings before closest sensor and 6 readings after - thus we
-                         * process sensors that are with 180 degrees of intersection of light
-                         * ray with robot body
-                         */
-                        for (SInt32 nIndexOffset = -6; nIndexOffset < 7; ++nIndexOffset)
+                        else
                         {
-                            UInt32 unIdx = Modulo(nReadingIdx + nIndexOffset, 24);
-                            CRadians cAngularDistanceFromOptimalLightReceptionPoint = Abs((cAngleLightWrtTurtlebot - m_tReadings[unIdx].Angle).SignedNormalize());
-                            /*
-                             * ComputeReading gives value as if sensor was perfectly in line with
-                             * light ray. We then linearly decrease actual reading from 1 (dist
-                             * 0) to 0 (dist PI/2)
-                             */
-                            m_tReadings[unIdx].Value += ComputeReading(fReading) * ScaleReading(cAngularDistanceFromOptimalLightReceptionPoint);
-                        }
-                    }
-                    else
-                    {
-                        /* The ray is occluded */
-                        if (m_bShowRays)
-                        {
-                            m_pcControllableEntity->AddCheckedRay(true, cOcclusionCheckRay);
-                            m_pcControllableEntity->AddIntersectionPoint(cOcclusionCheckRay, sIntersection.TOnRay);
+                            /* There is an occlusion, the light is not visible */
+                            if (m_bShowRays)
+                            {
+                                m_pcControllableEntity->AddIntersectionPoint(cScanningRay,
+                                                                             sIntersection.TOnRay);
+                                m_pcControllableEntity->AddCheckedRay(true, cScanningRay);
+                            }
                         }
                     }
                 }
-            }
-            /* Apply noise to the sensors */
-            if (m_bAddNoise)
-            {
-                for (size_t i = 0; i < 24; ++i)
+                /* Apply noise to the sensor */
+                if (m_bAddNoise)
                 {
                     m_tReadings[i].Value += m_pcRNG->Uniform(m_cNoiseRange);
                 }
-            }
-            /* Trunc the reading between 0 and 1 */
-            for (size_t i = 0; i < 24; ++i)
-            {
-                SENSOR_RANGE.TruncValue(m_tReadings[i].Value);
+                /* Clamp the reading between 0 and 1 */
+                // UNIT.TruncValue(m_tReadings[i].Value);
             }
         }
         else
@@ -285,11 +172,19 @@ namespace argos
                 {
                     /* Apply noise to the sensor */
                     m_tReadings[i].Value += m_pcRNG->Uniform(m_cNoiseRange);
-                    /* Trunc the reading between 0 and 1 */
-                    SENSOR_RANGE.TruncValue(m_tReadings[i].Value);
+                    /* Clamp the reading between 0 and 1 */
+                    UNIT.TruncValue(m_tReadings[i].Value);
                 }
             }
         }
+    }
+
+    /****************************************/
+    /****************************************/
+
+    Real CTurtlebot4LightRotZOnlySensor::CalculateReading(Real f_distance, Real f_intensity)
+    {
+        return ::exp(-f_distance * 2.0f);
     }
 
     /****************************************/
@@ -311,18 +206,17 @@ namespace argos
                     "Carlo Pinciroli [ilpincy@gmail.com]",
                     "1.0",
                     "The turtlebot4 light sensor (optimized for 2D).",
-                    "This sensor accesses a set of light sensors. The sensors all return a value\n"
-                    "between 0 and 1, where 0 means nothing within range and 1 means the perceived\n"
-                    "light saturates the sensor. Values between 0 and 1 depend on the distance of\n"
-                    "the perceived light. Each reading R is calculated with R=(I/x)^2, where x is the\n"
-                    "distance between a sensor and the light, and I is the reference intensity of the\n"
-                    "perceived light. The reference intensity corresponds to the minimum distance at\n"
-                    "which the light saturates a sensor. The reference intensity depends on the\n"
-                    "individual light, and it is set with the \"intensity\" attribute of the light\n"
-                    "entity. In case multiple lights are present in the environment, each sensor\n"
-                    "reading is calculated as the sum of the individual readings due to each light.\n"
-                    "In other words, light wave interference is not taken into account. In\n"
-                    "controllers, you must include the ci_light_sensor.h header.\n\n"
+                    "This sensor accesses the 3 light sensors on the turtlebot4:\n"
+                    "  - Sensor 0: Front-left (+30 degrees)\n"
+                    "  - Sensor 1: Front-right (-30 degrees)\n"
+                    "  - Sensor 2: Rear (180 degrees)\n"
+                    "Each sensor returns a value between 0 and 1, where 0 means nothing within\n"
+                    "range and 1 means the perceived light saturates the sensor. Each reading R\n"
+                    "is calculated with R=(I/x)^2, where x is the distance between the sensor\n"
+                    "and the light, and I is the reference intensity of the perceived light.\n"
+                    "In case multiple lights are present in the environment, each sensor reading\n"
+                    "is the sum of the individual readings due to each light.\n"
+                    "In controllers, include ci_turtlebot4_light_sensor.h.\n\n"
                     "REQUIRED XML CONFIGURATION\n\n"
                     "  <controllers>\n"
                     "    ...\n"
@@ -376,9 +270,7 @@ namespace argos
                     "      ...\n"
                     "    </my_controller>\n"
                     "    ...\n"
-                    "  </controllers>\n\n"
-                    "OPTIONAL XML CONFIGURATION\n\n"
-                    "None.\n",
+                    "  </controllers>\n",
                     "Usable");
 
 }

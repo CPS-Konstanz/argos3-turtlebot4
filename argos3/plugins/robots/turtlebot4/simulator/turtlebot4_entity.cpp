@@ -127,8 +127,8 @@ namespace argos
              new CLightSensorEquippedEntity(this, "light_0");
          AddComponent(*m_pcLightSensorEquippedEntity);
          {
-            Real fSensorElev = TURTLEBOT4_BASE_TOP;
-            Real fRadius = UPPER_BODY_RADIUS;
+            Real fSensorElev = TURTLEBOT4_BASE_TOP+0.01;
+            Real fRadius = UPPER_BODY_RADIUS-0.01;
             Real fRange = 10.0f;
             CVector3 cLPos, cLDir;
             /* Front-left: +30° */
@@ -278,8 +278,8 @@ namespace argos
              new CLightSensorEquippedEntity(this, "light_0");
          AddComponent(*m_pcLightSensorEquippedEntity);
          {
-            Real fSensorElev = TURTLEBOT4_BASE_TOP;
-            Real fRadius = UPPER_BODY_RADIUS;
+            Real fSensorElev = TURTLEBOT4_BASE_TOP+0.01;
+            Real fRadius = UPPER_BODY_RADIUS-0.01;
             Real fRange = 10.0f;
             CVector3 cPos, cDir;
             /* Front-left: +30° */

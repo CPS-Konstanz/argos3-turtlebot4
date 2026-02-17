@@ -1,30 +1,14 @@
 /**
- * @file <argos3/plugins/robots/foot-bot/control_interface/ci_footbot_light_sensor.h>
+ * @file <argos3/plugins/robots/turtlebot4/control_interface/ci_turtlebot4_light_sensor.h>
  *
- * @brief This file provides the definition of the footbot light sensor.
+ * @brief This file provides the definition of the turtlebot4 light sensor.
  *
- * This file provides the definition of the footbot light sensor.
- * The sensors are evenly spaced on a ring around the base of the robot.
- * Therefore, they do not turn with the turret. The readings are normalized
- * between 0 and 1, and are in the following order (seeing the robot from TOP,
- * battery socket is the BACK):
+ * The turtlebot4 has 3 light sensors:
+ *   - Index 0: Front-left  (+30°)
+ *   - Index 1: Front-right (-30°)
+ *   - Index 2: Rear        (180°)
  *
- *              front
- *
- *              0 23
- *            1     22
- *          2         21
- *        3             20      r
- * l    4                 19    i
- * e  5                     18  g
- * f  6                     17  h
- * t    7                 16    t
- *        8             15
- *          9         14
- *            10     13
- *              11 12
- *
- *              back
+ * Readings are normalized between 0 and 1.
  *
  * @author Carlo Pinciroli - <ilpincy@gmail.com>
  */
@@ -50,7 +34,7 @@ namespace argos
     public:
         /**
          * The DTO of the light sensor. It contains the reading of each sensor and
-         * and the angle at which each sensor is placed.
+         * the angle at which each sensor is placed.
          */
         struct SReading
         {

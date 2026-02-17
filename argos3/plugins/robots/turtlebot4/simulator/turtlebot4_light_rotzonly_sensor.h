@@ -42,6 +42,8 @@ namespace argos
 
         virtual void Reset();
 
+        virtual Real CalculateReading(Real f_distance, Real f_intensity);
+
         /**
          * Returns true if the rays must be shown in the GUI.
          * @return true if the rays must be shown in the GUI.
