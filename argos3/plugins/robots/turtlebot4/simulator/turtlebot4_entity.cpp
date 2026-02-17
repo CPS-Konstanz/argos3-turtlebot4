@@ -58,7 +58,8 @@ namespace argos
                                                                  m_pcLEDEquippedEntity(nullptr),
                                                                  m_pcProximitySensorEquippedEntity(nullptr),
                                                                  m_pcWheeledEntity(nullptr),
-                                                                 m_pcOmnidirectionalCameraEquippedEntity(nullptr)
+                                                                 m_pcOmnidirectionalCameraEquippedEntity(nullptr),
+                                                                 m_pcLightSensorEquippedEntity(nullptr)
    // m_pcPerspectiveCameraEquippedEntity(nullptr)
    {
       try
@@ -119,6 +120,31 @@ namespace argos
             cDir.Set(TURTLEBOT4_IR_SENSOR_RING_RANGE, 0.0f, 0.0f);
             cDir.RotateZ(cAngle);
             m_pcProximitySensorEquippedEntity->AddSensor(cOff, cDir, TURTLEBOT4_IR_SENSOR_RING_RANGE, m_pcEmbodiedEntity->GetOriginAnchor());
+         }
+
+         /* Light sensor equipped entity — 3 sensors: front-left, front-right, rear */
+         m_pcLightSensorEquippedEntity =
+             new CLightSensorEquippedEntity(this, "light_0");
+         AddComponent(*m_pcLightSensorEquippedEntity);
+         {
+            Real fSensorElev = TURTLEBOT4_BASE_TOP + 1.0;
+            Real fRadius = UPPER_BODY_RADIUS;
+            Real fRange = 10.0f;
+            CVector3 cLPos, cLDir;
+            /* Front-left: +30° */
+            CRadians cFL(CRadians::PI / 6.0);
+            cLPos.Set(fRadius * Cos(cFL), fRadius * Sin(cFL), fSensorElev);
+            cLDir.Set(Cos(cFL), Sin(cFL), 0.0f);
+            m_pcLightSensorEquippedEntity->AddSensor(cLPos, cLDir, fRange, m_pcEmbodiedEntity->GetOriginAnchor());
+            /* Front-right: -30° */
+            CRadians cFR(-CRadians::PI / 6.0);
+            cLPos.Set(fRadius * Cos(cFR), fRadius * Sin(cFR), fSensorElev);
+            cLDir.Set(Cos(cFR), Sin(cFR), 0.0f);
+            m_pcLightSensorEquippedEntity->AddSensor(cLPos, cLDir, fRange, m_pcEmbodiedEntity->GetOriginAnchor());
+            /* Rear: 180° */
+            cLPos.Set(-fRadius, 0.0f, fSensorElev);
+            cLDir.Set(-1.0f, 0.0f, 0.0f);
+            m_pcLightSensorEquippedEntity->AddSensor(cLPos, cLDir, fRange, m_pcEmbodiedEntity->GetOriginAnchor());
          }
 
          /* Omnidirectional camera equipped entity */
@@ -245,6 +271,31 @@ namespace argos
             cDir.Set(TURTLEBOT4_IR_SENSOR_RING_RANGE, 0.0f, 0.0f);
             cDir.RotateZ(cAngle);
             m_pcProximitySensorEquippedEntity->AddSensor(cOff, cDir, TURTLEBOT4_IR_SENSOR_RING_RANGE, m_pcEmbodiedEntity->GetOriginAnchor());
+         }
+
+         /* Light sensor equipped entity — 3 sensors: front-left, front-right, rear */
+         m_pcLightSensorEquippedEntity =
+             new CLightSensorEquippedEntity(this, "light_0");
+         AddComponent(*m_pcLightSensorEquippedEntity);
+         {
+            Real fSensorElev = TURTLEBOT4_BASE_TOP + 1.0;
+            Real fRadius = UPPER_BODY_RADIUS;
+            Real fRange = 10.0f;
+            CVector3 cPos, cDir;
+            /* Front-left: +30° */
+            CRadians cFL(CRadians::PI / 6.0);
+            cPos.Set(fRadius * Cos(cFL), fRadius * Sin(cFL), fSensorElev);
+            cDir.Set(Cos(cFL), Sin(cFL), 0.0f);
+            m_pcLightSensorEquippedEntity->AddSensor(cPos, cDir, fRange, m_pcEmbodiedEntity->GetOriginAnchor());
+            /* Front-right: -30° */
+            CRadians cFR(-CRadians::PI / 6.0);
+            cPos.Set(fRadius * Cos(cFR), fRadius * Sin(cFR), fSensorElev);
+            cDir.Set(Cos(cFR), Sin(cFR), 0.0f);
+            m_pcLightSensorEquippedEntity->AddSensor(cPos, cDir, fRange, m_pcEmbodiedEntity->GetOriginAnchor());
+            /* Rear: 180° */
+            cPos.Set(-fRadius, 0.0f, fSensorElev);
+            cDir.Set(-1.0f, 0.0f, 0.0f);
+            m_pcLightSensorEquippedEntity->AddSensor(cPos, cDir, fRange, m_pcEmbodiedEntity->GetOriginAnchor());
          }
 
          /* Omnidirectional camera equipped entity */

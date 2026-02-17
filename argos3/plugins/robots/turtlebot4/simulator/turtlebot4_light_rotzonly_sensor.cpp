@@ -136,9 +136,10 @@ namespace argos
         /* Get turtlebot4 orientation */
         CRadians cTmp1, cTmp2, cOrientationZ;
         m_pcEmbodiedEntity->GetOriginAnchor().Orientation.ToEulerAngles(cOrientationZ, cTmp1, cTmp2);
+        /* Get physical sensor list for ray start positions */
+        CLightSensorEquippedEntity::SSensor::TList &tSensors = m_pcLightEntity->GetSensors();
         /* Ray used for scanning the environment for obstacles */
         CRay3 cOcclusionCheckRay;
-        cOcclusionCheckRay.SetStart(m_pcEmbodiedEntity->GetOriginAnchor().Position);
         CVector3 cRobotToLight;
         /* Buffer for the angle of the light wrt to the turtlebot4 */
         CRadians cAngleLightWrtTurtlebot;
@@ -151,10 +152,11 @@ namespace argos
             CSpace::TMapPerType &mapLights = itLights->second;
             /*
              * 1. go through the list of light entities in the scene
-             * 2. check if a light is occluded
-             * 3. if it isn't, distribute the reading across the sensors
+             * 2. find the closest physical sensor to the light direction
+             * 3. check if the light is occluded from that sensor's position
+             * 4. if it isn't, distribute the reading across the 24 virtual sensors
              *    NOTE: the readings are additive
-             * 4. go through the sensors and clamp their values
+             * 5. go through the sensors and clamp their values
              */
             for (auto it = mapLights.begin();
                  it != mapLights.end();
@@ -165,9 +167,30 @@ namespace argos
                 /* Consider the light only if it has non zero intensity */
                 if (cLight.GetIntensity() > 0.0f)
                 {
-                    /* Set the ray end */
-                    cOcclusionCheckRay.SetEnd(cLight.GetPosition());
-                    /* Check occlusion between the foot-bot and the light */
+                    /* Find the closest physical sensor to the light direction */
+                    CVector3 cLightPos = cLight.GetPosition();
+                    CVector3 cRobotPos = m_pcEmbodiedEntity->GetOriginAnchor().Position;
+                    CRadians cLightAngleLocal = (cLightPos - cRobotPos).GetZAngle() - cOrientationZ;
+                    cLightAngleLocal.SignedNormalize();
+                    Real fMinAngDist = CRadians::TWO_PI.GetValue();
+                    CVector3 cSensorWorldPos = cRobotPos;
+                    for (UInt32 s = 0; s < tSensors.size(); ++s)
+                    {
+                        CRadians cSensorAngle = tSensors[s]->Direction.GetZAngle();
+                        CRadians cDiff = (cLightAngleLocal - cSensorAngle);
+                        cDiff.SignedNormalize();
+                        if (Abs(cDiff).GetValue() < fMinAngDist)
+                        {
+                            fMinAngDist = Abs(cDiff).GetValue();
+                            cSensorWorldPos = tSensors[s]->Position;
+                            cSensorWorldPos.Rotate(tSensors[s]->Anchor.Orientation);
+                            cSensorWorldPos += tSensors[s]->Anchor.Position;
+                        }
+                    }
+                    /* Set ray from closest physical sensor to the light */
+                    cOcclusionCheckRay.SetStart(cSensorWorldPos);
+                    cOcclusionCheckRay.SetEnd(cLightPos);
+                    /* Check occlusion between the turtlebot4 and the light */
                     if (!GetClosestEmbodiedEntityIntersectedByRay(sIntersection,
                                                                   cOcclusionCheckRay,
                                                                   *m_pcEmbodiedEntity))
@@ -177,8 +200,8 @@ namespace argos
                         {
                             m_pcControllableEntity->AddCheckedRay(false, cOcclusionCheckRay);
                         }
-                        /* Get the distance between the light and the foot-bot */
-                        cOcclusionCheckRay.ToVector(cRobotToLight);
+                        /* Get the distance between the light and the robot center for reading computation */
+                        cRobotToLight = cLightPos - cRobotPos;
                         /*
                          * Linearly scale the distance with the light intensity
                          * The greater the intensity, the smaller the distance

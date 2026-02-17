@@ -26,7 +26,7 @@
         <turtlebot4_ground implementation="rot_z_only" />
         <turtlebot4_proximity implementation="default" show_rays="true" />
         <turtlebot4_lidar implementation="default" num_readings="360" show_rays="false" />
-
+        <turtlebot4_light implementation="rot_z_only" show_rays="true" />
       </sensors>
       <params velocity="6.0" />
     </turtlebot4_test_controller>

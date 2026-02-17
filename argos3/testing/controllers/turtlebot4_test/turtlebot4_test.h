@@ -24,7 +24,7 @@
 #include <argos3/plugins/robots/generic/control_interface/ci_differential_steering_actuator.h>
 /* Definition of proximity sensor */
 // #include <argos3/plugins/robots/generic/control_interface/ci_proximity_sensor.h>
-// #include <argos3/plugins/robots/turtlebot4/control_interface/ci_turtlebot4_light_sensor.h>
+#include <argos3/plugins/robots/turtlebot4/control_interface/ci_turtlebot4_light_sensor.h>
 #include <argos3/plugins/robots/turtlebot4/control_interface/ci_turtlebot4_proximity_sensor.h>
 #include <argos3/plugins/robots/turtlebot4/control_interface/ci_turtlebot4_base_ground_sensor.h>
 #include <argos3/plugins/robots/turtlebot4/control_interface/ci_turtlebot4_lidar_sensor.h>
@@ -92,7 +92,7 @@ public:
    /*
    * This function avoids obstacles using the proximity sensors.
    */
-   void AvoidObstaclesWithProximitySensors();
+   void LogIRReadings();
 
    /*
     * This function resets the controller to its state right after the
@@ -124,7 +124,7 @@ private:
    CCI_Turtlebot4BaseGroundSensor* m_pcGround;
 
    /* Pointer to the new turtlebot4 light sensor*/
-   // CCI_Turtlebot4LightSensor* m_pcLight;
+   CCI_Turtlebot4LightSensor* m_pcLight;
 
    /* Pointer to the new turtlebot4 Lidar sensor*/
    CCI_Turtlebot4LIDARSensor* m_pcLidar;

@@ -42,10 +42,18 @@ void CTestLoopFunctions::Destroy() {}
 
 CColor CTestLoopFunctions::GetFloorColor(const CVector2 &c_position_on_plane)
 {
-   if (c_position_on_plane.GetX() < 0.0f)
+   if (c_position_on_plane.GetX() < -0.5f)
+   {
+      return CColor::BLACK;
+   }
+
+   else if (c_position_on_plane.GetX() < 0.5f)
    {
       return CColor::GRAY50;
    }
+   
+
+
    return CColor::WHITE;
 }
 

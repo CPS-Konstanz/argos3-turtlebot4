@@ -101,7 +101,7 @@ namespace argos {
             m_tReadings[i].Value += m_pcRNG->Uniform(m_cNoiseRange);
          }
          /* Set the final reading */
-         m_tReadings[i].Value = m_tReadings[i].Value < 0.5f ? 0.0f : 1.0f;
+         // m_tReadings[i].Value = m_tReadings[i].Value < 0.5f ? 0.0f : 1.0f;
       }
    }
 
