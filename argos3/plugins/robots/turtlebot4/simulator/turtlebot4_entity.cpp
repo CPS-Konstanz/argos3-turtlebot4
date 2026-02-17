@@ -76,14 +76,11 @@ namespace argos
          m_pcWheeledEntity->SetWheel(0, CVector3(0.0f, TURTLEBOT4_HALF_WHEEL_DISTANCE, 0.0f), TURTLEBOT4_WHEEL_RADIUS);
          m_pcWheeledEntity->SetWheel(1, CVector3(0.0f, -TURTLEBOT4_HALF_WHEEL_DISTANCE, 0.0f), TURTLEBOT4_WHEEL_RADIUS);
 
-         // /* LED equipped entity */
+         // /* LED equipped entity — single LED on top plate center */
          m_pcLEDEquippedEntity = new CLEDEquippedEntity(this, "leds_0");
          AddComponent(*m_pcLEDEquippedEntity);
-         m_pcLEDEquippedEntity->AddLEDRing(
+         m_pcLEDEquippedEntity->AddLED(
              CVector3(0.0f, 0.0f, TURTLEBOT4_LED_RING_ELEVATION),
-             TURTLEBOT4_LED_RING_RADIUS,
-             TURTLEBOT4_LED_RING_START_ANGLE,
-             8,
              m_pcEmbodiedEntity->GetOriginAnchor());
 
          /* LIDAR sensor equipped entity */
@@ -176,16 +173,16 @@ namespace argos
          m_pcGroundSensorEquippedEntity =
              new CGroundSensorEquippedEntity(this, "ground_0");
          AddComponent(*m_pcGroundSensorEquippedEntity);
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.1425, 0.0268),
+         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(TURTLEBOT4_GROUND_SENSOR_SIDE_LEFT),
                                                    CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
                                                    m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.1425, -0.0268),
+         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(TURTLEBOT4_GROUND_SENSOR_SIDE_RIGHT),
                                                    CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
                                                    m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.0879, 0.109),
+         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(TURTLEBOT4_GROUND_SENSOR_FRONT_LEFT),
                                                    CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
                                                    m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.0879, -0.109),
+         m_pcGroundSensorEquippedEntity->AddSensor(CVector2(TURTLEBOT4_GROUND_SENSOR_FRONT_RIGHT),
                                                    CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
                                                    m_pcEmbodiedEntity->GetOriginAnchor());
 
@@ -228,14 +225,11 @@ namespace argos
          AddComponent(*m_pcWheeledEntity);
          m_pcWheeledEntity->SetWheel(0, CVector3(0.0f, TURTLEBOT4_HALF_WHEEL_DISTANCE, 0.0f), TURTLEBOT4_WHEEL_RADIUS);
          m_pcWheeledEntity->SetWheel(1, CVector3(0.0f, -TURTLEBOT4_HALF_WHEEL_DISTANCE, 0.0f), TURTLEBOT4_WHEEL_RADIUS);
-         /* LED equipped entity, with LEDs [0-11] and beacon [12] */
+         /* LED equipped entity — single LED on top plate center */
          m_pcLEDEquippedEntity = new CLEDEquippedEntity(this, "leds_0");
          AddComponent(*m_pcLEDEquippedEntity);
-         m_pcLEDEquippedEntity->AddLEDRing(
+         m_pcLEDEquippedEntity->AddLED(
              CVector3(0.0f, 0.0f, TURTLEBOT4_LED_RING_ELEVATION),
-             TURTLEBOT4_LED_RING_RADIUS,
-             TURTLEBOT4_LED_RING_START_ANGLE,
-             8,
              m_pcEmbodiedEntity->GetOriginAnchor());
 
          /* LIDAR sensor equipped entity */

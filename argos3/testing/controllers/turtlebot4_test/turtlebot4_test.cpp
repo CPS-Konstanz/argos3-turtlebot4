@@ -46,7 +46,7 @@ void CTurtlebot4Test::Init(TConfigurationNode &t_node)
    m_pcLight = GetSensor<CCI_Turtlebot4LightSensor>("turtlebot4_light");
    // m_pcCamera = GetSensor  <CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor>("turtlebot4_colored_blob_omnidirectional_camera");
    m_pcGround = GetSensor<CCI_Turtlebot4BaseGroundSensor>("turtlebot4_ground");
-   // m_pcLEDs   = GetActuator<CCI_LEDsActuator                          >("leds");
+   m_pcLEDs = GetActuator<CCI_LEDsActuator>("leds");
    m_pcLidar = GetSensor<CCI_Turtlebot4LIDARSensor>("turtlebot4_lidar");
    // m_pcCamera  = GetSensor  <CCI_ColoredBlobPerspectiveCameraSensor>("turtlebot4_colored_blob_perspective_camera");
    // m_pcCamera->Enable();
@@ -215,16 +215,14 @@ void CTurtlebot4Test::ControlStep()
 
    const std::string &strId = GetId();
    LOG << "\n"
-             << strId << "  " << std::endl;
+       << strId << "  " << std::endl;
 
-   // --- Obstacle Avoidance with proximity sensors ---
    LogIRReadings();
-
    LogGroundSensorReadings();
-   // --- Light sensor debug ---
    LogLightReadings();
-   // LogLightUsingCameraSensorReadings();
    LogLidarSensorReadings();
+
+   m_pcLEDs->SetAllColors(CColor::MAGENTA);
 }
 
 /****************************************/

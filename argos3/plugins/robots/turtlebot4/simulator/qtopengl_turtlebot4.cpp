@@ -35,9 +35,8 @@ namespace argos
    static const Real BODY_HEIGHT = TURTLEBOT4_BASE_HEIGHT;       // to be checked!
    static const Real LOWER_BODY_HEIGHT = TURTLEBOT4_LOWER_BODY_HEIGHT;
 
-   static const Real LED_ELEVATION = BODY_ELEVATION + BODY_HEIGHT;
-   static const Real LED_HEIGHT = 0.01; // to be checked!
-   // static const Real LED_UPPER_RING_INNER_RADIUS = 0.8 * BODY_RADIUS;
+   static const Real LED_ELEVATION = TURTLEBOT4_LED_RING_ELEVATION;
+   static const Real LED_DOT_RADIUS = UPPER_BODY_RADIUS * 0.5f;
 
 
    /****************************************/
@@ -124,12 +123,35 @@ namespace argos
          glCallList(m_unColumnList);
          glPopMatrix();
       }
+
+      /* Draw single LED at top plate center */
+      CLEDEquippedEntity& cLEDEntity = c_entity.GetLEDEquippedEntity();
+      const CColor& cColor = cLEDEntity.GetLED(0).GetColor();
+      SetLEDMaterial(cColor.GetRed()   / 255.0f,
+                     cColor.GetGreen() / 255.0f,
+                     cColor.GetBlue()  / 255.0f);
+      glPushMatrix();
+      glTranslated(0.0f, 0.0f, LED_ELEVATION);
+      CVector2 cV(LED_DOT_RADIUS, 0.0f);
+      CRadians cStep(CRadians::TWO_PI / 10);
+      glBegin(GL_POLYGON);
+      glNormal3d(0.0f, 0.0f, 1.0f);
+      for (UInt32 j = 0; j <= 10; ++j)
+      {
+         glVertex3d(cV.GetX(), cV.GetY(), 0.0f);
+         cV.Rotate(cStep);
+      }
+      glEnd();
+      glPopMatrix();
+      /* Reset emission so it doesn't affect other objects */
+      const GLfloat no_emission[] = {0.0f, 0.0f, 0.0f, 1.0f};
+      glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, no_emission);
    }
 
    /* Base body — dark charcoal */
    void CQTOpenGLTurtlebot4::SetBaseMaterial()
    {
-      const GLfloat ambient_diffuse[] = {0.12f, 0.12f, 0.12f, 1.0f};
+      const GLfloat ambient_diffuse[] = {0.2f, 0.2f, 0.2f, 1.0f};
       const GLfloat specular[] = {0.08f, 0.08f, 0.08f, 1.0f};
       const GLfloat shininess[] = {10.0f};
       glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, ambient_diffuse);
@@ -137,11 +159,6 @@ namespace argos
       glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
    }
 
-   /* Bumper — not used, same as base */
-   void CQTOpenGLTurtlebot4::SetBumperMaterial()
-   {
-      SetBaseMaterial();
-   }
 
    /* Upper deck — slightly lighter gray */
    void CQTOpenGLTurtlebot4::SetDeckMaterial()
@@ -161,6 +178,19 @@ namespace argos
       const GLfloat specular[] = {0.02f, 0.02f, 0.02f, 1.0f};
       const GLfloat shininess[] = {2.0f};
       glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, ambient_diffuse);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
+   }
+
+   /* LED — emissive colored dot */
+   void CQTOpenGLTurtlebot4::SetLEDMaterial(GLfloat f_red, GLfloat f_green, GLfloat f_blue)
+   {
+      const GLfloat ambient_diffuse[] = {f_red, f_green, f_blue, 1.0f};
+      const GLfloat emission[] = {f_red, f_green, f_blue, 1.0f};
+      const GLfloat specular[] = {0.0f, 0.0f, 0.0f, 1.0f};
+      const GLfloat shininess[] = {0.0f};
+      glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, ambient_diffuse);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, emission);
       glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
       glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
    }

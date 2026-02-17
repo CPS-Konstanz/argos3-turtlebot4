@@ -48,8 +48,6 @@ namespace argos
       /** Set Base Material */
       void SetBaseMaterial();
 
-      /** Set Bumper Material (front arc) */
-      void SetBumperMaterial();
 
       /** Set deck Material */
       void SetDeckMaterial();
@@ -59,6 +57,9 @@ namespace argos
 
       /** Set Wheel Material */
       void SetWheelMaterial();
+
+      /** Set LED Material with given color */
+      void SetLEDMaterial(GLfloat f_red, GLfloat f_green, GLfloat f_blue);
 
    private:
       /** Start of the display list index */
