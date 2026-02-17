@@ -113,8 +113,15 @@ void CTurtlebot4Test::LogGroundSensorReadings() const
 
 void CTurtlebot4Test::LogLidarSensorReadings() const
 {
-   const auto numReadings = m_pcLidar->GetNumReadings();
-   argos::LOG << numReadings << " LIDAR readings: " << numReadings << std::endl;
+   // print Lidar readings values
+   const size_t N = m_pcLidar->GetNumReadings();
+   LOG << "Lidar: ";
+   for (size_t i = 0; i < N; ++i)
+   {
+      if (i > 0)
+         LOG << ',';
+      LOG << m_pcLidar->GetReading(i);
+   }
 }
 
 /****************************************/
@@ -206,7 +213,7 @@ void CTurtlebot4Test::ControlStep()
 {
 
    const std::string &strId = GetId();
-   std::cout << "\n"
+   std::cout << "\n\n"
              << strId << "  " << std::endl;
 
    // --- Obstacle Avoidance with proximity sensors ---
@@ -217,7 +224,7 @@ void CTurtlebot4Test::ControlStep()
    LogLightReadings();
    // LogLightUsingCameraSensorReadings();
 
-   // LogLidarSensorReadings();
+   LogLidarSensorReadings();
 }
 
 /****************************************/

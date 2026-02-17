@@ -45,7 +45,7 @@ namespace argos {
 
    CTurtlebot4LIDARDefaultSensor::CTurtlebot4LIDARDefaultSensor() :
       m_pnReadings(NULL),
-      m_unNumReadings(1800),
+      m_unNumReadings(360),
       m_unPowerLaserState(TURTLEBOT4_POWERON_LASERON),
       m_pcEmbodiedEntity(NULL),
       m_bShowRays(false),
@@ -90,7 +90,7 @@ namespace argos {
             TURTLEBOT4_LIDAR_SENSORS_FAN_RADIUS + TURTLEBOT4_LIDAR_SENSORS_RING_RANGE.GetMax(),
             m_unNumReadings,
             m_pcEmbodiedEntity->GetOriginAnchor());
-         m_pnReadings = new long[m_unNumReadings];
+         m_pnReadings = new Real[m_unNumReadings];
          /* Show rays? */
          GetNodeAttributeOrDefault(t_tree, "show_rays", m_bShowRays, m_bShowRays);
          /* Parse noise level */
@@ -144,8 +144,8 @@ namespace argos {
                                                             sIntersection.TOnRay);
                m_pcControllableEntity->AddCheckedRay(true, cScanningRay);
             }
-            /* The actual reading is in cm */
-            m_pnReadings[i] = cScanningRay.GetDistance(sIntersection.TOnRay) * 100;
+            /* The actual reading is in m */
+            m_pnReadings[i] = cScanningRay.GetDistance(sIntersection.TOnRay); //* 100;
          }
          else {
             /* No intersection */
@@ -178,7 +178,7 @@ namespace argos {
    /****************************************/
    /****************************************/
 
-   long CTurtlebot4LIDARDefaultSensor::GetReading(UInt32 un_idx) const {
+   Real CTurtlebot4LIDARDefaultSensor::GetReading(UInt32 un_idx) const {
       return m_pnReadings[un_idx];
    }
 

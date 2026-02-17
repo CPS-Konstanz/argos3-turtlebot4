@@ -38,7 +38,7 @@ namespace argos {
 
       virtual void Destroy();
 
-      virtual long GetReading(UInt32 un_idx) const;
+      virtual Real GetReading(UInt32 un_idx) const;
 
       virtual size_t GetNumReadings() const;
 
@@ -53,7 +53,7 @@ namespace argos {
    private:
 
       /** Readings of the LIDAR sensor */
-      long int* m_pnReadings;
+      Real* m_pnReadings;
 
       /** Number of readings of the LIDAR sensor */
       size_t m_unNumReadings;

@@ -105,7 +105,7 @@ namespace argos
              -CRadians::PI / 60.0f,  // -3°
              CRadians::PI / 12.630f, // +60°
              CRadians::PI / 5.294f,  // +60°
-             CRadians::PI / 2.7565f  // +90° (rightmost)            // slight extra left bias if needed
+             CRadians::PI / 2.7565f  // +65,3°
          };
 
          CRadians cAngle;
