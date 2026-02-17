@@ -46,7 +46,7 @@
   <!-- * Arena configuration * -->
   <!-- *********************** -->
 
-  <arena size="5,5,2" center="0,0,1">
+  <arena size="5,5,3" center="0,0,1.5">
 
     <floor id="floor"
       source="loop_functions"
@@ -67,7 +67,7 @@
     </box>
 
     <light id="light_1"
-      position="0,-2,1"
+      position="0,0,1"
       orientation="0,0,0"
       color="yellow"
       intensity="3.0"

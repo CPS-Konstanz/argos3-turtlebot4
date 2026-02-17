@@ -72,12 +72,7 @@ void CTurtlebot4Test::LogLightReadings() const
    std::cout << "Light readings: ";
    for (size_t i = 0; i < tReadings.size(); ++i)
    {
-      if (tReadings[i].Value > 0)
-      {
-         // guard against label/readings size mismatch
-         const char *label = (i < 3 ? kLabels[i] : "Unknown");
-         std::cout << label << ": " << tReadings[i].Value << " ";
-      }
+      std::cout << kLabels[i] << ": " << tReadings[i].Value << " ";
    }
    std::cout << std::endl;
 }
@@ -183,7 +178,7 @@ void CTurtlebot4Test::LogIRReadings()
    argos::LOG << "IRvalue_5: " << IRvalue_5 << std::endl;
    argos::LOG << "IRvalue_6: " << IRvalue_6 << std::endl;
 
-   // this part is an addition to the logging function, used to avoid obstacles
+   // the following part is an addition to the logging function and it's just used to avoid obstacles
 
    /* Do we have an obstacle in front? */
    if (IRvalue_2 > 0.0f || IRvalue_3 > 0.0f || IRvalue_4 > 0.0f || IRvalue_5 > 0.0f || IRvalue_6 > 0.0f)

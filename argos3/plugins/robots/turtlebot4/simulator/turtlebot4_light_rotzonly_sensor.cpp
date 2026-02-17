@@ -62,10 +62,10 @@ namespace argos
     /****************************************/
 
     CTurtlebot4LightRotZOnlySensor::CTurtlebot4LightRotZOnlySensor() : m_pcEmbodiedEntity(nullptr),
-                                                                             m_bShowRays(false),
-                                                                             m_pcRNG(nullptr),
-                                                                             m_bAddNoise(false),
-                                                                             m_cSpace(CSimulator::GetInstance().GetSpace()) {}
+                                                                       m_bShowRays(false),
+                                                                       m_pcRNG(nullptr),
+                                                                       m_bAddNoise(false),
+                                                                       m_cSpace(CSimulator::GetInstance().GetSpace()) {}
 
     /****************************************/
     /****************************************/
@@ -197,8 +197,21 @@ namespace argos
                     {
                         /* The light is not occluded */
                         if (m_bShowRays)
+
+                        // this part is just for visualization of the rays between the light and the sensors, it doesn't affect the readings
+                        // and shows all the light rays not only the highest one
+
                         {
-                            m_pcControllableEntity->AddCheckedRay(false, cOcclusionCheckRay);
+                            CRay3 cSensorRay;
+                            CVector3 cSensorWPos;
+                            for (UInt32 s = 0; s < tSensors.size(); ++s)
+                            {
+                                cSensorWPos = tSensors[s]->Position;
+                                cSensorWPos.Rotate(tSensors[s]->Anchor.Orientation);
+                                cSensorWPos += tSensors[s]->Anchor.Position;
+                                cSensorRay.Set(cSensorWPos, cLightPos);
+                                m_pcControllableEntity->AddCheckedRay(false, cSensorRay);
+                            }
                         }
                         /* Get the distance between the light and the robot center for reading computation */
                         cRobotToLight = cLightPos - cRobotPos;
