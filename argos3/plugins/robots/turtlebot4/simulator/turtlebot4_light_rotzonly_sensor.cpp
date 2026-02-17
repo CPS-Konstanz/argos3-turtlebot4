@@ -162,7 +162,7 @@ namespace argos
                 // UNIT.TruncValue(m_tReadings[i].Value);
             }
         }
-        else
+        else // this never happens
         {
             /* There are no lights in the environment */
             if (m_bAddNoise)
@@ -184,7 +184,15 @@ namespace argos
 
     Real CTurtlebot4LightRotZOnlySensor::CalculateReading(Real f_distance, Real f_intensity)
     {
-        return ::exp(-f_distance * 2.0f);
+        //  R=(f_intensity/f_distance)^2
+        if (f_distance > 0.0f) // safety check to avoid division by zero (this should never happen)
+        {
+            return pow((f_intensity / f_distance), 2);
+        }
+        else
+        {
+            return 0.0f;
+        }
     }
 
     /****************************************/
