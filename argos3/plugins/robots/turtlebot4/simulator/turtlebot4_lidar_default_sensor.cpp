@@ -131,7 +131,7 @@ namespace argos {
          }
          else {
             /* No intersection */
-            m_pnReadings[i] = 0;
+            m_pnReadings[i] = TURTLEBOT4_LIDAR_SENSORS_RING_RANGE.GetMax();
             if(m_bShowRays) {
                m_pcControllableEntity->AddCheckedRay(false, cScanningRay);
             }
