@@ -36,6 +36,7 @@
       library="build/argos3/testing/controllers/turtlebot4_test/libturtlebot4_test.so">
       <actuators>
         <differential_steering implementation="default" />
+        <leds implementation="default" medium="leds" />
       </actuators>
       <sensors>
         <turtlebot4_ground implementation="rot_z_only" />
@@ -112,7 +113,7 @@
     <!-- <distribute>
       <position method="uniform" min="-2,-2,0" max="2,2,0" />
       <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0" />
-      <entity quantity="1" max_trials="100">
+      <entity quantity="5" max_trials="100">
         <turtlebot4 id="tb">
           <controller config="fdc_no_lidar" />
         </turtlebot4>

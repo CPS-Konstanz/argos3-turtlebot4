@@ -1,8 +1,8 @@
-# ARGoS3 Turtlebot4 and New Robot Templates
-This repository contains ARGoS3 plugins for the Turtlebot4 together with a couple of lightweight robot examples that can be copied when creating new robots.
+# ARGoS3 Turtlebot4
+This repository contains ARGoS3 plugins for the Turtlebot4.
 
 <p align="center">
-  <img src="./turtlebot4.gif" width="500" alt="Turtlebot4 simulation snapshot">
+  <img src="./turtlebot4s.gif" width="500" alt="Turtlebot4 simulation snapshot">
 </p>
 
 ## Prerequisites
