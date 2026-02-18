@@ -77,3 +77,4 @@ argos3 -c testing/experiments/turtlebot4_test.argos
 - [ ] Test the camera already implemented in the plugin
 - [ ] Check credits and license of the name in the files
 - [ ] Improve the Build and Install instructions
+- [ ] Check proximity sensors range if it matches the real TurtleBot 4
