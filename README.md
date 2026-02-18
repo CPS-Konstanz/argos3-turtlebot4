@@ -1,5 +1,5 @@
-# ARGoS3 Turtlebot4
-This repository contains ARGoS3 plugins for the Turtlebot4.
+# ARGoS3 TurtleBot 4
+This repository contains ARGoS3 plugins for the TurtleBot 4.
 
 <p align="center">
   <img src="./turtlebots4.gif" width="500" alt="Turtlebot4 simulation snapshot">
@@ -10,6 +10,13 @@ This repository contains ARGoS3 plugins for the Turtlebot4.
 - Optional (but recommended): skim through the [developer manual](https://www.argos-sim.info/dev_manual.php) to understand how ARGoS3 expects plugins to be structured.
 
 ## Build and Install
+Clone this repository and navigate to the root directory:
+
+```bash
+git clone https://github.com/CPS-Konstanz/argos3-turtlebot4.git
+cd ~/argos3-turtlebot4
+```
+
 Use the helper script or run the commands manually:
 
 ```bash
@@ -38,25 +45,19 @@ export ARGOS_PLUGIN_PATH=$EXAMPLEDIR/build/newepuck
 ```
 
 ## Repository Layout
-- `argos3/plugins/robots/`: houses every robot plugin. See the local README that links to the full “Adding a New Robot” guide.
-- `argos3/plugins/robots/turtlebot4`: full Turtlebot4 plugin 
-- `argos3/plugins/robots/testbot`: minimal plugin focused on the robot entity and Qt-OpenGL mesh 
-- `argos3/plugins/robots/newepuck`: an e-puck robot with additional sensors/ actuators.
-- `argos3/testing`: controllers, loop functions, and ARGoS experiment files for exercising the plugins.
+- `argos3/plugins/robots/turtlebot4`: implementation of the TurtleBot 4 plugin 
+- `argos3/testing`: folder contain an example controller, experiment and loop function to test the plugin.
 - `build.sh`: convenience script for rebuilding and optionally installing.
 
+
+## Implemnentation Details
+<add snesors and actuators description here>
+
 ## Run the Sample Experiment
-The provided Turtlebot4 obstacle-avoidance experiment can be executed once the plugin is built (and either installed or discoverable via `ARGOS_PLUGIN_PATH`):
+The `testing` folder contains a simple obstacle-avoidance experiment using the TurtleBot 4 plugin. Obstacle avoidance is based only on the proximity sensors (i.e., infrared sensors).
+To run the experiments, run:
 
 ```bash
-argos3 -c argos3/testing/experiments/turtlebot4_test.argos
+cd ~/argos3_turtlebot4
+argos3 -c testing/experiments/turtlebot4_test.argos
 ```
-
-## Building Your Own Robot Plugin
-See `docs/ADDING_NEW_ROBOT.md` for the detailed walkthrough that covers copying a template robot, wiring CMake, adding controllers/experiments, and validating the plugin inside ARGoS3. 
-Follow `docs/NEWEPUCK_TEMPLATE.md`, which also shows how to add install rules so the plugin lands under your ARGoS prefix.
-
-## Possible Future Work
-- Port these controllers to a physical Turtlebot4.
-- Expand the documentation with additional robot templates as they become available.
- 

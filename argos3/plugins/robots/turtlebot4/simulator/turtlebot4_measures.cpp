@@ -35,7 +35,7 @@ const CRange<Real> TURTLEBOT4_LIDAR_SENSORS_RING_RANGE(0.01, 12.00);            
 const Real TURTLEBOT4_MIN_LINEAR_VELOCITY = 0.0f;   // m/s, minimum linear velocity of the robot, robot can go backwards but we assume that this is not possibile
 const Real TURTLEBOT4_MAX_LINEAR_VELOCITY = 0.460f; // m/s, maximum linear velocity of the robot (see https://turtlebot.github.io/turtlebot4-user-manual/overview/features.html#hardware-specifications)
 
-// please note that on the angular velocity the sign of the value determins the direction of rotation
+// please note that on the angular velocity the sign of the value determins the direction of rotation, here we define the module of the min and maximum values
 const Real TURTLEBOT4_MIN_ANGULAR_VELOCITY = 0;     // rad/s, minimum angular velocity of the robot (see, https://turtlebot.github.io/turtlebot4-user-manual/overview/features.html#hardware-specifications)
 const Real TURTLEBOT4_MAX_ANGULAR_VELOCITY = 1.90f; // rad/s, maximum angular velocity of the robot (see, https://turtlebot.github.io/turtlebot4-user-manual/overview/features.html#hardware-specifications)
 

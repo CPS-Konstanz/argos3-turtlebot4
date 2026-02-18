@@ -4,6 +4,9 @@
 #include <argos3/core/utility/configuration/argos_configuration.h>
 #include <argos3/core/utility/logging/argos_log.h>
 using namespace std;
+#include <argos3/plugins/robots/turtlebot4/simulator/turtlebot4_measures.h>
+#include <algorithm>
+
 /****************************************/
 /****************************************/
 
@@ -11,35 +14,13 @@ CTurtlebot4Test::CTurtlebot4Test() : m_pcWheels(NULL),
                                      m_pcProximity(NULL),
                                      m_pcGround(NULL),
                                      m_pcLight(NULL),
-                                     m_fWheelVelocity(-2.5f) {}
+                                     m_fWheelVelocity() {}
 
 /****************************************/
 /****************************************/
 
 void CTurtlebot4Test::Init(TConfigurationNode &t_node)
 {
-   /*
-    * Get sensor/actuator handles
-    *
-    * The passed string (ex. "differential_steering") corresponds to the
-    * XML tag of the device whose handle we want to have. For a list of
-    * allowed values, type at the command prompt:
-    *
-    * $ argos3 -q actuators
-    *
-    * to have a list of all the possible actuators, or
-    *
-    * $ argos3 -q sensors
-    *
-    * to have a list of all the possible sensors.
-    *
-    * NOTE: ARGoS creates and initializes actuators and sensors
-    * internally, on the basis of the lists provided the configuration
-    * file at the <controllers><turtlebot4_test><actuators> and
-    * <controllers><turtlebot4_test><sensors> sections. If you forgot to
-    * list a device in the XML and then you request it here, an error
-    * occurs.
-    */
 
    m_pcWheels = GetActuator<CCI_DifferentialSteeringActuator>("differential_steering");
    m_pcProximity = GetSensor<CCI_Turtlebot4ProximitySensor>("turtlebot4_proximity");
@@ -50,15 +31,6 @@ void CTurtlebot4Test::Init(TConfigurationNode &t_node)
    m_pcLidar = GetSensor<CCI_Turtlebot4LIDARSensor>("turtlebot4_lidar");
    // m_pcCamera  = GetSensor  <CCI_ColoredBlobPerspectiveCameraSensor>("turtlebot4_colored_blob_perspective_camera");
    // m_pcCamera->Enable();
-
-   /*
-    * Parse the configuration file
-    *
-    * The user defines this part. Here, the algorithm accepts three
-    * parameters and it's nice to put them in the config file so we don't
-    * have to recompile if we want to try other settings.
-    */
-   GetNodeAttributeOrDefault(t_node, "velocity", m_fWheelVelocity, m_fWheelVelocity);
 }
 
 /****************************************/
@@ -94,18 +66,6 @@ void CTurtlebot4Test::LogGroundSensorReadings() const
       // print the value of each ground sensor reading
       LOG << "Ground sensor " << i << ": " << tGroundReads[i].Value << std::endl;
    }
-
-   //  /* Classify based on number of white sensors */
-   //  std::string strZone;
-   //  if(unWhiteCount == tGroundReads.size()) {
-   //      strZone = "WHITE";
-   //  } else {
-   //      strZone = "GRAY";
-   //  }
-
-   //  /* Print results */
-   //  LOG << strId << " | ";
-   //  LOG << "| Zone: " << strZone << std::endl;
 }
 
 /****************************************/
@@ -173,8 +133,6 @@ void CTurtlebot4Test::LogIRReadings()
    Real IRvalue_4 = readings[4].Value;
    Real IRvalue_5 = readings[5].Value;
    Real IRvalue_6 = readings[6].Value;
-   Real fMaxReadVal = 0.0f;
-   UInt32 unMaxReadIdx = 0;
 
    argos::LOG << "IR sensor 0: " << IRvalue_0 << std::endl;
    argos::LOG << "IR sensor 1: " << IRvalue_1 << std::endl;
@@ -183,29 +141,6 @@ void CTurtlebot4Test::LogIRReadings()
    argos::LOG << "IR sensor 4: " << IRvalue_4 << std::endl;
    argos::LOG << "IR sensor 5: " << IRvalue_5 << std::endl;
    argos::LOG << "IR sensor 6: " << IRvalue_6 << std::endl;
-
-   // the following part is an addition to the logging function and it's just used to avoid obstacles
-
-   /* Do we have an obstacle in front? */
-   if (IRvalue_2 > 0.0f || IRvalue_3 > 0.0f || IRvalue_4 > 0.0f || IRvalue_5 > 0.0f || IRvalue_6 > 0.0f)
-   {
-      /* Yes, we do: avoid it */
-      //   if(unMaxReadIdx == 1 || unMaxReadIdx == 3) {
-      /* The obstacle is straight, turn left */
-      m_pcWheels->SetLinearVelocity(m_fWheelVelocity, 0.0f);
-      //   }
-      //   else if (unMaxReadIdx == 5) {
-      //     /* The obstacle is on the right, turn right */
-      //     m_pcWheels->SetLinearVelocity(0.0f, m_fWheelVelocity);
-      //   }
-   }
-   else
-   {
-      /* No, we don't: go straight */
-      //  argos::LOG << "obj straight unMaxReadIdx set to both wheels: " << m_fWheelVelocity << std::endl;
-      m_pcWheels->SetLinearVelocity(m_fWheelVelocity, m_fWheelVelocity);
-      // Real angularVel = m_pcWheels-
-   }
 }
 /****************************************/
 /****************************************/
@@ -217,12 +152,41 @@ void CTurtlebot4Test::ControlStep()
    LOG << "\n"
        << strId << "  " << std::endl;
 
+   // log sensor readings
    LogIRReadings();
    LogGroundSensorReadings();
    LogLightReadings();
    LogLidarSensorReadings();
 
-   m_pcLEDs->SetAllColors(CColor::MAGENTA);
+   // simple collision avoidance behavior based on the proximity sensors readings
+   const auto &readings = m_pcProximity->GetReadings();
+
+
+   Real IRvalue_3 = readings[3].Value;
+
+   /* Do we have an obstacle in front? */
+   if (IRvalue_3 > 0.0f)
+   {
+      // yes, rotate in place
+      f_lin_vel = 0.0;
+      f_ang_vel = 10.0; // dummy value
+
+      m_pcLEDs->SetAllColors(CColor::RED); // set the led color
+   }
+   else
+   {
+      // no, move forward
+      f_lin_vel = 0.2; // dummy value
+      f_ang_vel = 0.0;
+
+      m_pcLEDs->SetAllColors(CColor::GREEN); // set the led color
+   }
+
+   // clamp the value accoridng to the TurtleBot 4 capabilities
+   f_lin_vel = std::clamp(f_lin_vel, TURTLEBOT4_MIN_LINEAR_VELOCITY, TURTLEBOT4_MAX_LINEAR_VELOCITY);
+   f_ang_vel = std::clamp(f_ang_vel, -TURTLEBOT4_MAX_ANGULAR_VELOCITY, TURTLEBOT4_MAX_ANGULAR_VELOCITY); // angular velocity can be positive or negative depending on the direction of rotation
+
+   SetWheelVelocity(f_lin_vel, f_ang_vel); // set the wheel velocity based on the linear and angular velocity
 }
 
 /****************************************/
@@ -230,10 +194,30 @@ void CTurtlebot4Test::ControlStep()
 
 void CTurtlebot4Test::Reset()
 {
+
    /* Enable camera filtering */
    // m_pcCamera->Enable();
    /* Set beacon color to all red to be visible for other robots */
    // m_pcLEDs->SetSingleColor(12, CColor::RED);
+}
+
+void CTurtlebot4Test::SetWheelVelocity(Real f_lin_vel, Real f_ang_vel)
+{
+
+   // the velocities of the robot are expressed in m/s and rad/s while the SetLinearVelocity used to control a differential drive
+   // robot is expressed in cm/s and it refers to the speed of each whell.
+   // Consequently we need to convert to map the linear and angular velcoity to the left and right wheel speeds and convert from m/s to cm/s
+
+   // for a differential drive robot the following equations hold?
+   // v_left = lin_vel - ang_vel * (wheels_distance / 2)
+   // v_right = lin_vel + ang_vel * (wheels_distance / 2)
+
+   Real f_left_wheel_vel = (f_lin_vel - f_ang_vel * (TURTLEBOT4_WHEEL_DISTANCE / 2.0f)) * 100.0f;  // convert from m/s to cm/s
+   Real f_right_wheel_vel = (f_lin_vel + f_ang_vel * (TURTLEBOT4_WHEEL_DISTANCE / 2.0f)) * 100.0f; // convert from m/s to cm/s
+
+   LOG << "Wheel velocities: left = " << f_left_wheel_vel << " cm/s, right = " << f_right_wheel_vel << " cm/s" << std::endl;
+
+   m_pcWheels->SetLinearVelocity(f_left_wheel_vel, f_right_wheel_vel);
 }
 
 /****************************************/

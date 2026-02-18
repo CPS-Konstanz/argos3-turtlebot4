@@ -140,6 +140,13 @@ private:
    /* Wheel speed. */
    Real m_fWheelVelocity;
 
+   void SetWheelVelocity(Real f_lin_vel, Real f_ang_vel);
+
+   // linear and angular velocity of the robot
+   Real f_lin_vel;
+   Real f_ang_vel;
+   
+
    /* Pointer to the omnidirectional camera sensor */
    // CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor* m_pcCamera;
 
