@@ -69,3 +69,7 @@ To run the experiments:
 cd ~/argos3_turtlebot4
 argos3 -c testing/experiments/turtlebot4_test.argos
 ```
+
+## TODO
+- [ ] Test the camera already implemented in the plugin
+- [ ] Check credits and license of the name in the files
