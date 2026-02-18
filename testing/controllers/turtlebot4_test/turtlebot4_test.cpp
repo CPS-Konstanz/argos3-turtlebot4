@@ -158,35 +158,50 @@ void CTurtlebot4Test::ControlStep()
    LogLightReadings();
    LogLidarSensorReadings();
 
-   // simple collision avoidance behavior based on the proximity sensors readings
+   // Collision avoidance based on proximity sensor readings.
+   // Sensor layout (angle from front, positive = left, negative = right):
+   //   [0] -65°  far right
+   //   [1] -38°  right
+   //   [2] -20°  front-right
+   //   [3]  -3°  front
+   //   [4] +14°  front-left
+   //   [5] +34°  left
+   //   [6] +65°  far left
+   // Angular velocity sign: positive = turn left, negative = turn right.
    const auto &readings = m_pcProximity->GetReadings();
 
+   bool front_obstacle = (readings[2].Value > 0.0f || readings[3].Value > 0.0f || readings[4].Value > 0.0f);
+   bool left_obstacle  = (readings[5].Value > 0.0f || readings[6].Value > 0.0f);
+   bool right_obstacle = (readings[0].Value > 0.0f || readings[1].Value > 0.0f);
 
-   Real IRvalue_3 = readings[3].Value;
-
-   /* Do we have an obstacle in front? */
-   if (IRvalue_3 > 0.0f)
-   {
-      // yes, rotate in place
-      f_lin_vel = 0.0;
-      f_ang_vel = 10.0; // dummy value
-
-      m_pcLEDs->SetAllColors(CColor::RED); // set the led color
+   if (front_obstacle) {
+      // Stop and turn away from the heavier side
+      f_lin_vel = 0.0f;
+      f_ang_vel = (readings[2].Value >= readings[4].Value)
+                  ? TURTLEBOT4_MAX_ANGULAR_VELOCITY   // front-right heavier → turn left
+                  : -TURTLEBOT4_MAX_ANGULAR_VELOCITY; // front-left heavier  → turn right
+      m_pcLEDs->SetAllColors(CColor::RED);
+   } else if (left_obstacle) {
+      // Obstacle on the left: keep moving but steer right
+      f_lin_vel = TURTLEBOT4_MAX_LINEAR_VELOCITY * 0.5f;
+      f_ang_vel = -TURTLEBOT4_MAX_ANGULAR_VELOCITY;
+      m_pcLEDs->SetAllColors(CColor::YELLOW);
+   } else if (right_obstacle) {
+      // Obstacle on the right: keep moving but steer left
+      f_lin_vel = TURTLEBOT4_MAX_LINEAR_VELOCITY * 0.5f;
+      f_ang_vel = TURTLEBOT4_MAX_ANGULAR_VELOCITY;
+      m_pcLEDs->SetAllColors(CColor::YELLOW);
+   } else {
+      // No obstacle: move forward at full speed
+      f_lin_vel = TURTLEBOT4_MAX_LINEAR_VELOCITY;
+      f_ang_vel = 0.0f;
+      m_pcLEDs->SetAllColors(CColor::GREEN);
    }
-   else
-   {
-      // no, move forward
-      f_lin_vel = 0.2; // dummy value
-      f_ang_vel = 0.0;
 
-      m_pcLEDs->SetAllColors(CColor::GREEN); // set the led color
-   }
-
-   // clamp the value accoridng to the TurtleBot 4 capabilities
    f_lin_vel = std::clamp(f_lin_vel, TURTLEBOT4_MIN_LINEAR_VELOCITY, TURTLEBOT4_MAX_LINEAR_VELOCITY);
-   f_ang_vel = std::clamp(f_ang_vel, -TURTLEBOT4_MAX_ANGULAR_VELOCITY, TURTLEBOT4_MAX_ANGULAR_VELOCITY); // angular velocity can be positive or negative depending on the direction of rotation
+   f_ang_vel = std::clamp(f_ang_vel, -TURTLEBOT4_MAX_ANGULAR_VELOCITY, TURTLEBOT4_MAX_ANGULAR_VELOCITY);
 
-   SetWheelVelocity(f_lin_vel, f_ang_vel); // set the wheel velocity based on the linear and angular velocity
+   SetWheelVelocity(f_lin_vel, f_ang_vel);
 }
 
 /****************************************/

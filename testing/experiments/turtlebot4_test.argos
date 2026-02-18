@@ -44,6 +44,7 @@
         <turtlebot4_lidar implementation="default" num_readings="360" show_rays="false" />
         <turtlebot4_light implementation="rot_z_only" show_rays="false" />
       </sensors>
+      <params />
 
     </turtlebot4_test_controller>
 
@@ -105,34 +106,18 @@
 
 
     <!-- Place a turtlebot4 in the origin and bind it to the controller -->
-    <turtlebot4 id="tb_11">
+    <!-- <turtlebot4 id="tb_11">
       <body position="0,0,0" orientation="0,0,0" />
       <controller config="fdc" />
-    </turtlebot4>
+    </turtlebot4> -->
 
-    <!-- <distribute>
+    <distribute>
       <position method="uniform" min="-2,-2,0" max="2,2,0" />
       <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0" />
       <entity quantity="5" max_trials="100">
         <turtlebot4 id="tb">
           <controller config="fdc_no_lidar" />
         </turtlebot4>
-      </entity>
-    </distribute> -->
-
-    <distribute>
-      <position method="uniform" min="-2,-2,0" max="2,2,0" />
-      <orientation method="uniform" min="0,0,0" max="360,0,0" />
-      <entity quantity="5" max_trials="100">
-        <box id="b" size="0.3,0.3,0.5" movable="false" />
-      </entity>
-    </distribute>
-
-    <distribute>
-      <position method="uniform" min="-2,-2,0" max="2,2,0" />
-      <orientation method="constant" values="0,0,0" />
-      <entity quantity="5" max_trials="100">
-        <cylinder id="c" height="0.5" radius="0.15" movable="false" />
       </entity>
     </distribute>
 
