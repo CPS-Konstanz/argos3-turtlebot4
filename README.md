@@ -57,7 +57,7 @@ export ARGOS_PLUGIN_PATH=$EXAMPLEDIR/build/newepuck
 - Light sensors
 - Ground sensors
 
-### Sensors to be tested
+### Sensors implemented to be tested
 - Camera
 
 ## Actuators
@@ -76,3 +76,4 @@ argos3 -c testing/experiments/turtlebot4_test.argos
 ## TODO
 - [ ] Test the camera already implemented in the plugin
 - [ ] Check credits and license of the name in the files
+- [ ] Improve the Build and Install instructions
