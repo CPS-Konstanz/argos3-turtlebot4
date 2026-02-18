@@ -2,7 +2,7 @@
 This repository contains ARGoS3 plugins for the Turtlebot4.
 
 <p align="center">
-  <img src="./turtlebot4s.gif" width="500" alt="Turtlebot4 simulation snapshot">
+  <img src="./turtlebots4.gif" width="500" alt="Turtlebot4 simulation snapshot">
 </p>
 
 ## Prerequisites

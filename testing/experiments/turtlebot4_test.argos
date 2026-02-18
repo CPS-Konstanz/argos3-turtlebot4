@@ -18,7 +18,7 @@
   <controllers>
 
     <turtlebot4_test_controller id="fdc"
-      library="build/argos3/testing/controllers/turtlebot4_test/libturtlebot4_test.so">
+      library="build/testing/controllers/turtlebot4_test/libturtlebot4_test">
       <actuators>
         <differential_steering implementation="default" />
         <leds implementation="default" medium="leds" />
@@ -33,7 +33,7 @@
     </turtlebot4_test_controller>
 
     <turtlebot4_test_controller id="fdc_no_lidar"
-      library="build/argos3/testing/controllers/turtlebot4_test/libturtlebot4_test.so">
+      library="build/testing/controllers/turtlebot4_test/libturtlebot4_test">
       <actuators>
         <differential_steering implementation="default" />
         <leds implementation="default" medium="leds" />
@@ -53,7 +53,7 @@
   <!-- * Loop functions * -->
   <!-- ****************** -->
   <loop_functions
-    library="build/argos3/testing/loop_functions/test_loop_functions/libtest_loop_functions"
+    library="build/testing/loop_functions/test_loop_functions/libtest_loop_functions"
     label="test_loop_functions">
     <testing />
   </loop_functions>
