@@ -92,7 +92,7 @@ set(ARGOS_PLUGIN_PATH "${ARGOS_PLUGIN_PATH}:${CMAKE_CURRENT_BINARY_DIR}" CACHE I
 
 install(FILES ${ARGOS3_HEADERS_PLUGINS_ROBOTS_TURTLEBOT4_CONTROLINTERFACE} DESTINATION include/argos3/plugins/robots/turtlebot4/control_interface)
 install(FILES ${ARGOS3_HEADERS_PLUGINS_ROBOTS_TURTLEBOT4_SIMULATOR} DESTINATION include/argos3/plugins/robots/turtlebot4/simulator)
-install(DIRECTORY simulator/models DESTINATION include/argos3/plugins/simulator/visualizations/qt-opengl)
+# install(DIRECTORY simulator/models DESTINATION include/argos3/plugins/simulator/visualizations/qt-opengl)
 install(FILES simulator/turtlebot4_texture_bottom.png simulator/turtlebot4_texture_side.png simulator/turtlebot4_texture_top.png DESTINATION include/argos3/plugins/simulator/visualizations/qt-opengl/textures)
 
 install(TARGETS argos3plugin_simulator_turtlebot4
