@@ -60,6 +60,9 @@ export ARGOS_PLUGIN_PATH=$EXAMPLEDIR/build/newepuck
 ### Sensors to be tested
 - Camera
 
+## Actuators
+The robot is implemented as a differential drive robot, the example controller provieded (see example) shows how to convert the linear and angular velocity commands into left and right wheel velocities. 
+
 
 ## Run the Sample Experiment
 The `testing` folder contains a simple obstacle-avoidance experiment using the TurtleBot 4 plugin. Obstacle avoidance is based only on the proximity sensors.
