@@ -62,8 +62,8 @@ export ARGOS_PLUGIN_PATH=$EXAMPLEDIR/build/newepuck
 
 
 ## Run the Sample Experiment
-The `testing` folder contains a simple obstacle-avoidance experiment using the TurtleBot 4 plugin. Obstacle avoidance is based only on the proximity sensors (i.e., infrared sensors).
-To run the experiments, run:
+The `testing` folder contains a simple obstacle-avoidance experiment using the TurtleBot 4 plugin. Obstacle avoidance is based only on the proximity sensors.
+To run the experiments:
 
 ```bash
 cd ~/argos3_turtlebot4
