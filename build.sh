@@ -13,4 +13,4 @@ if [[ "$1" == "install" ]]; then
     sudo make install
 fi
 
-cd..
+cd ..
