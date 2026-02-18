@@ -50,8 +50,16 @@ export ARGOS_PLUGIN_PATH=$EXAMPLEDIR/build/newepuck
 - `build.sh`: convenience script for rebuilding and optionally installing.
 
 
-## Implemnentation Details
-<add snesors and actuators description here>
+## Sensors
+### Sensor implemented and tested
+- LiDAR
+- Proximity sensors (i.e., infrared sensors)
+- Light sensors
+- Ground sensors
+
+### Sensors to be tested
+- Camera
+
 
 ## Run the Sample Experiment
 The `testing` folder contains a simple obstacle-avoidance experiment using the TurtleBot 4 plugin. Obstacle avoidance is based only on the proximity sensors (i.e., infrared sensors).
