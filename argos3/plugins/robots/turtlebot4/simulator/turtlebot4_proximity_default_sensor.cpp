@@ -1,8 +1,4 @@
-/**
- * @file <argos3/plugins/robots/turtlebot4/simulator/turtlebot4_proximity_default_sensor.cpp>
- *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
- */
+
 
 #include <argos3/core/simulator/entity/embodied_entity.h>
 #include <argos3/core/simulator/entity/composable_entity.h>
@@ -112,7 +108,7 @@ namespace argos {
                    "turtlebot4_proximity", "default",
                    "Jyotsna Bellary, Paolo Leopardi",
                    "1.0",
-                   "",
+                   "The Turtlebot4 proximity sensor.",
                    "",
                    "Usable");
 }

@@ -1,8 +1,3 @@
-/**
- * @file <argos3/plugins/robots/turtlebot4/simulator/turtlebot4_base_ground_rotzonly_sensor.h>
- *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
- */
 
 #ifndef TURTLEBOT4_BASE_GROUND_ROTZONLY_SENSOR_H
 #define TURTLEBOT4_BASE_GROUND_ROTZONLY_SENSOR_H

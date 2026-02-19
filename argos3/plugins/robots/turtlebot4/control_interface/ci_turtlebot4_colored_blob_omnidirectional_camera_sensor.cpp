@@ -93,7 +93,7 @@ namespace argos
 
    const CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor::SReadings &CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor::GetReadings() const
    {
-      std::cout << "Get Readingss";
+      
       return m_sReadings;
    }
 

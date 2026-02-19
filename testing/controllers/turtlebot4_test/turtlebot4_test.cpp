@@ -25,12 +25,11 @@ void CTurtlebot4Test::Init(TConfigurationNode &t_node)
    m_pcWheels = GetActuator<CCI_DifferentialSteeringActuator>("differential_steering");
    m_pcProximity = GetSensor<CCI_Turtlebot4ProximitySensor>("turtlebot4_proximity");
    m_pcLight = GetSensor<CCI_Turtlebot4LightSensor>("turtlebot4_light");
-   // m_pcCamera = GetSensor  <CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor>("turtlebot4_colored_blob_omnidirectional_camera");
+   m_pcCamera = GetSensor  <CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor>("turtlebot4_colored_blob_omnidirectional_camera");
    m_pcGround = GetSensor<CCI_Turtlebot4BaseGroundSensor>("turtlebot4_ground");
    m_pcLEDs = GetActuator<CCI_LEDsActuator>("leds");
    m_pcLidar = GetSensor<CCI_Turtlebot4LIDARSensor>("turtlebot4_lidar");
-   // m_pcCamera  = GetSensor  <CCI_ColoredBlobPerspectiveCameraSensor>("turtlebot4_colored_blob_perspective_camera");
-   // m_pcCamera->Enable();
+   m_pcCamera->Enable();
 }
 
 /****************************************/
@@ -90,16 +89,12 @@ void CTurtlebot4Test::LogLidarSensorReadings() const
 
 void CTurtlebot4Test::LogLightUsingCameraSensorReadings() const
 {
-   /* Perspective Camera */
-   // const CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor::SReadings& sReadings = m_pcCamera->GetReadings();
-   LOG << CCI_Controller::GetId() << "> Camera: " << std::endl;
-   // LOG << "Number of blobs detected: " << sReadings.BlobList.size() << std::endl;
-   // LOG << "Counter: " << sReadings.Counter << std::endl;
-   // for (size_t i = 0; i < sReadings.BlobList.size(); i++) {
-   //       CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor::SBlob* sBlob = sReadings.BlobList[i];
-   //    LOG << "Color = " << sBlob->Color << std::endl;
-   //    LOG << "Distance = " << sBlob->Distance << std::endl;
-   // }
+   const auto &tReadings = m_pcCamera->GetReadings();
+   LOG << "Camera: " << tReadings.BlobList.size() << " blobs detected" << std::endl;
+   for(size_t i = 0; i < tReadings.BlobList.size(); ++i) {
+      const auto* blob = tReadings.BlobList[i];
+      LOG << "  blob[" << i << "]: color=" << blob->Color << "  angle=" << ToDegrees(blob->Angle).GetValue() << ",  dist=" << blob->Distance  << std::endl;
+   }
 }
 
 /****************************************/
@@ -157,6 +152,7 @@ void CTurtlebot4Test::ControlStep()
    LogGroundSensorReadings();
    LogLightReadings();
    LogLidarSensorReadings();
+   LogLightUsingCameraSensorReadings();
 
    // Collision avoidance based on proximity sensor readings.
    // Sensor layout (angle from front, positive = left, negative = right):

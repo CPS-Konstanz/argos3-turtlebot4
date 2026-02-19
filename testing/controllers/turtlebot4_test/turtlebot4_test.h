@@ -22,14 +22,12 @@
 #include <argos3/core/control_interface/ci_controller.h>
 /* Definition of the differential steering actuator */
 #include <argos3/plugins/robots/generic/control_interface/ci_differential_steering_actuator.h>
-/* Definition of proximity sensor */
-// #include <argos3/plugins/robots/generic/control_interface/ci_proximity_sensor.h>
+
 #include <argos3/plugins/robots/turtlebot4/control_interface/ci_turtlebot4_light_sensor.h>
 #include <argos3/plugins/robots/turtlebot4/control_interface/ci_turtlebot4_proximity_sensor.h>
 #include <argos3/plugins/robots/turtlebot4/control_interface/ci_turtlebot4_base_ground_sensor.h>
 #include <argos3/plugins/robots/turtlebot4/control_interface/ci_turtlebot4_lidar_sensor.h>
 #include <argos3/plugins/robots/turtlebot4/control_interface/ci_turtlebot4_colored_blob_omnidirectional_camera_sensor.h>
-// #include <argos3/plugins/robots/turtlebot4/simulator/turtlebot4_colored_blob_perspective_camera_default_sensor.h>
 #include <argos3/plugins/robots/generic/control_interface/ci_leds_actuator.h>
 
 /*
@@ -148,10 +146,9 @@ private:
    
 
    /* Pointer to the omnidirectional camera sensor */
-   // CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor* m_pcCamera;
+   CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor* m_pcCamera;
 
-   // CCI_ColoredBlobPerspectiveCameraSensor* m_pcCamera;
-   // CCI_LEDsActuator* m_pcLedAct;
+
 
 };
 

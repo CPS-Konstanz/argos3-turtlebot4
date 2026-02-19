@@ -28,6 +28,9 @@
         <turtlebot4_proximity implementation="default" show_rays="true" />
         <turtlebot4_lidar implementation="default" num_readings="360" show_rays="false" />
         <turtlebot4_light implementation="rot_z_only" show_rays="true" />
+        <turtlebot4_colored_blob_omnidirectional_camera implementation="rot_z_only" medium="leds"
+          show_rays="true" />
+
       </sensors>
       <params />
     </turtlebot4_test_controller>
@@ -83,24 +86,25 @@
       <body position="-2.5,0,0" orientation="0,0,0" />
     </box>
 
-    <!-- <light id="light_1"
-      position="-2,2,1.5"
-      orientation="0,0,0"
-      color="yellow"
-      intensity="3.0"
-      medium="leds" /> -->
-
-    <light id="light_2"
-      position="-2,0.5,1.5"
+    <!-- light 1 and light 2 will not be detected by the camera-->
+    <light id="light_1"
+      position="-2,1.5,1.5"
       orientation="0,0,0"
       color="yellow"
       intensity="3.0"
       medium="leds" />
 
-    <light id="light_3"
-      position="-2,-0.5,1.5"
+    <light id="light_2"
+      position="-2,-1.5,1.5"
       orientation="0,0,0"
       color="yellow"
+      intensity="3.0"
+      medium="leds" />
+
+    <light id="light_visibile_from_camera"
+      position="0.5,0,0.5"
+      orientation="0,0,0"
+      color="red"
       intensity="3.0"
       medium="leds" />
 

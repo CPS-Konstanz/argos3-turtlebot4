@@ -63,6 +63,7 @@ namespace argos {
       CPositionalIndex<CEmbodiedEntity>*       m_pcEmbodiedIndex;
       CTurtlebot4OmnidirectionalCameraLEDCheckOperation* m_pcOperation;
       bool                                     m_bShowRays;
+      Real                                     m_fMaxRange;
 
    };
 }

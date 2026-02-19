@@ -7,49 +7,58 @@
 #include <argos3/plugins/simulator/entities/omnidirectional_camera_equipped_entity.h>
 #include <argos3/plugins/simulator/media/led_medium.h>
 
-namespace argos {
+namespace argos
+{
 
    /****************************************/
    /****************************************/
 
-   class CTurtlebot4OmnidirectionalCameraLEDCheckOperation : public CPositionalIndex<CLEDEntity>::COperation {
+   class CTurtlebot4OmnidirectionalCameraLEDCheckOperation : public CPositionalIndex<CLEDEntity>::COperation
+   {
 
    public:
-
       CTurtlebot4OmnidirectionalCameraLEDCheckOperation(
-         CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor::TBlobList& t_blobs,
-         COmnidirectionalCameraEquippedEntity& c_omnicam_entity,
-         CEmbodiedEntity& c_embodied_entity,
-         CControllableEntity& c_controllable_entity,
-         bool b_show_rays,
-         Real f_noise_std_dev) :
-         m_tBlobs(t_blobs),
-         m_cOmnicamEntity(c_omnicam_entity),
-         m_cEmbodiedEntity(c_embodied_entity),
-         m_cControllableEntity(c_controllable_entity),
-         m_bShowRays(b_show_rays),
-         m_fDistanceNoiseStdDev(f_noise_std_dev),
-         m_pcRNG(nullptr) {
+          CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor::TBlobList &t_blobs,
+          COmnidirectionalCameraEquippedEntity &c_omnicam_entity,
+          CEmbodiedEntity &c_embodied_entity,
+          CControllableEntity &c_controllable_entity,
+          bool b_show_rays,
+          Real f_noise_std_dev) : m_tBlobs(t_blobs),
+                                  m_cOmnicamEntity(c_omnicam_entity),
+                                  m_cEmbodiedEntity(c_embodied_entity),
+                                  m_cControllableEntity(c_controllable_entity),
+                                  m_bShowRays(b_show_rays),
+                                  m_fDistanceNoiseStdDev(f_noise_std_dev),
+                                  m_pcRNG(nullptr)
+      {
          m_pcRootSensingEntity = &m_cEmbodiedEntity.GetParent();
-         if(m_fDistanceNoiseStdDev > 0.0f) {
+         if (m_fDistanceNoiseStdDev > 0.0f)
+         {
             m_pcRNG = CRandom::CreateRNG("argos");
          }
       }
-      virtual ~CTurtlebot4OmnidirectionalCameraLEDCheckOperation() noexcept {
-         while(! m_tBlobs.empty()) {
+      virtual ~CTurtlebot4OmnidirectionalCameraLEDCheckOperation() noexcept
+      {
+         while (!m_tBlobs.empty())
+         {
             delete m_tBlobs.back();
             m_tBlobs.pop_back();
          }
       }
 
-      virtual bool operator()(CLEDEntity& c_led) {
+      virtual bool operator()(CLEDEntity &c_led)
+      {
          /* Process this LED only if it's lit */
-         if(c_led.GetColor() != CColor::BLACK) {
-            if(c_led.HasParent()) {
+         if (c_led.GetColor() != CColor::BLACK)
+         {
+            if (c_led.HasParent())
+            {
                /* Filter out the LEDs belonging to the sensing entity by checking if they share the same parent entity */
                m_pcRootOfLEDEntity = &c_led.GetParent();
-               while(m_pcRootOfLEDEntity->HasParent()) m_pcRootOfLEDEntity = &m_pcRootOfLEDEntity->GetParent();
-               if(m_pcRootSensingEntity == m_pcRootOfLEDEntity) {
+               while (m_pcRootOfLEDEntity->HasParent())
+                  m_pcRootOfLEDEntity = &m_pcRootOfLEDEntity->GetParent();
+               if (m_pcRootSensingEntity == m_pcRootOfLEDEntity)
+               {
                   return true;
                }
             }
@@ -59,23 +68,26 @@ namespace argos {
             m_cLEDRelativePos -= m_cCameraPos;
             m_cLEDRelativePosXY.Set(m_cLEDRelativePos.GetX(),
                                     m_cLEDRelativePos.GetY());
-            if(Abs(m_cLEDRelativePos.GetX()) < m_fGroundHalfRange &&
-               Abs(m_cLEDRelativePos.GetY()) < m_fGroundHalfRange &&
-               m_cLEDRelativePos.GetZ() < m_cCameraPos.GetZ() &&
-               !GetClosestEmbodiedEntityIntersectedByRay(m_sIntersectionItem,
-                                                         m_cOcclusionCheckRay,
-                                                         m_cEmbodiedEntity)) {
+            if (Abs(m_cLEDRelativePos.GetX()) < m_fGroundHalfRange &&
+                Abs(m_cLEDRelativePos.GetY()) < m_fGroundHalfRange &&
+                m_cLEDRelativePos.GetZ() < m_cCameraPos.GetZ() &&
+                !GetClosestEmbodiedEntityIntersectedByRay(m_sIntersectionItem,
+                                                          m_cOcclusionCheckRay,
+                                                          m_cEmbodiedEntity))
+            {
                /* If noise was setup, add it */
-               if(m_fDistanceNoiseStdDev > 0.0f) {
+               if (m_fDistanceNoiseStdDev > 0.0f)
+               {
                   m_cLEDRelativePosXY += CVector2(
-                     m_cLEDRelativePosXY.Length() * m_pcRNG->Gaussian(m_fDistanceNoiseStdDev),
-                     m_pcRNG->Uniform(CRadians::UNSIGNED_RANGE));
+                      m_cLEDRelativePosXY.Length() * m_pcRNG->Gaussian(m_fDistanceNoiseStdDev),
+                      m_pcRNG->Uniform(CRadians::UNSIGNED_RANGE));
                }
                m_tBlobs.push_back(new CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor::SBlob(
-                                     c_led.GetColor(),
-                                     NormalizedDifference(m_cLEDRelativePosXY.Angle(), m_cCameraOrient),
-                                     m_cLEDRelativePosXY.Length() * 100.0f));
-               if(m_bShowRays) {
+                   c_led.GetColor(),
+                   NormalizedDifference(m_cLEDRelativePosXY.Angle(), m_cCameraOrient),
+                   m_cLEDRelativePosXY.Length() * 100.0f));
+               if (m_bShowRays)
+               {
                   m_cControllableEntity.AddCheckedRay(false, CRay3(m_cCameraPos, c_led.GetPosition()));
                }
             }
@@ -83,8 +95,10 @@ namespace argos {
          return true;
       }
 
-      void Setup(Real f_ground_half_range) {
-         while(! m_tBlobs.empty()) {
+      void Setup(Real f_ground_half_range)
+      {
+         while (!m_tBlobs.empty())
+         {
             delete m_tBlobs.back();
             m_tBlobs.pop_back();
          }
@@ -94,17 +108,16 @@ namespace argos {
          m_cCameraPos += m_cOmnicamEntity.GetOffset();
          m_cOcclusionCheckRay.SetStart(m_cCameraPos);
       }
-      
+
    private:
-      
-      CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor::TBlobList& m_tBlobs;
-      COmnidirectionalCameraEquippedEntity& m_cOmnicamEntity;
-      CEmbodiedEntity& m_cEmbodiedEntity;
-      CControllableEntity& m_cControllableEntity;
+      CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor::TBlobList &m_tBlobs;
+      COmnidirectionalCameraEquippedEntity &m_cOmnicamEntity;
+      CEmbodiedEntity &m_cEmbodiedEntity;
+      CControllableEntity &m_cControllableEntity;
       Real m_fGroundHalfRange;
       bool m_bShowRays;
-      CEntity* m_pcRootSensingEntity;
-      CEntity* m_pcRootOfLEDEntity;
+      CEntity *m_pcRootSensingEntity;
+      CEntity *m_pcRootOfLEDEntity;
       CVector3 m_cCameraPos;
       CRadians m_cCameraOrient;
       CRadians m_cTmp1, m_cTmp2;
@@ -113,31 +126,34 @@ namespace argos {
       SEmbodiedEntityIntersectionItem m_sIntersectionItem;
       CRay3 m_cOcclusionCheckRay;
       Real m_fDistanceNoiseStdDev;
-      CRandom::CRNG* m_pcRNG;
+      CRandom::CRNG *m_pcRNG;
    };
 
    /****************************************/
    /****************************************/
 
-   CTurtlebot4ColoredBlobOmnidirectionalCameraRotZOnlySensor::CTurtlebot4ColoredBlobOmnidirectionalCameraRotZOnlySensor() :
-      m_pcOmnicamEntity(nullptr),
-      m_pcControllableEntity(nullptr),
-      m_pcEmbodiedEntity(nullptr),
-      m_pcLEDIndex(nullptr),
-      m_pcEmbodiedIndex(nullptr),
-      m_bShowRays(false) {
+   CTurtlebot4ColoredBlobOmnidirectionalCameraRotZOnlySensor::CTurtlebot4ColoredBlobOmnidirectionalCameraRotZOnlySensor() : m_pcOmnicamEntity(nullptr),
+                                                                                                                            m_pcControllableEntity(nullptr),
+                                                                                                                            m_pcEmbodiedEntity(nullptr),
+                                                                                                                            m_pcLEDIndex(nullptr),
+                                                                                                                            m_pcEmbodiedIndex(nullptr),
+                                                                                                                            m_bShowRays(false),
+                                                                                                                            m_fMaxRange(3.0f)
+   {
    }
 
    /****************************************/
    /****************************************/
 
-   CTurtlebot4ColoredBlobOmnidirectionalCameraRotZOnlySensor::~CTurtlebot4ColoredBlobOmnidirectionalCameraRotZOnlySensor() {
+   CTurtlebot4ColoredBlobOmnidirectionalCameraRotZOnlySensor::~CTurtlebot4ColoredBlobOmnidirectionalCameraRotZOnlySensor()
+   {
    }
 
    /****************************************/
    /****************************************/
 
-   void CTurtlebot4ColoredBlobOmnidirectionalCameraRotZOnlySensor::SetRobot(CComposableEntity& c_entity) {
+   void CTurtlebot4ColoredBlobOmnidirectionalCameraRotZOnlySensor::SetRobot(CComposableEntity &c_entity)
+   {
       /* Get omndirectional camera equipped entity */
       m_pcOmnicamEntity = &(c_entity.GetComponent<COmnidirectionalCameraEquippedEntity>("omnidirectional_camera"));
       /* Get controllable entity */
@@ -149,12 +165,16 @@ namespace argos {
    /****************************************/
    /****************************************/
 
-   void CTurtlebot4ColoredBlobOmnidirectionalCameraRotZOnlySensor::Init(TConfigurationNode& t_tree) {
-      try {
+   void CTurtlebot4ColoredBlobOmnidirectionalCameraRotZOnlySensor::Init(TConfigurationNode &t_tree)
+   {
+      try
+      {
          /* Parent class init */
          CCI_Turtlebot4ColoredBlobOmnidirectionalCameraSensor::Init(t_tree);
          /* Show rays? */
          GetNodeAttributeOrDefault(t_tree, "show_rays", m_bShowRays, m_bShowRays);
+         /* Parse max range (default: 3.0m) */
+         GetNodeAttributeOrDefault(t_tree, "max_range", m_fMaxRange, m_fMaxRange);
          /* Parse noise */
          Real fDistanceNoiseStdDev = 0;
          GetNodeAttributeOrDefault(t_tree, "noise_std_dev", fDistanceNoiseStdDev, fDistanceNoiseStdDev);
@@ -164,14 +184,15 @@ namespace argos {
          m_pcLEDIndex = &(CSimulator::GetInstance().GetMedium<CLEDMedium>(strMedium).GetIndex());
          /* Create check operation */
          m_pcOperation = new CTurtlebot4OmnidirectionalCameraLEDCheckOperation(
-            m_sReadings.BlobList,
-            *m_pcOmnicamEntity,
-            *m_pcEmbodiedEntity,
-            *m_pcControllableEntity,
-            m_bShowRays,
-            fDistanceNoiseStdDev);
+             m_sReadings.BlobList,
+             *m_pcOmnicamEntity,
+             *m_pcEmbodiedEntity,
+             *m_pcControllableEntity,
+             m_bShowRays,
+             fDistanceNoiseStdDev);
       }
-      catch(CARGoSException& ex) {
+      catch (CARGoSException &ex)
+      {
          THROW_ARGOSEXCEPTION_NESTED("Error initializing the colored blob omnidirectional camera rotzonly sensor", ex);
       }
       /* sensor is disabled by default */
@@ -181,33 +202,41 @@ namespace argos {
    /****************************************/
    /****************************************/
 
-   void CTurtlebot4ColoredBlobOmnidirectionalCameraRotZOnlySensor::Update() {
+   void CTurtlebot4ColoredBlobOmnidirectionalCameraRotZOnlySensor::Update()
+   {
       /* sensor is disabled--nothing to do */
-      if (IsDisabled()) {
-        return;
+      if (IsDisabled())
+      {
+         return;
       }
 
       /* Increase data counter */
       ++m_sReadings.Counter;
-      /* Calculate range on the ground */
+      /* Calculate camera position */
       CVector3 cCameraPos = m_pcOmnicamEntity->GetOffset();
       cCameraPos += m_pcEmbodiedEntity->GetOriginAnchor().Position;
-      Real fGroundHalfRange = cCameraPos.GetZ() * Tan(m_pcOmnicamEntity->GetAperture());
+      /*
+       * Use m_fMaxRange directly as the XY search radius.
+       * For the Z axis, search from ground (0) up to 2*camera_z, which matches
+       * the condition in the check operation (led_z - cam_z < cam_z).
+       * This covers robot LEDs at typical heights (e.g. 0.375m < 2*0.29m = 0.58m).
+       */
       /* Prepare the operation */
-      m_pcOperation->Setup(fGroundHalfRange);
+      m_pcOperation->Setup(m_fMaxRange);
       /* Go through LED entities in box range */
       m_pcLEDIndex->ForEntitiesInBoxRange(
-         CVector3(cCameraPos.GetX(),
-                  cCameraPos.GetY(),
-                  cCameraPos.GetZ() * 0.5f),
-         CVector3(fGroundHalfRange, fGroundHalfRange, cCameraPos.GetZ() * 0.5f),
-         *m_pcOperation);
+          CVector3(cCameraPos.GetX(),
+                   cCameraPos.GetY(),
+                   cCameraPos.GetZ()),
+          CVector3(m_fMaxRange, m_fMaxRange, cCameraPos.GetZ()),
+          *m_pcOperation);
    }
 
    /****************************************/
    /****************************************/
 
-   void CTurtlebot4ColoredBlobOmnidirectionalCameraRotZOnlySensor::Reset() {
+   void CTurtlebot4ColoredBlobOmnidirectionalCameraRotZOnlySensor::Reset()
+   {
       m_sReadings.Counter = 0;
       m_sReadings.BlobList.clear();
    }
@@ -215,14 +244,16 @@ namespace argos {
    /****************************************/
    /****************************************/
 
-   void CTurtlebot4ColoredBlobOmnidirectionalCameraRotZOnlySensor::Destroy() {
+   void CTurtlebot4ColoredBlobOmnidirectionalCameraRotZOnlySensor::Destroy()
+   {
       delete m_pcOperation;
    }
 
    /****************************************/
    /****************************************/
 
-   void CTurtlebot4ColoredBlobOmnidirectionalCameraRotZOnlySensor::Enable() {
+   void CTurtlebot4ColoredBlobOmnidirectionalCameraRotZOnlySensor::Enable()
+   {
       m_pcOmnicamEntity->Enable();
       CCI_Sensor::Enable();
    }
@@ -230,7 +261,8 @@ namespace argos {
    /****************************************/
    /****************************************/
 
-   void CTurtlebot4ColoredBlobOmnidirectionalCameraRotZOnlySensor::Disable() {
+   void CTurtlebot4ColoredBlobOmnidirectionalCameraRotZOnlySensor::Disable()
+   {
       m_pcOmnicamEntity->Disable();
       CCI_Sensor::Disable();
    }
@@ -326,7 +358,6 @@ namespace argos {
                    "   (e.g., only when it is looking for an LED equipped entity) can increase performance\n"
                    "   by only requiring ARGoS to update the readings on timesteps they will be used.\n",
 
-                   "Usable"
-		  );
+                   "Usable");
 
 }

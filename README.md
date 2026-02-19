@@ -51,14 +51,48 @@ export ARGOS_PLUGIN_PATH=$EXAMPLEDIR/build/newepuck
 
 
 ## Sensors
-### Sensor implemented and tested
-- LiDAR
-- Proximity sensors (i.e., infrared sensors)
-- Light sensors
-- Ground sensors
 
-### Sensors implemented to be tested
-- Camera
+### LiDAR (`turtlebot4_lidar`, implementation `default`)
+Simulates the TurtleBot 4's 360° LiDAR. Returns an array of distance readings in meters.
+
+- **Range:** 0.01 m – 12.00 m
+- **Angular coverage:** 360°
+- **Number of readings:** configurable via the `num_readings` XML attribute (e.g. 360 → one reading per degree)
+- **Mounting height:** ~0.19 m (lower body + 0.099 m)
+
+### Proximity Sensors / IR (`turtlebot4_proximity`, implementation `default`)
+Simulates the 7 infrared intensity sensors arranged in a front half-ring. Each reading is in [0, 1] where 0 means no obstacle and values closer to 1 indicate a closer obstacle.
+
+- **Range:** 0 – 0.2 m
+- **Response function:** `exp(-d × 2e / 0.2)` (exponential decay, matches the Create 3 Gazebo model)
+- **Sensor positions (angle from robot front, positive = left):**
+  - [0] −65°, [1] −38°, [2] −20°, [3] −3°, [4] +14°, [5] +34°, [6] +65°
+- **Mounting height:** 0.057 m
+
+### Light Sensors (`turtlebot4_light`, implementation `rot_z_only`)
+Simulates three phototransistors that react to `<light>` entities placed in the arena. The reading sums contributions from all visible (non-occluded) light sources.
+
+- **Range:** unlimited — all lights in the arena contribute
+- **Response function:** R = (intensity / distance)² per light source; multiple sources are summed
+- **Sensors:** 3 — Front-Left, Front-Right, Rear
+- **Optional noise:** `noise_level` XML attribute (additive uniform noise)
+
+### Ground Sensors (`turtlebot4_ground`, implementation `rot_z_only`)
+Reads the floor color beneath each sensor position as a grayscale value in [0, 1] (0 = black, 1 = white). Useful for line following or detecting floor markings.
+
+- **Range:** point measurement — no distance range, reads directly at sensor XY position
+- **Sensors:** 4 — Side-Left (6, 14.5 cm), Side-Right (6, −14.5 cm), Front-Left (16, 4.5 cm), Front-Right (16, −4.5 cm), positions in cm relative to robot center
+- **Optional noise:** `noise_level` XML attribute (additive uniform noise)
+
+### Omnidirectional Camera (`turtlebot4_colored_blob_omnidirectional_camera`, implementation `rot_z_only`)
+Simulates a downward-looking fisheye camera that detects colored LEDs registered in the `leds` medium. Returns a list of blobs, each described by color, angle, and distance.
+
+- **XY range:** 3.0 m by default; configurable via `max_range` XML attribute
+- **Z constraint:** only LEDs with height < 2 × camera elevation (≈ 0.58 m) are detected. This covers typical robot LED rings (≈ 0.375 m) but excludes elevated arena lights (e.g. at 1.5 m)
+- **Camera mounting height:** 0.289 m
+- **Output per blob:** color (`CColor`), angle in degrees (counter-clockwise from robot front), distance in cm
+- **Occlusion:** blocked by embodied entities between camera and LED
+- **Note:** the sensor is **disabled by default**; call `m_pcCamera->Enable()` in `Init()` and declare `medium="leds"` in the XML
 
 ## Actuators
 The robot is implemented as a differential drive robot, the example controller provieded (see example) shows how to convert the linear and angular velocity commands into left and right wheel velocities. 
@@ -72,8 +106,3 @@ To run the experiments:
 cd ~/argos3_turtlebot4
 argos3 -c testing/experiments/turtlebot4_test.argos
 ```
-
-## TODO
-- [ ] Test the camera already implemented in the plugin
-- [ ] Check credits and license of the name in the files
-- [ ] Improve the Build and Install instructions
