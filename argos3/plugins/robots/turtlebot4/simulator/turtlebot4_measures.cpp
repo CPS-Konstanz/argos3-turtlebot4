@@ -21,7 +21,7 @@ const Real TURTLEBOT4_UPPER_BODY_HEIGHT = TURTLEBOT4_BASE_HEIGHT - TURTLEBOT4_LO
 const Real TURTLEBOT4_BASE_TOP = TURTLEBOT4_BASE_ELEVATION + TURTLEBOT4_BASE_HEIGHT;             // meters, height of the top of the robot
 const Real TURTLEBOT4_COLUMN_RADIUS = 0.008f;                                                    // tubes ~1cm
 const Real TURTLEBOT4_COLUMN_HEIGHT = TURTLEBOT4_UPPER_BODY_HEIGHT;                              // meters, heigh of the sticks connecting the base to the upper body, approximation
-// XY positions of the 4 tower standoffs relative to robot center (see turtlebot4.urdf.xacro)
+// XY positions of the 4 tower standoffs relative to robot center in meters ((see https://github.com/paoloelle/turtlebot4/blob/a50ef806e23b45d13fabad0b99c90013c4fac9a0/turtlebot4_description/urdf/standard/turtlebot4.urdf.xacro)
 const CVector2 TURTLEBOT4_COLUMN_OFFSETS[4] = {
    CVector2( 0.03063f,  0.11431f),  // front-left
    CVector2( 0.03063f, -0.11431f),  // front-right
@@ -34,7 +34,7 @@ const Real TURTLEBOT4_WHEEL_DISTANCE = 0.235;                                // 
 const Real TURTLEBOT4_HALF_WHEEL_DISTANCE = TURTLEBOT4_WHEEL_DISTANCE * 0.5; // meters, half of the distance between the centers of the two wheels
 const Real UPPER_BODY_RADIUS = TURTLEBOT4_BASE_RADIUS * 0.95f;               // meters, radius of the top plate, approximation
 
-const Real TURTLEBOT4_LIDAR_ELEVATION = TURTLEBOT4_LOWER_BODY_HEIGHT + 0.098715f; // meters (see https://github.com/paoloelle/turtlebot4/blob/a50ef806e23b45d13fabad0b99c90013c4fac9a0/turtlebot4_description/urdf/standard/turtlebot4.urdf.xacro#L33
+const Real TURTLEBOT4_LIDAR_ELEVATION = TURTLEBOT4_LOWER_BODY_HEIGHT + 0.098715f; // meters (see https://github.com/paoloelle/turtlebot4/blob/a50ef806e23b45d13fabad0b99c90013c4fac9a0/turtlebot4_description/urdf/standard/turtlebot4.urdf.xacro#L33)
 const Real TURTLEBOT4_LIDAR_SENSORS_FAN_RADIUS = TURTLEBOT4_BASE_RADIUS;          // meters, here we avoid that the lidar detects the sticks so we set the radius as the base radius
 const CRadians TURTLEBOT4_LIDAR_ANGLE_SPAN(ToRadians(CDegrees(360.0)));           // radians, angle span of the LiDAR sensor all around the robot
 const CRange<Real> TURTLEBOT4_LIDAR_SENSORS_RING_RANGE(0.01, 12.00);              // minimum and maximum reading ranges of the LiDAR. these values sums to TURTLEBOT4_LIDAR_SENSORS_FAN_RADIUS
@@ -56,7 +56,7 @@ const Real TURTLEBOT4_RAB_ELEVATION = TURTLEBOT4_LED_RING_ELEVATION;
 
 const Real TURTLEBOT4_IR_SENSOR_RING_ELEVATION = 0.0572; // meters (see https://github.com/iRobotEducation/create3_sim/blob/b7c69013d0db241df64199cae9491286635d1bcc/irobot_create_common/irobot_create_description/urdf/create3.urdf.xacro)
 const Real TURTLEBOT4_IR_SENSOR_RING_RADIUS = TURTLEBOT4_BASE_RADIUS;
-const Real TURTLEBOT4_IR_SENSOR_RING_RANGE = 0.1f;
+const Real TURTLEBOT4_IR_SENSOR_RING_RANGE = 0.2f; // meters, max range of the IR intensity sensors (see https://github.com/iRobotEducation/create3_sim/blob/b7c69013d0db241df64199cae9491286635d1bcc/irobot_create_common/irobot_create_description/urdf/sensors/ir_intensity.urdf.xacro)
 const Real OMNIDIRECTIONAL_CAMERA_ELEVATION = 0.288699733f;
 
 const CVector2 TURTLEBOT4_GROUND_SENSOR_SIDE_LEFT(0.06f, 0.145f);    // meters. XY position of the side left ground sensor, relative to the center of the robot  (see https://github.com/iRobotEducation/create3_sim/blob/b7c69013d0db241df64199cae9491286635d1bcc/irobot_create_common/irobot_create_description/urdf/create3.urdf.xacro#L137)

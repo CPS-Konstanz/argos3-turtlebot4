@@ -10,6 +10,9 @@
 #include <argos3/plugins/simulator/entities/proximity_sensor_equipped_entity.h>
 
 #include "turtlebot4_proximity_default_sensor.h"
+#include "turtlebot4_measures.h"
+
+#include <cmath>
 
 namespace argos {
 
@@ -33,15 +36,22 @@ namespace argos {
       }
 
       virtual Real CalculateReading(Real f_distance) {
-         if(f_distance < 0.04) {
-            return 1.0;
-         }
-         else if(f_distance > 0.12){
-            return 0.0;
-         }
-         else {
-            return 4.14*exp(-33.0*f_distance)-.085;
-         }
+         // Formula from Create3:
+         // https://github.com/iRobotEducation/create3_sim/blob/1fccb769708860267a5c90a10110308fa3faa785/irobot_create_gz/irobot_create_gz_toolbox/src/sensors/ir_intensity.cpp#L68
+         //
+         // The real sensor produces a raw integer reading:
+         //   raw = A * exp(-d * B)
+         // where A = 3500 (max value for white surface at contact)
+         //       B ~ 26.831568 (experimentally determined decay coefficient)
+         //       d = distance in meters
+         //
+         // In the Create3 Gazebo simulation, B is derived from range_max as:
+         //   B = 2*e / range_max   (so that raw ~ 0 at d = range_max)
+         //
+         // Here we normalize to [0,1] by dividing by A=3500 (the value at d=0), that's why no 3500 appears in the formula below:
+         //   reading = exp(-d * 2*e / range_max)
+         static const Real B = 2.0 * M_E / TURTLEBOT4_IR_SENSOR_RING_RANGE;
+         return std::exp(-f_distance * B);
       }
 
    };
