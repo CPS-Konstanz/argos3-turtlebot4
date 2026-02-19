@@ -12,31 +12,34 @@ This repository contains ARGoS3 plugins for the TurtleBot 4.
 ## Build and Install
 Clone this repository and navigate to the root directory:
 
+### Clone the repository
 ```bash
 git clone https://github.com/CPS-Konstanz/argos3-turtlebot4.git
 cd ~/argos3-turtlebot4
 ```
 
-Use the helper script or run the commands manually:
+### Install the plugin
+To install the plugin, you can use the helper script or run the commands manually.
 
-```bash
-# configures and builds in ./build (Debug by default)
-./build.sh           
+- Helper script:
+  ```bash
+  # configures and builds in ./build (Debug by default)
+  ./build.sh           
 
-# same as above plus sudo make install
-./build.sh install   
-```
+  # same as above plus sudo make install
+  ./build.sh install   
+  ```
 
-Manual steps:
+- Manual steps:
 
-```bash
-mkdir -p build && cd build
-cmake -DCMAKE_BUILD_TYPE=Debug ..
-make -j$(nproc)
+  ```bash
+  mkdir -p build && cd build
+  cmake -DCMAKE_BUILD_TYPE=Debug ..
+  make -j$(nproc)
 
-# to install libraries/headers into your ARGoS3 prefix
-sudo make install    
-```
+  # to install libraries/headers into your ARGoS3 prefix
+  sudo make install    
+  ```
 
 If you prefer running without `sudo make install`, set `ARGOS_PLUGIN_PATH` to `<repo>/build/argos3/plugins/robots/<plugin>` before launching `argos3` so it can find the shared libraries.
 ```bash
@@ -95,8 +98,13 @@ Simulates a downward-looking fisheye camera that detects colored LEDs registered
 - **Note:** the sensor is **disabled by default**; call `m_pcCamera->Enable()` in `Init()` and declare `medium="leds"` in the XML
 
 ## Actuators
+
+### Differential Drive
 The robot is implemented as a differential drive robot, the example controller provieded (see example) shows how to convert the linear and angular velocity commands into left and right wheel velocities.
-This because the real TurtleBot 4 accepts velocity commands in the form of linear and angular velocity, but the ARGoS3 differential drive actuator expects left and right wheel velocities. 
+This because the real TurtleBot 4 accepts velocity commands in the form of linear and angular velocity, but the ARGoS3 differential drive actuator expects left and right wheel velocities.
+
+### LED
+The robot has a LED that can be set to different colors. 
 
 
 ## Run the Sample Experiment
@@ -107,3 +115,7 @@ To run the experiments:
 cd ~/argos3_turtlebot4
 argos3 -c testing/experiments/turtlebot4_test.argos
 ```
+
+## References
+- [TurtleBot 4 User Manual](https://turtlebot.github.io/turtlebot4-user-manual/) — official documentation for the TurtleBot 4 platform.
+- [ARGoS](https://www.argos-sim.info/) — the multi-robot simulator this plugin is built on.
