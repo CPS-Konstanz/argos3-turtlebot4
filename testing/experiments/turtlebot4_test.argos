@@ -27,29 +27,13 @@
         <turtlebot4_ground implementation="rot_z_only" />
         <turtlebot4_proximity implementation="default" show_rays="true" />
         <turtlebot4_lidar implementation="default" num_readings="360" show_rays="false" />
-        <turtlebot4_light implementation="rot_z_only" show_rays="true" />
-        <turtlebot4_colored_blob_omnidirectional_camera implementation="rot_z_only" medium="leds"
-          show_rays="true" />
-
-      </sensors>
-      <params />
-    </turtlebot4_test_controller>
-
-    <turtlebot4_test_controller id="fdc_no_lidar"
-      library="build/testing/controllers/turtlebot4_test/libturtlebot4_test">
-      <actuators>
-        <differential_steering implementation="default" />
-        <leds implementation="default" medium="leds" />
-      </actuators>
-      <sensors>
-        <turtlebot4_ground implementation="rot_z_only" />
-        <turtlebot4_proximity implementation="default" show_rays="true" />
-        <turtlebot4_lidar implementation="default" num_readings="360" show_rays="false" />
         <turtlebot4_light implementation="rot_z_only" show_rays="false" />
+        <turtlebot4_colored_blob_omnidirectional_camera implementation="rot_z_only" medium="leds"  show_rays="false" />
+
       </sensors>
       <params />
-
     </turtlebot4_test_controller>
+
 
   </controllers>
 
@@ -101,29 +85,30 @@
       intensity="3.0"
       medium="leds" />
 
-    <light id="light_visibile_from_camera"
+    <!-- <light id="light_visibile_from_camera"
       position="0.5,0,0.5"
       orientation="0,0,0"
       color="red"
       intensity="3.0"
-      medium="leds" />
+      medium="leds" /> -->
 
 
     <!-- Place a turtlebot4 in the origin and bind it to the controller -->
-    <turtlebot4 id="tb_11">
+    <!-- <turtlebot4 id="tb_11">
       <body position="0,0,0" orientation="0,0,0" />
       <controller config="fdc" />
-    </turtlebot4>
+    </turtlebot4> -->
 
-    <!-- <distribute>
+    <!-- distribure multiple turtlebots-->
+    <distribute>
       <position method="uniform" min="-2,-2,0" max="2,2,0" />
       <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0" />
-      <entity quantity="1" max_trials="100">
+      <entity quantity="6" max_trials="100">
         <turtlebot4 id="tb">
-          <controller config="fdc_no_lidar" />
+          <controller config="fdc" />
         </turtlebot4>
       </entity>
-    </distribute> -->
+    </distribute>
 
 
   </arena>
