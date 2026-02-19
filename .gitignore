@@ -3,3 +3,5 @@
 .qt
 /newfootbot/
 .vscode/
+.docs/
+./argos3/plugins/robots/README.md
