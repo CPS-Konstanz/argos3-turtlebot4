@@ -51,6 +51,3 @@ add_subdirectory(argos3)
 
 # to buid the test controller
 add_subdirectory(testing)
-
-#Fix new Footbot plugin
-# add_subdirectory(newfootbot)

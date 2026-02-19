@@ -21,6 +21,13 @@ const Real TURTLEBOT4_UPPER_BODY_HEIGHT = TURTLEBOT4_BASE_HEIGHT - TURTLEBOT4_LO
 const Real TURTLEBOT4_BASE_TOP = TURTLEBOT4_BASE_ELEVATION + TURTLEBOT4_BASE_HEIGHT;             // meters, height of the top of the robot
 const Real TURTLEBOT4_COLUMN_RADIUS = 0.008f;                                                    // tubes ~1cm
 const Real TURTLEBOT4_COLUMN_HEIGHT = TURTLEBOT4_UPPER_BODY_HEIGHT;                              // meters, heigh of the sticks connecting the base to the upper body, approximation
+// XY positions of the 4 tower standoffs relative to robot center (see turtlebot4.urdf.xacro)
+const CVector2 TURTLEBOT4_COLUMN_OFFSETS[4] = {
+   CVector2( 0.03063f,  0.11431f),  // front-left
+   CVector2( 0.03063f, -0.11431f),  // front-right
+   CVector2(-0.07607f,  0.09066f),  // rear-left
+   CVector2(-0.07607f, -0.09066f),  // rear-right
+};
 
 const Real TURTLEBOT4_WHEEL_RADIUS = 0.036;                                  // meters, radius of the wheel (see https://iroboteducation.github.io/create3_docs/hw/mechanical/)
 const Real TURTLEBOT4_WHEEL_DISTANCE = 0.235;                                // meters, distance between the centers of the two wheels (see https://iroboteducation.github.io/create3_docs/hw/mechanical/)
@@ -49,7 +56,6 @@ const Real TURTLEBOT4_RAB_ELEVATION = TURTLEBOT4_LED_RING_ELEVATION;
 
 const Real TURTLEBOT4_IR_SENSOR_RING_ELEVATION = 0.0572; // meters (see https://github.com/iRobotEducation/create3_sim/blob/b7c69013d0db241df64199cae9491286635d1bcc/irobot_create_common/irobot_create_description/urdf/create3.urdf.xacro)
 const Real TURTLEBOT4_IR_SENSOR_RING_RADIUS = TURTLEBOT4_BASE_RADIUS;
-const CRadians TURTLEBOT4_IR_SENSOR_RING_START_ANGLE = CRadians((2 * ARGOS_PI / 8.0f) * 0.5f);
 const Real TURTLEBOT4_IR_SENSOR_RING_RANGE = 0.1f;
 const Real OMNIDIRECTIONAL_CAMERA_ELEVATION = 0.288699733f;
 

@@ -103,22 +103,12 @@ namespace argos
 
       glCallList(m_unUpperBodyList);
 
-      /* Columns (4 pillars: 2 front wider apart, 2 rear closer together) */
-      Real frontRadius = BODY_RADIUS * 0.6f;
-      Real rearRadius  = BODY_RADIUS * 0.75f;
-      CRadians cColumnAngles[4] = {
-         CRadians(ToRadians(CDegrees(  70.0))),  /* front-left  */
-         CRadians(ToRadians(CDegrees( -70.0))),  /* front-right */
-         CRadians(ToRadians(CDegrees( 160.0))),  /* rear-left   */
-         CRadians(ToRadians(CDegrees(-160.0)))   /* rear-right  */
-      };
-      Real colRadius[4] = { frontRadius, frontRadius, rearRadius, rearRadius };
-
+      /* Columns (4 tower standoffs, positions from turtlebot4.urdf.xacro) */
       for (UInt32 i = 0; i < 4; ++i)
       {
          glPushMatrix();
-         glTranslated(colRadius[i] * Cos(cColumnAngles[i]),
-                      colRadius[i] * Sin(cColumnAngles[i]),
+         glTranslated(TURTLEBOT4_COLUMN_OFFSETS[i].GetX(),
+                      TURTLEBOT4_COLUMN_OFFSETS[i].GetY(),
                       0.0f);
          glCallList(m_unColumnList);
          glPopMatrix();
