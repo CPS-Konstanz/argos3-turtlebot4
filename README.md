@@ -93,7 +93,7 @@ Simulates a downward-looking fisheye camera that detects colored LEDs registered
 - **XY range:** 3.0 m by default; configurable via `max_range` XML attribute
 - **Z constraint:** only LEDs with height < 2 × camera elevation (≈ 0.58 m) are detected. This covers typical robot LED rings (≈ 0.375 m) but excludes elevated arena lights (e.g. at 1.5 m)
 - **Camera mounting height:** 0.289 m
-- **Output per blob:** color (`CColor`), angle in degrees (counter-clockwise from robot front), distance in cm
+- **Output per blob:** color, angle in degrees, distance in cm
 - **Occlusion:** blocked by embodied entities between camera and LED
 - **Note:** the sensor is **disabled by default**; call `m_pcCamera->Enable()` in `Init()` and declare `medium="leds"` in the XML
 
