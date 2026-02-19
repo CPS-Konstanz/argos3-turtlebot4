@@ -1,8 +1,3 @@
-/**
- * @file <argos3/plugins/robots/turtlebot4/simulator/turtlebot4_lidar_default_sensor.cpp>
- *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
- */
 
 #include <argos3/core/simulator/entity/embodied_entity.h>
 #include <argos3/core/simulator/entity/composable_entity.h>
@@ -14,13 +9,7 @@
 
 #include <cstring>
 
-   /****************************************/
-   /****************************************/
-   // Lidar Specs:
-   // https://emanual.robotis.com/assets/docs/LDS_Basic_Specification.pdf
-   //
-   /****************************************/
-   /****************************************/
+
 namespace argos {
 
 
@@ -208,84 +197,9 @@ namespace argos {
 
    REGISTER_SENSOR(CTurtlebot4LIDARDefaultSensor,
                    "turtlebot4_lidar", "default",
-                   "Carlo Pinciroli [ilpincy@gmail.com]",
+                   "Jyotsna Bellary, Paolo Leopardi",
                    "1.0",
                    "The Turtlebot4 LIDAR sensor.",
-                   "This sensor accesses the Turtlebot4 LIDAR sensor. The sensors return the\n"
-                   "distance to nearby objects. In controllers, you must include the\n"
-                   "ci_turtlebot4_lidar_sensor.h header.\n\n"
-                   "REQUIRED XML CONFIGURATION\n\n"
-                   "  <controllers>\n"
-                   "    ...\n"
-                   "    <my_controller ...>\n"
-                   "      ...\n"
-                   "      <sensors>\n"
-                   "        ...\n"
-                   "        <lidar implementation=\"default\" />\n"
-                   "        ...\n"
-                   "      </sensors>\n"
-                   "      ...\n"
-                   "    </my_controller>\n"
-                   "    ...\n"
-                   "  </controllers>\n\n"
-                   "OPTIONAL XML CONFIGURATION\n\n"
-                   "It is possible to draw the rays shot by the LIDAR sensor in the OpenGL\n"
-                   "visualization. This can be useful for sensor debugging but also to understand\n"
-                   "what's wrong in your controller. In OpenGL, the rays are drawn in cyan when\n"
-                   "they are not obstructed and in purple when they are. In case a ray is\n"
-                   "obstructed, a black dot is drawn where the intersection occurred.\n"
-                   "To turn this functionality on, add the attribute \"show_rays\" as in this\n"
-                   "example:\n\n"
-                   "  <controllers>\n"
-                   "    ...\n"
-                   "    <my_controller ...>\n"
-                   "      ...\n"
-                   "      <sensors>\n"
-                   "        ...\n"
-                   "        <lidar implementation=\"default\"\n"
-                   "               show_rays=\"true\" />\n"
-                   "        ...\n"
-                   "      </sensors>\n"
-                   "      ...\n"
-                   "    </my_controller>\n"
-                   "    ...\n"
-                   "  </controllers>\n\n"
-                   "It is possible to change the default number of readings to make computation\n"
-                   "faster. The default number of readings is 682, but using the 'num_readings'\n"
-                   "attribute you can change it to a different value:\n\n"
-                   "  <controllers>\n"
-                   "    ...\n"
-                   "    <my_controller ...>\n"
-                   "      ...\n"
-                   "      <sensors>\n"
-                   "        ...\n"
-                   "        <lidar implementation=\"default\"\n"
-                   "               num_readings=\"100\" />\n"
-                   "        ...\n"
-                   "      </sensors>\n"
-                   "      ...\n"
-                   "    </my_controller>\n"
-                   "    ...\n"
-                   "  </controllers>\n\n"
-                   "It is possible to add uniform noise to the sensors, thus matching the\n"
-                   "characteristics of a real robot better. This can be done with the attribute\n"
-                   "\"noise_level\", whose allowed range is in [-1,1] and is added to the calculated\n"
-                   "reading. The final sensor reading is always normalized in the [0-1] range.\n\n"
-                   "  <controllers>\n"
-                   "    ...\n"
-                   "    <my_controller ...>\n"
-                   "      ...\n"
-                   "      <sensors>\n"
-                   "        ...\n"
-                   "        <lidar implementation=\"default\"\n"
-                   "               noise_level=\"0.1\" />\n"
-                   "        ...\n"
-                   "      </sensors>\n"
-                   "      ...\n"
-                   "    </my_controller>\n"
-                   "    ...\n"
-                   "  </controllers>\n\n",
-                   "Usable"
-		  );
-
+                   "",
+                   "Usable");
 }

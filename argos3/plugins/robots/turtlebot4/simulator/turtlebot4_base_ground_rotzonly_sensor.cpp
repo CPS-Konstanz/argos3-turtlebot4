@@ -1,8 +1,4 @@
-/**
- * @file <argos3/plugins/robots/turtlebot4/simulator/turtlebot4_base_ground_rotzonly_sensor.cpp>
- *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
- */
+
 
 #include <argos3/core/simulator/simulator.h>
 #include <argos3/core/simulator/entity/composable_entity.h>
@@ -119,13 +115,9 @@ namespace argos {
 
    REGISTER_SENSOR(CTurtlebot4BaseGroundRotZOnlySensor,
                    "turtlebot4_ground", "rot_z_only",
-                   "Carlo Pinciroli [ilpincy@gmail.com]",
+                   "Jyotsna Bellary, Paolo Leopardi",
                    "1.0",
-                   "The turtlebot4 base ground sensor.",
-                   "This sensor accesses the turtlebot4 base ground sensor. For a complete description\n"
-                   "of its usage, refer to the ci_turtlebot4_base_ground_sensor.h interface. For the XML\n"
-                   "configuration, refer to the default ground sensor.\n",
-                   "Usable"
-		  );
-
+                   "",
+                   "",
+                   "Usable");
 }

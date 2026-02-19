@@ -110,13 +110,9 @@ namespace argos {
 
    REGISTER_SENSOR(CTurtlebot4ProximityDefaultSensor,
                    "turtlebot4_proximity", "default",
-                   "Carlo Pinciroli [ilpincy@gmail.com]",
+                   "Jyotsna Bellary, Paolo Leopardi",
                    "1.0",
-                   "The Turtlebot4 proximity sensor.",
-                   "This sensor accesses the Turtlebot4 proximity sensor. For a complete description\n"
-                   "of its usage, refer to the ci_turtlebot4_proximity_sensor.h interface. For the XML\n"
-                   "configuration, refer to the default proximity sensor.\n",
-                   "Usable"
-		  );
-
+                   "",
+                   "",
+                   "Usable");
 }

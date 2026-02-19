@@ -1,8 +1,4 @@
-/**
- * @file <argos3/plugins/robots/turtlebot4/simulator/turtlebot4_lidar_default_sensor.h>
- *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
- */
+
 
 #ifndef TURTLEBOT4_LIDAR_DEFAULT_SENSOR_H
 #define TURTLEBOT4_LIDAR_DEFAULT_SENSOR_H

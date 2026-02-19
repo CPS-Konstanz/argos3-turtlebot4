@@ -1,15 +1,7 @@
-/**
- * @file <argos3/plugins/robots/turtlebot4/simulator/turtlebot4_measures.h>
- *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
- */
+
 
 #include "turtlebot4_measures.h"
 
-/****************************************/
-/****************************************/
-// Measures from here:
-// https://emanual.robotis.com/docs/en/platform/turtlebot4/features/
 
 UInt8 TURTLEBOT4_POWERON_LASERON = 3;
 const Real TURTLEBOT4_MASS = 3.945f;                                                             // mass in kg (see https://turtlebot.github.io/turtlebot4-user-manual/overview/features.html#hardware-specifications)

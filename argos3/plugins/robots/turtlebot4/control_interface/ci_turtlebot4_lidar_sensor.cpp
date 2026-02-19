@@ -1,8 +1,3 @@
-/**
- * @file <argos3/plugins/robots/turtlebot4/control_interface/ci_turtlebot4_lidar_sensor.cpp>
- *
- * @author Carlo Pinciroli <ilpincy@gmail.com>
- */
 
 #include "ci_turtlebot4_lidar_sensor.h"
 #include <argos3/core/utility/math/angles.h>

@@ -1,8 +1,4 @@
-/**
- * @file <turtlebot4/simulator/qtopengl_turtlebot4.cpp>
- *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
- */
+
 
 #include "qtopengl_turtlebot4.h"
 #include "turtlebot4_entity.h"

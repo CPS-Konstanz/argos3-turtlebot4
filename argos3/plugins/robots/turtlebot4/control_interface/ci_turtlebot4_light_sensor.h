@@ -1,17 +1,4 @@
-/**
- * @file <argos3/plugins/robots/turtlebot4/control_interface/ci_turtlebot4_light_sensor.h>
- *
- * @brief This file provides the definition of the turtlebot4 light sensor.
- *
- * The turtlebot4 has 3 light sensors:
- *   - Index 0: Front-left  (+30°)
- *   - Index 1: Front-right (-30°)
- *   - Index 2: Rear        (180°)
- *
- * Readings are normalized between 0 and 1.
- *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
- */
+
 
 #ifndef CCI_TURTLEBOT4_LIGHT_SENSOR_H
 #define CCI_TURTLEBOT4_LIGHT_SENSOR_H

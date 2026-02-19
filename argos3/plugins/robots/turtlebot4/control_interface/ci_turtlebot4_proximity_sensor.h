@@ -1,8 +1,3 @@
-/**
- * @file <argos3/plugins/robots/generic/control_interface/ci_turtlebot4_proximity_sensor.h>
- *
- * @author Danesh Tarapore <daneshtarapore@gmail.com>
- */
 
 #ifndef CCI_TURTLEBOT4_PROXIMITY_SENSOR_H
 #define CCI_TURTLEBOT4_PROXIMITY_SENSOR_H

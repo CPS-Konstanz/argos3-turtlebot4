@@ -1,8 +1,3 @@
-/**
- * @file <argos3/plugins/robots/generic/control_interface/ci_turtlebot4_proximity_sensor.cpp>
- *
- * @author Jyotsna Bellary <jyotsnabellary@gmail.com>
- */
 
 #include "ci_turtlebot4_proximity_sensor.h"
 #include <argos3/core/utility/math/angles.h>

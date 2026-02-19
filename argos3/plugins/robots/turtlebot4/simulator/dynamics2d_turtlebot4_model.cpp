@@ -1,8 +1,4 @@
-/**
- * @file <turtlebot4/simulator/dynamics2d_turtlebot4_model.cpp>
- *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
- */
+
 
 #include "dynamics2d_turtlebot4_model.h"
 #include <argos3/plugins/simulator/physics_engines/dynamics2d/dynamics2d_gripping.h>

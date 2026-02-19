@@ -1,8 +1,4 @@
-/**
- * @file <turtlebot4/simulator/dynamics3d_turtlebot4_model.cpp>
- *
- * @author Michael Allwright - <allsey87@gmail.com>
- */
+
 
 #include "dynamics3d_turtlebot4_model.h"
 

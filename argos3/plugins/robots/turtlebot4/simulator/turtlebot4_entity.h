@@ -1,8 +1,4 @@
-/**
- * @file <turtlebot4/simulator/turtlebot4_entity.h>
- *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
- */
+
 
 #ifndef TURTLEBOT4_ENTITY_H
 #define TURTLEBOT4_ENTITY_H

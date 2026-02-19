@@ -1,8 +1,4 @@
-/**
- * @file <argos3/plugins/robots/turtlebot4/simulator/turtlebot4_measures.h>
- *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
- */
+
 
 #ifndef TURTLEBOT4_MEASURES_H
 #define TURTLEBOT4_MEASURES_H

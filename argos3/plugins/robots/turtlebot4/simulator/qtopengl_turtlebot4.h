@@ -1,8 +1,4 @@
-/**
- * @file <turtlebot4/simulator/qtopengl_turtlebot4.h>
- *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
- */
+
 
 #ifndef QTOPENGL_TURTLEBOT4_H
 #define QTOPENGL_TURTLEBOT4_H

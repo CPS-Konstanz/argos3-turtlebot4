@@ -1,8 +1,4 @@
-/**
- * @file <argos3/plugins/robots/turtlebot4/simulator/turtlebot4_light_rotzonly_sensor.cpp>
- *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
- */
+
 
 #include <argos3/core/simulator/simulator.h>
 #include <argos3/core/simulator/entity/embodied_entity.h>
@@ -211,74 +207,10 @@ namespace argos
 
     REGISTER_SENSOR(CTurtlebot4LightRotZOnlySensor,
                     "turtlebot4_light", "rot_z_only",
-                    "Carlo Pinciroli [ilpincy@gmail.com]",
+                    "Jyotsna Bellary, Paolo Leopardi",
                     "1.0",
-                    "The turtlebot4 light sensor (optimized for 2D).",
-                    "This sensor accesses the 3 light sensors on the turtlebot4:\n"
-                    "  - Sensor 0: Front-left (+30 degrees)\n"
-                    "  - Sensor 1: Front-right (-30 degrees)\n"
-                    "  - Sensor 2: Rear (180 degrees)\n"
-                    "Each sensor returns a value between 0 and 1, where 0 means nothing within\n"
-                    "range and 1 means the perceived light saturates the sensor. Each reading R\n"
-                    "is calculated with R=(I/x)^2, where x is the distance between the sensor\n"
-                    "and the light, and I is the reference intensity of the perceived light.\n"
-                    "In case multiple lights are present in the environment, each sensor reading\n"
-                    "is the sum of the individual readings due to each light.\n"
-                    "In controllers, include ci_turtlebot4_light_sensor.h.\n\n"
-                    "REQUIRED XML CONFIGURATION\n\n"
-                    "  <controllers>\n"
-                    "    ...\n"
-                    "    <my_controller ...>\n"
-                    "      ...\n"
-                    "      <sensors>\n"
-                    "        ...\n"
-                    "        <turtlebot4_light implementation=\"rot_z_only\" />\n"
-                    "        ...\n"
-                    "      </sensors>\n"
-                    "      ...\n"
-                    "    </my_controller>\n"
-                    "    ...\n"
-                    "  </controllers>\n\n"
-                    "OPTIONAL XML CONFIGURATION\n\n"
-                    "It is possible to draw the rays shot by the light sensor in the OpenGL\n"
-                    "visualization. This can be useful for sensor debugging but also to understand\n"
-                    "what's wrong in your controller. In OpenGL, the rays are drawn in cyan when\n"
-                    "they are not obstructed and in purple when they are. In case a ray is\n"
-                    "obstructed, a black dot is drawn where the intersection occurred.\n"
-                    "To turn this functionality on, add the attribute \"show_rays\" as in this\n"
-                    "example:\n\n"
-                    "  <controllers>\n"
-                    "    ...\n"
-                    "    <my_controller ...>\n"
-                    "      ...\n"
-                    "      <sensors>\n"
-                    "        ...\n"
-                    "        <turtlebot4_light implementation=\"rot_z_only\"\n"
-                    "                       show_rays=\"true\" />\n"
-                    "        ...\n"
-                    "      </sensors>\n"
-                    "      ...\n"
-                    "    </my_controller>\n"
-                    "    ...\n"
-                    "  </controllers>\n\n"
-                    "It is possible to add uniform noise to the sensors, thus matching the\n"
-                    "characteristics of a real robot better. This can be done with the attribute\n"
-                    "\"noise_level\", whose allowed range is in [-1,1] and is added to the calculated\n"
-                    "reading. The final sensor reading is always normalized in the [0-1] range.\n\n"
-                    "  <controllers>\n"
-                    "    ...\n"
-                    "    <my_controller ...>\n"
-                    "      ...\n"
-                    "      <sensors>\n"
-                    "        ...\n"
-                    "        <turtlebot4_light implementation=\"rot_z_only\"\n"
-                    "                       noise_level=\"0.1\" />\n"
-                    "        ...\n"
-                    "      </sensors>\n"
-                    "      ...\n"
-                    "    </my_controller>\n"
-                    "    ...\n"
-                    "  </controllers>\n",
+                    "",
+                    "",
                     "Usable");
 
 }

@@ -1,8 +1,3 @@
-/**
- * @file <turtlebot4/simulator/dynamics3d_turtlebot4_model.h>
- *
- * @author Michael Allwright - <allsey87@gmail.com>
- */
 
 #ifndef DYNAMICS3D_TURTLEBOT4_MODEL_H
 #define DYNAMICS3D_TURTLEBOT4_MODEL_H

@@ -1,14 +1,4 @@
-/**
- * @file <argos3/plugins/robots/turtlebot4/control_interface/ci_turtlebot4_lidar_sensor.h>
- *
- * @brief This file provides the definition of the Turtlebot4 LIDAR sensor.
- *
- * This file provides the definition of the Turtlebot4 LIDAR sensor.
- * The sensor readings are evenly spaced on a slice around the body of
- * the robot.
- *
- * @author Carlo Pinciroli <ilpincy@gmail.com>
- */
+
 
 #ifndef CCI_TURTLEBOT4_LIDAR_SENSOR_H
 #define CCI_TURTLEBOT4_LIDAR_SENSOR_H

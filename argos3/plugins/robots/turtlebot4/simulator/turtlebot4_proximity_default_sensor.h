@@ -1,8 +1,4 @@
-/**
- * @file <argos3/plugins/robots/turtlebot4/simulator/turtlebot4_proximity_default_sensor.h>
- *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
- */
+
 
 #ifndef TURTLEBOT4_PROXIMITY_DEFAULT_SENSOR_H
 #define TURTLEBOT4_PROXIMITY_DEFAULT_SENSOR_H

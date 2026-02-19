@@ -1,8 +1,4 @@
-/**
- * @file <turtlebot4/simulator/dynamics2d_turtlebot4_model.h>
- *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
- */
+
 
 #ifndef DYNAMICS2D_TURTLEBOT4_MODEL_H
 #define DYNAMICS2D_TURTLEBOT4_MODEL_H
