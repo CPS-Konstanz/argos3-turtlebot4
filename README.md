@@ -52,7 +52,7 @@ export ARGOS_PLUGIN_PATH=$EXAMPLEDIR/build/newepuck
 
 ## Sensors
 
-### LiDAR (`turtlebot4_lidar`, implementation `default`)
+### LiDAR
 Simulates the TurtleBot 4's 360° LiDAR. Returns an array of distance readings in meters.
 
 - **Range:** 0.01 m – 12.00 m
@@ -60,7 +60,7 @@ Simulates the TurtleBot 4's 360° LiDAR. Returns an array of distance readings i
 - **Number of readings:** configurable via the `num_readings` XML attribute (e.g. 360 → one reading per degree)
 - **Mounting height:** ~0.19 m (lower body + 0.099 m)
 
-### Proximity Sensors / IR (`turtlebot4_proximity`, implementation `default`)
+### Proximity Sensors / IR
 Simulates the 7 infrared intensity sensors arranged in a front half-ring. Each reading is in [0, 1] where 0 means no obstacle and values closer to 1 indicate a closer obstacle.
 
 - **Range:** 0 – 0.2 m
@@ -69,7 +69,7 @@ Simulates the 7 infrared intensity sensors arranged in a front half-ring. Each r
   - [0] −65°, [1] −38°, [2] −20°, [3] −3°, [4] +14°, [5] +34°, [6] +65°
 - **Mounting height:** 0.057 m
 
-### Light Sensors (`turtlebot4_light`, implementation `rot_z_only`)
+### Light Sensors
 Simulates three phototransistors that react to `<light>` entities placed in the arena. The reading sums contributions from all visible (non-occluded) light sources.
 
 - **Range:** unlimited — all lights in the arena contribute
@@ -77,14 +77,14 @@ Simulates three phototransistors that react to `<light>` entities placed in the 
 - **Sensors:** 3 — Front-Left, Front-Right, Rear
 - **Optional noise:** `noise_level` XML attribute (additive uniform noise)
 
-### Ground Sensors (`turtlebot4_ground`, implementation `rot_z_only`)
+### Ground Sensors
 Reads the floor color beneath each sensor position as a grayscale value in [0, 1] (0 = black, 1 = white). Useful for line following or detecting floor markings.
 
 - **Range:** point measurement — no distance range, reads directly at sensor XY position
 - **Sensors:** 4 — Side-Left (6, 14.5 cm), Side-Right (6, −14.5 cm), Front-Left (16, 4.5 cm), Front-Right (16, −4.5 cm), positions in cm relative to robot center
 - **Optional noise:** `noise_level` XML attribute (additive uniform noise)
 
-### Omnidirectional Camera (`turtlebot4_colored_blob_omnidirectional_camera`, implementation `rot_z_only`)
+### Omnidirectional Camera
 Simulates a downward-looking fisheye camera that detects colored LEDs registered in the `leds` medium. Returns a list of blobs, each described by color, angle, and distance.
 
 - **XY range:** 3.0 m by default; configurable via `max_range` XML attribute
@@ -95,7 +95,8 @@ Simulates a downward-looking fisheye camera that detects colored LEDs registered
 - **Note:** the sensor is **disabled by default**; call `m_pcCamera->Enable()` in `Init()` and declare `medium="leds"` in the XML
 
 ## Actuators
-The robot is implemented as a differential drive robot, the example controller provieded (see example) shows how to convert the linear and angular velocity commands into left and right wheel velocities. 
+The robot is implemented as a differential drive robot, the example controller provieded (see example) shows how to convert the linear and angular velocity commands into left and right wheel velocities.
+This because the real TurtleBot 4 accepts velocity commands in the form of linear and angular velocity, but the ARGoS3 differential drive actuator expects left and right wheel velocities. 
 
 
 ## Run the Sample Experiment
