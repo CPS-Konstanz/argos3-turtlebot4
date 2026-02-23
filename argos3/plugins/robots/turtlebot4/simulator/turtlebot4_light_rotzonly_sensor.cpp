@@ -158,9 +158,9 @@ namespace argos
                 // UNIT.TruncValue(m_tReadings[i].Value);
             }
         }
-        else // this never happens
+        else // no light entities in the environment
         {
-            /* There are no lights in the environment */
+            
             if (m_bAddNoise)
             {
                 /* Go through the sensors */
