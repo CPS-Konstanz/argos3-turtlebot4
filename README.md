@@ -1,5 +1,5 @@
 # ARGoS3 TurtleBot 4
-This repository contains ARGoS3 plugins for the TurtleBot 4.
+This repository contains the ARGoS3 plugin for the TurtleBot 4.
 
 <p align="center">
   <img src="./turtlebots4.gif" width="500" alt="Turtlebot4 simulation snapshot">
@@ -64,16 +64,16 @@ Simulates the TurtleBot 4's 360° LiDAR. Returns an array of distance readings i
 - **Mounting height:** ~0.19 m (lower body + 0.099 m)
 
 ### Proximity Sensors / IR
-Simulates the 7 infrared intensity sensors arranged in a front half-ring. Each reading is in [0, 1] where 0 means no obstacle and values closer to 1 indicate a closer obstacle.
+Simulates the seven infrared intensity sensors arranged in a front half-ring. Each reading is in [0, 1] where 0 means no obstacle and values closer to 1 indicate a closer obstacle.
 
 - **Range:** 0 – 0.2 m
 - **Response function:** `exp(-d × 2e / 0.2)` (exponential decay, matches the Create 3 Gazebo model)
-- **Sensor positions (angle from robot front, positive = left):**
+- **Sensor positions (angle from robot front, positive angles = left side sensors):**
   - [0] −65°, [1] −38°, [2] −20°, [3] −3°, [4] +14°, [5] +34°, [6] +65°
 - **Mounting height:** 0.057 m
 
 ### Light Sensors
-Simulates three phototransistors that react to `<light>` entities placed in the arena. The reading sums contributions from all visible (non-occluded) light sources.
+Simulates three light sensors that react to `<light>` entities placed in the arena. The reading sums contributions from all visible (non-occluded) light sources.
 
 - **Range:** unlimited — all lights in the arena contribute
 - **Response function:** R = (intensity / distance)² per light source; multiple sources are summed
@@ -81,7 +81,7 @@ Simulates three phototransistors that react to `<light>` entities placed in the 
 - **Optional noise:** `noise_level` XML attribute (additive uniform noise)
 
 ### Ground Sensors
-Reads the floor color beneath each sensor position as a grayscale value in [0, 1] (0 = black, 1 = white). Useful for line following or detecting floor markings.
+Simulates ground sensors that read the floor color beneath each sensor position as a grayscale value in [0, 1] (0 = black, 1 = white).
 
 - **Range:** point measurement — no distance range, reads directly at sensor XY position
 - **Sensors:** 4 — Side-Left (6, 14.5 cm), Side-Right (6, −14.5 cm), Front-Left (16, 4.5 cm), Front-Right (16, −4.5 cm), positions in cm relative to robot center
