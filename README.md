@@ -19,38 +19,25 @@ cd ~/argos3-turtlebot4
 ```
 
 ### Install the plugin
-To install the plugin, you can use the helper script or run the commands manually.
+To install the plugin, run the following commands:
 
-- Helper script:
-  ```bash
-  # configures and builds in ./build (Debug by default)
-  ./build.sh           
-
-  # same as above plus sudo make install
-  ./build.sh install   
-  ```
-
-- Manual steps:
-
-  ```bash
-  mkdir -p build && cd build
-  cmake -DCMAKE_BUILD_TYPE=Debug ..
-  make -j$(nproc)
-
-  # to install libraries/headers into your ARGoS3 prefix
-  sudo make install    
-  ```
-
-If you prefer running without `sudo make install`, set `ARGOS_PLUGIN_PATH` to `<repo>/build/argos3/plugins/robots/<plugin>` before launching `argos3` so it can find the shared libraries.
 ```bash
-export EXAMPLEDIR=../argos3_plugins/new_robots
-export ARGOS_PLUGIN_PATH=$EXAMPLEDIR/build/newepuck
+mkdir -p build && cd build
+cmake -DCMAKE_BUILD_TYPE=Debug ..
+make -j$(nproc)
+
+# to install libraries/headers into your ARGoS3 prefix
+sudo make install
+```
+
+If you prefer running without `sudo make install`, set `ARGOS_PLUGIN_PATH` to the build output directory before launching `argos3` so it can find the shared libraries:
+```bash
+export ARGOS_PLUGIN_PATH=~/argos3-turtlebot4/build/argos3/plugins/robots/turtlebot4
 ```
 
 ## Repository Layout
 - `argos3/plugins/robots/turtlebot4`: implementation of the TurtleBot 4 plugin 
 - `argos3/testing`: folder contain an example controller, experiment and loop function to test the plugin.
-- `build.sh`: convenience script for rebuilding and optionally installing.
 
 
 ## Sensors

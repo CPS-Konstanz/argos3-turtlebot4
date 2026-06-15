@@ -5,3 +5,6 @@
 .vscode/
 docs/
 ./argos3/plugins/robots/README.md
+argos3/plugins/robots/turtlebot4/simulator/turtlebot4_argos_real-world.code-workspace
+.DS_Store
+build.sh
