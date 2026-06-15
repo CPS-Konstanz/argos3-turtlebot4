@@ -106,3 +106,9 @@ argos3 -c testing/experiments/turtlebot4_test.argos
 ## References
 - [TurtleBot 4 User Manual](https://turtlebot.github.io/turtlebot4-user-manual/) — official documentation for the TurtleBot 4 platform.
 - [ARGoS](https://www.argos-sim.info/) — the multi-robot simulator this plugin is built on.
+- [ROS-2-ARGoS Bridge](https://github.com/CPS-Konstanz/argos3-ros2-bridge.git) — to use the plugin in combination with ROS 2.
+
+## Citation
+If you use the TurtleBot 4 plugin in your research, please cite our work:
+```
+```
