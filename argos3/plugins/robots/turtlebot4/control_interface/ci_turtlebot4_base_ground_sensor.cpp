@@ -13,16 +13,7 @@ namespace argos {
    /****************************************/
 
    CCI_Turtlebot4BaseGroundSensor::CCI_Turtlebot4BaseGroundSensor() :
-      m_tReadings(8) {
-      // Set the values for the base ground sensor offset (taken from the CAD model, in cm)
-      m_tReadings[0].Offset.Set( 8.0, 0.0);
-      m_tReadings[1].Offset.Set( 4.2, 6.5);
-      m_tReadings[2].Offset.Set( 0.0, 8.0);
-      m_tReadings[3].Offset.Set(-4.2, 6.5);
-      m_tReadings[4].Offset.Set(-8.0, 0.0);
-      m_tReadings[5].Offset.Set(-4.2,-6.5);
-      m_tReadings[6].Offset.Set( 0.0,-8.0);
-      m_tReadings[7].Offset.Set( 4.2,-6.5);
+      m_tReadings(4) {
    }
 
    /****************************************/
@@ -37,8 +28,7 @@ namespace argos {
 
    std::ostream& operator<<(std::ostream& c_os,
                             const CCI_Turtlebot4BaseGroundSensor::SReading& s_reading) {
-      c_os << "Value=<" << s_reading.Value
-           << ">, Offset=<" << s_reading.Offset << ">";
+      c_os << "Value=<" << s_reading.Value << ">";
       return c_os;
    }
 
@@ -64,9 +54,8 @@ namespace argos {
    void CCI_Turtlebot4BaseGroundSensor::CreateLuaState(lua_State* pt_lua_state) {
       CLuaUtility::OpenRobotStateTable(pt_lua_state, "base_ground");
       for(size_t i = 0; i < m_tReadings.size(); ++i) {
-         CLuaUtility::StartTable(pt_lua_state, i+1                            );
-         CLuaUtility::AddToTable(pt_lua_state, "offset", m_tReadings[i].Offset);
-         CLuaUtility::AddToTable(pt_lua_state, "value",  m_tReadings[i].Value );
+         CLuaUtility::StartTable(pt_lua_state, i+1                           );
+         CLuaUtility::AddToTable(pt_lua_state, "value",  m_tReadings[i].Value);
          CLuaUtility::EndTable  (pt_lua_state                                 );
       }
       CLuaUtility::CloseRobotStateTable(pt_lua_state);

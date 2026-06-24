@@ -52,7 +52,6 @@ namespace argos {
             m_cNoiseRange.Set(-fNoiseLevel, fNoiseLevel);
             m_pcRNG = CRandom::CreateRNG("argos");
          }
-         m_tReadings.resize(4);
          /* sensor is enabled by default */
          Enable();
       }
@@ -96,8 +95,6 @@ namespace argos {
          if(m_bAddNoise) {
             m_tReadings[i].Value += m_pcRNG->Uniform(m_cNoiseRange);
          }
-         /* Set the final reading */
-         // m_tReadings[i].Value = m_tReadings[i].Value < 0.5f ? 0.0f : 1.0f;
       }
    }
 

@@ -8,7 +8,6 @@ namespace argos {
 }
 
 #include <argos3/core/control_interface/ci_sensor.h>
-#include <argos3/core/utility/math/vector2.h>
 #include <vector>
 
 namespace argos {
@@ -19,15 +18,9 @@ namespace argos {
 
       struct SReading {
          Real Value;
-         CVector2 Offset;
-	 
-         SReading() :
-            Value(0.0f) {}
-	 
-         SReading(Real f_value,
-                  const CVector2& c_offset) :
-            Value(f_value),
-            Offset(c_offset) {}
+
+         SReading() : Value(0.0f) {}
+         explicit SReading(Real f_value) : Value(f_value) {}
       };
 
       typedef std::vector<SReading> TReadings;
