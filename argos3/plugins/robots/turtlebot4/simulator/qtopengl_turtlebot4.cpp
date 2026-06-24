@@ -132,6 +132,18 @@ namespace argos
       /* Reset emission so it doesn't affect other objects */
       const GLfloat no_emission[] = {0.0f, 0.0f, 0.0f, 1.0f};
       glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, no_emission);
+
+      /* Front indicator: always-white line on top plate toward +X */
+      static const Real TOP_Z = BODY_ELEVATION + LOWER_BODY_HEIGHT + TURTLEBOT4_COLUMN_HEIGHT + 0.011f;
+      glDisable(GL_LIGHTING);
+      glColor3f(1.0f, 1.0f, 1.0f);
+      glLineWidth(3.0f);
+      glBegin(GL_LINES);
+      glVertex3d(0.0,              0.0, TOP_Z);
+      glVertex3d(UPPER_BODY_RADIUS, 0.0, TOP_Z);
+      glEnd();
+      glLineWidth(1.0f);
+      glEnable(GL_LIGHTING);
    }
 
    /* Base body — dark charcoal */
