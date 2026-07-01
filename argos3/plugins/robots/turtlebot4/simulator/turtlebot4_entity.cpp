@@ -124,13 +124,13 @@ namespace argos
             Real fRadius = UPPER_BODY_RADIUS-0.01;
             Real fRange = 10.0f;
             CVector3 cLPos, cLDir;
-            /* Front-left: +30° */
-            CRadians cFL(CRadians::PI / 6.0);
+            /* Front-left: +60° */
+            CRadians cFL(CRadians::PI / 3.0);
             cLPos.Set(fRadius * Cos(cFL), fRadius * Sin(cFL), fSensorElev);
             cLDir.Set(Cos(cFL), Sin(cFL), 0.0f);
             m_pcLightSensorEquippedEntity->AddSensor(cLPos, cLDir, fRange, m_pcEmbodiedEntity->GetOriginAnchor());
-            /* Front-right: -30° */
-            CRadians cFR(-CRadians::PI / 6.0);
+            /* Front-right: -60° */
+            CRadians cFR(-CRadians::PI / 3.0);
             cLPos.Set(fRadius * Cos(cFR), fRadius * Sin(cFR), fSensorElev);
             cLDir.Set(Cos(cFR), Sin(cFR), 0.0f);
             m_pcLightSensorEquippedEntity->AddSensor(cLPos, cLDir, fRange, m_pcEmbodiedEntity->GetOriginAnchor());
@@ -272,13 +272,13 @@ namespace argos
             Real fRadius = UPPER_BODY_RADIUS-0.01;
             Real fRange = 10.0f;
             CVector3 cPos, cDir;
-            /* Front-left: +30° */
-            CRadians cFL(CRadians::PI / 6.0);
+            /* Front-left: +60° */
+            CRadians cFL(CRadians::PI / 3.0);
             cPos.Set(fRadius * Cos(cFL), fRadius * Sin(cFL), fSensorElev);
             cDir.Set(Cos(cFL), Sin(cFL), 0.0f);
             m_pcLightSensorEquippedEntity->AddSensor(cPos, cDir, fRange, m_pcEmbodiedEntity->GetOriginAnchor());
-            /* Front-right: -30° */
-            CRadians cFR(-CRadians::PI / 6.0);
+            /* Front-right: -60° */
+            CRadians cFR(-CRadians::PI / 3.0);
             cPos.Set(fRadius * Cos(cFR), fRadius * Sin(cFR), fSensorElev);
             cDir.Set(Cos(cFR), Sin(cFR), 0.0f);
             m_pcLightSensorEquippedEntity->AddSensor(cPos, cDir, fRange, m_pcEmbodiedEntity->GetOriginAnchor());
